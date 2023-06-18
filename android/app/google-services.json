@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "948096660107",
+    "firebase_url": "https://jobportal-c9122-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "jobportal-c9122",
+    "storage_bucket": "jobportal-c9122.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:948096660107:android:206014ca79d210635b9a8e",
+        "android_client_info": {
+          "package_name": "com.example.secure_job_portal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "948096660107-60uqksf304q5f4g9m54hce25t9tl1e63.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwKQena7QYyVatnm8Nkr1QkIOhi0jWMYE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "948096660107-60uqksf304q5f4g9m54hce25t9tl1e63.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
