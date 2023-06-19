@@ -10,28 +10,30 @@ Image logoWidget(String imageName) {
   );
 }
 
-TextField reusableTextField(String text, IconData icon, bool isPasswordType,
+TextField reusableTextField(String text, bool isPasswordType,
     TextEditingController controller) {
   return TextField(
     controller: controller,
     obscureText: isPasswordType,
     enableSuggestions: !isPasswordType,
     autocorrect: !isPasswordType,
-    cursorColor: Colors.white,
-    style: TextStyle(color: Colors.white.withOpacity(0.9)),
+    cursorColor: Colors.grey.shade500,
+    style: TextStyle(color: Colors.grey.shade600),
     decoration: InputDecoration(
-      prefixIcon: Icon(
-        icon,
-        color: Colors.white70,
-      ),
       labelText: text,
-      labelStyle: TextStyle(color: Colors.white.withOpacity(0.9)),
+      labelStyle: TextStyle(color: Colors.grey.shade500,
+      fontSize: 14),
       filled: true,
       floatingLabelBehavior: FloatingLabelBehavior.never,
-      fillColor: Colors.white.withOpacity(0.3),
-      border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: const BorderSide(width: 0, style: BorderStyle.none)),
+      fillColor: Colors.white,
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10.0),
+        borderSide: BorderSide(width: 1, style: BorderStyle.none),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10.0),
+        borderSide: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.indigo.shade900),
+      ),
     ),
     keyboardType: isPasswordType
         ? TextInputType.visiblePassword
@@ -41,10 +43,10 @@ TextField reusableTextField(String text, IconData icon, bool isPasswordType,
 
 Container firebaseUIButton(BuildContext context, String title, Function onTap) {
   return Container(
-    width: MediaQuery.of(context).size.width,
-    height: 50,
+    width: MediaQuery.of(context).size.width * 0.75,
+    height: 55,
     margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
-    decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
+    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
     child: ElevatedButton(
       onPressed: () {
         onTap();
@@ -52,17 +54,17 @@ Container firebaseUIButton(BuildContext context, String title, Function onTap) {
       child: Text(
         title,
         style: const TextStyle(
-            color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 16),
+            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
       ),
       style: ButtonStyle(
           backgroundColor: MaterialStateProperty.resolveWith((states) {
             if (states.contains(MaterialState.pressed)) {
-              return Colors.black26;
+              return Colors.grey.shade500;
             }
-            return Colors.white;
+            return Colors.indigo[900];
           }),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)))),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))),
     ),
   );
 }
