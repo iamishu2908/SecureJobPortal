@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:secure_job_portal/screens/signin.dart';
+import 'package:secure_job_portal/screens/signin_student.dart';
 import 'firebase_options.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.indigo,
       ),
-      home: const SignInScreen(),
+      home: const SignInStuScreen(),
     );
   }
 }
