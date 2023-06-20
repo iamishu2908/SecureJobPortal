@@ -1,6 +1,11 @@
+import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:secure_job_portal/screens/chatpage.dart';
+import 'package:secure_job_portal/screens/communitypage.dart';
+import 'package:secure_job_portal/screens/mainpage.dart';
 import 'package:secure_job_portal/screens/signin_student.dart';
 import 'package:flutter/material.dart';
+import 'package:secure_job_portal/utils/color_utils.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -10,21 +15,48 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<IconData> iconList = [
+    //list of icons that required by animated navigation bar.
+    Icons.people_alt_rounded,
+
+    Icons.forum_rounded,
+  ];
+  int _bottomNavIndex = 4;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: ElevatedButton(
-          child: Text("Logout"),
-          onPressed: () {
-            FirebaseAuth.instance.signOut().then((value) {
-              print("Signed Out");
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SignInStuScreen()));
-            });
-          },
-        ),
+      floatingActionButton: Visibility(
+        visible: MediaQuery.of(context).viewInsets.bottom == 0,
+        child: FloatingActionButton(
+            backgroundColor: primarytheme,
+            child: Icon(
+              Icons.home_rounded,
+            ),
+            onPressed: () {
+              setState(() {
+                _bottomNavIndex = 1;
+              });
+            }),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: AnimatedBottomNavigationBar(
+        splashColor: Colors.white,
+        //navigation bar
+        icons: iconList, //list of icons
+        activeIndex: _bottomNavIndex,
+        gapLocation: GapLocation.center,
+        notchSmoothness: NotchSmoothness.verySmoothEdge,
+        onTap: (index) => setState(() => _bottomNavIndex = index),
+        backgroundColor: whitetheme,
+        inactiveColor: Colors.grey,
+        activeColor: primarytheme,
+      ),
+      body: (_bottomNavIndex == 0)
+          ? communitypage()
+          : (_bottomNavIndex == 2)
+              ? chatpage()
+              : mainpage(),
     );
   }
 }
