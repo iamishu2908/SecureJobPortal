@@ -4,25 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:secure_job_portal/screens/signin_student.dart';
 import 'package:secure_job_portal/utils/color_utils.dart';
-
-// Get the current user
-
-FirebaseAuth auth = FirebaseAuth.instance;
-User? user;
-FirebaseFirestore firestore = FirebaseFirestore.instance;
-String username = 'Test';
-
-Future<void> getUserDetails(User? user) async {
-  if (user != null) {
-    DocumentSnapshot snapshot =
-        await firestore.collection('users').doc(user.uid).get();
-
-    if (snapshot.exists) {
-// Access the username field
-      username = snapshot.get('username');
-    }
-  }
-}
+import 'package:async/async.dart';
 
 class MyBehavior extends ScrollBehavior {
   @override
@@ -74,7 +56,7 @@ class _mainpageState extends State<mainpage> {
                               height: 5,
                             ),
                             Text(
-                              '$username!',
+                              'Test123 !',
                               textAlign: TextAlign.left,
                               style: GoogleFonts.poppins(
                                 fontWeight: FontWeight.w700,

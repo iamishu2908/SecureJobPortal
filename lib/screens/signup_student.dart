@@ -18,6 +18,7 @@ class SignUpStuScreen extends StatefulWidget {
 class _SignUpStuScreenState extends State<SignUpStuScreen> {
   TextEditingController _passwordTextController = TextEditingController();
   TextEditingController _emailTextController = TextEditingController();
+  TextEditingController _nameTextController = TextEditingController();
   String UserType = "";
   @override
   Widget build(BuildContext context) {
@@ -25,9 +26,7 @@ class _SignUpStuScreenState extends State<SignUpStuScreen> {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-            color: Colors.white24
-        ),
+        decoration: BoxDecoration(color: Colors.white24),
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.fromLTRB(
@@ -35,11 +34,12 @@ class _SignUpStuScreenState extends State<SignUpStuScreen> {
             child: Column(
               children: <Widget>[
                 Container(
-                  child: Text("Create an Account",
-                    style: TextStyle(color: Colors.indigo[900],
+                  child: Text(
+                    "Create an Account",
+                    style: TextStyle(
+                        color: Colors.indigo[900],
                         fontWeight: FontWeight.w500,
                         fontSize: 30),
-
                   ),
                 ),
                 const SizedBox(
@@ -48,33 +48,46 @@ class _SignUpStuScreenState extends State<SignUpStuScreen> {
                 ListTile(
                   title: Row(
                     children: <Widget>[
-                      Expanded(child: OutlinedButton(onPressed: () {
-                        UserType = "Student";},
+                      Expanded(
+                          child: OutlinedButton(
+                        onPressed: () {
+                          UserType = "Student";
+                        },
                         child: Text("Student"),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.white,
                           backgroundColor: Colors.indigo[900],
-                          side: BorderSide(color: Colors.indigo.shade900, width: 1),
-                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                          side: BorderSide(
+                              color: Colors.indigo.shade900, width: 1),
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
                         ),
-                      )
+                      )),
+                      SizedBox(
+                        width: 10,
                       ),
-                      SizedBox(width: 10,),
-                      Expanded(child: FilledButton(onPressed: () {
-                        UserType = "Company";
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const SignUpComScreen()),
-                        );
-                      },child: Text("Company"),
+                      Expanded(
+                          child: FilledButton(
+                        onPressed: () {
+                          UserType = "Company";
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SignUpComScreen()),
+                          );
+                        },
+                        child: Text("Company"),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.indigo[900],
                           backgroundColor: Colors.white,
-                          side: BorderSide(color: Colors.indigo.shade900, width: 1),
-                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                          side: BorderSide(
+                              color: Colors.indigo.shade900, width: 1),
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
                         ),
-                      )
-                      )
+                      ))
                     ],
                   ),
                 ),
@@ -87,15 +100,14 @@ class _SignUpStuScreenState extends State<SignUpStuScreen> {
                   alignment: Alignment.topLeft,
                   child: Text(
                     "Your Name",
-                    style: TextStyle(color: Colors.indigo.shade900,
+                    style: TextStyle(
+                        color: Colors.indigo.shade900,
                         fontSize: 15,
-                        fontWeight: FontWeight.w500
-                    ),
+                        fontWeight: FontWeight.w500),
                     textAlign: TextAlign.left,
                   ),
                 ),
-                reusableTextField("Enter Name", false,
-                    _emailTextController),
+                reusableTextField("Enter Name", false, _nameTextController),
                 const SizedBox(
                   height: 20,
                 ),
@@ -105,15 +117,14 @@ class _SignUpStuScreenState extends State<SignUpStuScreen> {
                   alignment: Alignment.topLeft,
                   child: Text(
                     "Email",
-                    style: TextStyle(color: Colors.indigo.shade900,
+                    style: TextStyle(
+                        color: Colors.indigo.shade900,
                         fontSize: 15,
-                        fontWeight: FontWeight.w500
-                    ),
+                        fontWeight: FontWeight.w500),
                     textAlign: TextAlign.left,
                   ),
                 ),
-                reusableTextField("Enter Email", false,
-                    _emailTextController),
+                reusableTextField("Enter Email", false, _emailTextController),
                 const SizedBox(
                   height: 20,
                 ),
@@ -123,24 +134,23 @@ class _SignUpStuScreenState extends State<SignUpStuScreen> {
                   alignment: Alignment.topLeft,
                   child: Text(
                     "Password",
-                    style: TextStyle(color: Colors.indigo.shade900,
+                    style: TextStyle(
+                        color: Colors.indigo.shade900,
                         fontSize: 15,
-                        fontWeight: FontWeight.w500
-                    ),
+                        fontWeight: FontWeight.w500),
                     textAlign: TextAlign.left,
                   ),
                 ),
-                reusableTextField("Enter Password", true,
-                    _passwordTextController),
+                reusableTextField(
+                    "Enter Password", true, _passwordTextController),
                 const SizedBox(
                   height: 20,
                 ),
-
                 firebaseUIButton(context, "Sign Up", () {
                   FirebaseAuth.instance
                       .signInWithEmailAndPassword(
-                      email: _emailTextController.text,
-                      password: _passwordTextController.text)
+                          email: _emailTextController.text,
+                          password: _passwordTextController.text)
                       .then((value) {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => HomeScreen()));
@@ -170,11 +180,11 @@ class _SignUpStuScreenState extends State<SignUpStuScreen> {
           },
           child: const Text(
             " Sign In",
-            style: TextStyle(color: Colors.orangeAccent, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: Colors.orangeAccent, fontWeight: FontWeight.bold),
           ),
         )
       ],
     );
   }
-
 }
