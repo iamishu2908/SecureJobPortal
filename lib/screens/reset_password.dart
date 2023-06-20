@@ -18,22 +18,19 @@ class _ResetPasswordState extends State<ResetPassword> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        foregroundColor: Colors.indigo[900],
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text(
-          "Reset Password",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        title: Text(
+          "Forgotten Password?",
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.indigo[900]),
         ),
       ),
       body: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [
-                hexStringToColor("CB2B93"),
-                hexStringToColor("9546C4"),
-                hexStringToColor("5E61F4")
-              ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+              color: Colors.white24),
           child: SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.fromLTRB(20, 120, 20, 0),
@@ -42,7 +39,20 @@ class _ResetPasswordState extends State<ResetPassword> {
                     const SizedBox(
                       height: 20,
                     ),
-                    reusableTextField("Enter Email Id", Icons.person_outline, false,
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 25,
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        "Email",
+                        style: TextStyle(color: Colors.indigo.shade900,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    reusableTextField("Enter Email", false,
                         _emailTextController),
                     const SizedBox(
                       height: 20,

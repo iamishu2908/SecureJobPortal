@@ -56,8 +56,8 @@ class _SignUpComScreenState extends State<SignUpComScreen> {
                         },
                         child: Text("Student"),
                         style: OutlinedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: Colors.indigo[900],
+                          foregroundColor: Colors.indigo[900],
+                          backgroundColor: Colors.white,
                           side: BorderSide(color: Colors.indigo.shade900, width: 1),
                           shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
                         ),
@@ -68,8 +68,8 @@ class _SignUpComScreenState extends State<SignUpComScreen> {
                         UserType = "Company";
                       },child: Text("Company"),
                         style: OutlinedButton.styleFrom(
-                          foregroundColor: Colors.indigo[900],
-                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.indigo[900],
                           side: BorderSide(color: Colors.indigo.shade900, width: 1),
                           shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
                         ),
@@ -146,21 +146,50 @@ class _SignUpComScreenState extends State<SignUpComScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 25,
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Password",
-                    style: TextStyle(color: Colors.indigo.shade900,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
+                Row(
+                    children: <Widget>[
+                      Container(
+                        //color: Colors.black,
+                        width: MediaQuery.of(context).size.width * 0.46,
+                        height: 25,
+                        //alignment: Alignment.topLeft,
+                        child: Text(
+                          "Email",
+                          style: TextStyle(color: Colors.indigo.shade900,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                      Container(
+                        //color: Colors.pink,
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        height: 25,
+                        //alignment: Alignment.topLeft,
+                        child: Text(
+                          "Password",
+                          style: TextStyle(color: Colors.indigo.shade900,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                    ]
                 ),
-                reusableTextField("Enter Password", true,
-                    _passwordTextController),
+                Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: reusableTextField("Enter Email", false,
+                            _emailTextController),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child:reusableTextField("Enter Password", true,
+                            _passwordTextController),
+                      ),
+                    ]),
                 const SizedBox(
                   height: 20,
                 ),
