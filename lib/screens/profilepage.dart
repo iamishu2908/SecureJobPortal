@@ -4,6 +4,24 @@ import 'package:secure_job_portal/screens/home.dart';
 import 'package:secure_job_portal/screens/mainpage.dart';
 import 'package:secure_job_portal/utils/color_utils.dart';
 
+List<String> profilemenu = [
+  'About Me',
+  'Work Experience',
+  'Education',
+  'Skills',
+  'Achievements',
+  'Resume'
+];
+
+List<IconData> iconmenu = [
+  Icons.person_pin_rounded,
+  Icons.work_outline_rounded,
+  Icons.school,
+  Icons.lightbulb,
+  Icons.workspace_premium_outlined,
+  Icons.file_present_rounded
+];
+
 class profilepage extends StatefulWidget {
   const profilepage({Key? key}) : super(key: key);
 
@@ -57,7 +75,7 @@ class _profilepageState extends State<profilepage> {
                   child: Text(
                     'Test123',
                     textAlign: TextAlign.left,
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.dmSans(
                       fontWeight: FontWeight.w400,
                       color: whitetheme,
                       fontSize: 20,
@@ -84,18 +102,23 @@ class _profilepageState extends State<profilepage> {
       body: ListView(
         // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SizedBox(
+            height: 20,
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: Container(
               // height: SizeConfig.screenHeight,
+              height: 5 * 190,
               child: ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: 6,
+                  itemCount: profilemenu.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5),
-                        child: qbox());
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: qbox(profilemenu.elementAt(index),
+                            iconmenu.elementAt(index)));
                   }),
             ),
           ),
@@ -108,6 +131,9 @@ class _profilepageState extends State<profilepage> {
 class qbox extends StatefulWidget {
   // int index;
   // List<ClassFaq> catlist;
+  String title;
+  IconData icon;
+  qbox(this.title, this.icon);
 
   // qbox(this.catlist, this.index);
 
@@ -146,59 +172,84 @@ class _qboxState extends State<qbox> {
             child: (expand == false)
                 ? Row(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Container(
-                          constraints: BoxConstraints(
-                              maxWidth:
-                                  MediaQuery.of(context).size.width * 0.7),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20))),
-                          child: Text(
-                            'About Me',
-                            // overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.left,
-                            style: GoogleFonts.poppins(
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black,
-                              fontSize: 17,
-                            ),
-                          ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Icon(
+                          widget.icon,
+                          size: 22.0,
+                          color: orangetheme,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        '${widget.title}',
+                        // overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.left,
+                        style: GoogleFonts.dmSans(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                          fontSize: 17,
                         ),
                       ),
                       Spacer(),
                       Align(
                         alignment: Alignment.centerRight,
                         child: Icon(
-                          Icons.keyboard_arrow_down_rounded,
+                          Icons.edit,
                           size: 22.0,
-                          color: Colors.grey,
+                          color: orangetheme,
                         ),
                       ),
+                      SizedBox(
+                        width: 5,
+                      )
                     ],
                   )
                 : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
-                        height: 5,
-                      ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        padding: const EdgeInsets.symmetric(vertical: 1),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'About Me ',
-                              // overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.left,
-                              style: GoogleFonts.poppins(
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black,
-                                fontSize: 17,
-                              ),
+                            Row(
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Icon(
+                                    widget.icon,
+                                    size: 22.0,
+                                    color: orangetheme,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  '${widget.title}',
+                                  // overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.left,
+                                  style: GoogleFonts.dmSans(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black,
+                                    fontSize: 17,
+                                  ),
+                                ),
+                                Spacer(),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Icon(
+                                    Icons.edit,
+                                    size: 22.0,
+                                    color: orangetheme,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                )
+                              ],
                             ),
                             SizedBox(
                               height: 10,
@@ -206,18 +257,10 @@ class _qboxState extends State<qbox> {
                             Text(
                               'I am a curious person interested in solving real world problems using the latest technologies.I\'m a tech geek!',
                               textAlign: TextAlign.left,
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.dmSans(
                                 fontWeight: FontWeight.w400,
                                 color: Colors.black,
                                 fontSize: 14,
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: Icon(
-                                Icons.keyboard_arrow_up_rounded,
-                                size: 22.0,
-                                color: Colors.grey,
                               ),
                             ),
                           ],
@@ -233,7 +276,7 @@ class _qboxState extends State<qbox> {
             //             child: Text(
             //               '1.Question',
             //               textAlign: TextAlign.left,
-            //               style: GoogleFonts.poppins(
+            //               style: GoogleFonts.dmSans(
             //                 fontWeight: FontWeight.w600,
             //                 color: Colors.black,
             //                 fontSize: 18,
@@ -254,7 +297,7 @@ class _qboxState extends State<qbox> {
             //             child: Text(
             //               'Answer 1',
             //               textAlign: TextAlign.left,
-            //               style: GoogleFonts.poppins(
+            //               style: GoogleFonts.dmSans(
             //                 fontWeight: FontWeight.w600,
             //                 color: Colors.black,
             //                 fontSize: 18,
@@ -268,7 +311,7 @@ class _qboxState extends State<qbox> {
             //             child: Text(
             //               "^ Click to minimize ^",
             //               textAlign: TextAlign.center,
-            //               style: GoogleFonts.poppins(
+            //               style: GoogleFonts.dmSans(
             //                 fontWeight: FontWeight.w200,
             //                 color: Colors.black,
             //                 fontSize: 11,

@@ -47,7 +47,7 @@ class _mainpageState extends State<mainpage> {
                             Text(
                               'Hello',
                               textAlign: TextAlign.left,
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.dmSans(
                                 fontWeight: FontWeight.w700,
                                 color: primarytheme,
                                 fontSize: 20,
@@ -59,7 +59,7 @@ class _mainpageState extends State<mainpage> {
                             Text(
                               'Test123 !',
                               textAlign: TextAlign.left,
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.dmSans(
                                 fontWeight: FontWeight.w700,
                                 color: primarytheme,
                                 fontSize: 20,
@@ -96,7 +96,7 @@ class _mainpageState extends State<mainpage> {
               child: Text(
                 'Find Your Job',
                 textAlign: TextAlign.left,
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.dmSans(
                   fontWeight: FontWeight.w700,
                   color: primarytheme,
                   fontSize: 15,
@@ -116,7 +116,7 @@ class _mainpageState extends State<mainpage> {
                       Text(
                         '44.5k',
                         textAlign: TextAlign.left,
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.dmSans(
                           fontWeight: FontWeight.w800,
                           color: primarytheme,
                           fontSize: 15,
@@ -125,7 +125,7 @@ class _mainpageState extends State<mainpage> {
                       Text(
                         'Jobs',
                         textAlign: TextAlign.left,
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.dmSans(
                           fontWeight: FontWeight.w300,
                           color: primarytheme,
                           fontSize: 15,
@@ -146,7 +146,7 @@ class _mainpageState extends State<mainpage> {
                       Text(
                         '66.8k',
                         textAlign: TextAlign.left,
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.dmSans(
                           fontWeight: FontWeight.w800,
                           color: primarytheme,
                           fontSize: 15,
@@ -155,7 +155,7 @@ class _mainpageState extends State<mainpage> {
                       Text(
                         'Internships',
                         textAlign: TextAlign.left,
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.dmSans(
                           fontWeight: FontWeight.w300,
                           color: primarytheme,
                           fontSize: 15,
