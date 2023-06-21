@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:secure_job_portal/screens/profilepage.dart';
 import 'package:secure_job_portal/screens/signin_student.dart';
 import 'package:secure_job_portal/utils/color_utils.dart';
 import 'package:async/async.dart';
@@ -71,6 +72,10 @@ class _mainpageState extends State<mainpage> {
                     GestureDetector(
                       onTap: () {
                         //TODO : link to profile page here
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profilepage()));
                         setState(() {});
                       },
                       child: Container(
@@ -169,7 +174,6 @@ class _mainpageState extends State<mainpage> {
             SizedBox(
               height: 35,
             ),
-            Spacer(),
             ElevatedButton(
               child: Text("Logout"),
               onPressed: () {
