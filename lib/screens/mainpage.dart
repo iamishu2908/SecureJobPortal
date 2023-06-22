@@ -174,18 +174,6 @@ class _mainpageState extends State<mainpage> {
             SizedBox(
               height: 35,
             ),
-            ElevatedButton(
-              child: Text("Logout"),
-              onPressed: () {
-                FirebaseAuth.instance.signOut().then((value) {
-                  print("Signed Out");
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SignInStuScreen()));
-                });
-              },
-            ),
           ],
         ),
       ),

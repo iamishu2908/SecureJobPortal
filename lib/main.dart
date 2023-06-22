@@ -7,11 +7,12 @@ import 'firebase_options.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -21,13 +22,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primaryColor: Colors.indigo,
-        ),
-        home: profilepage()
-        // home: const SignInStuScreen(),
-        );
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primaryColor: Colors.indigo,
+      ),
+      // home: profilepage()
+      home: const SignInStuScreen(),
+    );
   }
 }
