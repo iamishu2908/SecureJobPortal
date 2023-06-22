@@ -46,6 +46,7 @@ dependencies:
   animated_bottom_navigation_bar: ^1.2.0
   cloud_firestore: ^4.8.1
   google_fonts: ^2.1.0
+  rounded_expansion_tile: ^0.0.13
 
 dev_dependencies:
   flutter_test:
