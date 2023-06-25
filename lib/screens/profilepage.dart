@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:secure_job_portal/screens/home.dart';
 import 'package:secure_job_portal/screens/mainpage.dart';
+import 'package:secure_job_portal/screens/signin_student.dart';
 import 'package:secure_job_portal/utils/color_utils.dart';
 
 List<String> profilemenu = [
@@ -12,7 +14,6 @@ List<String> profilemenu = [
   'Achievements',
   'Resume'
 ];
-
 List<IconData> iconmenu = [
   Icons.person_pin_rounded,
   Icons.work_outline_rounded,
@@ -109,17 +110,47 @@ class _profilepageState extends State<profilepage> {
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: Container(
               // height: SizeConfig.screenHeight,
-              height: 5 * 190,
               child: ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: profilemenu.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        padding: const EdgeInsets.symmetric(vertical: 5),
                         child: qbox(profilemenu.elementAt(index),
                             iconmenu.elementAt(index)));
                   }),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(50.0),
+            child: ElevatedButton(
+              style: ButtonStyle(
+                  minimumSize: MaterialStateProperty.all<Size>(Size(60, 50)),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(primarytheme),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                  ))),
+              child: Text(
+                'Logout',
+                textAlign: TextAlign.left,
+                style: GoogleFonts.dmSans(
+                  fontWeight: FontWeight.w800,
+                  color: whitetheme,
+                  fontSize: 15,
+                ),
+              ),
+              onPressed: () {
+                FirebaseAuth.instance.signOut().then((value) {
+                  print("Signed Out");
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SignInStuScreen()));
+                });
+              },
             ),
           ),
         ],
@@ -129,12 +160,10 @@ class _profilepageState extends State<profilepage> {
 }
 
 class qbox extends StatefulWidget {
-  // int index;
-  // List<ClassFaq> catlist;
   String title;
   IconData icon;
-  qbox(this.title, this.icon);
 
+  qbox(this.title, this.icon);
   // qbox(this.catlist, this.index);
 
   @override
@@ -268,58 +297,6 @@ class _qboxState extends State<qbox> {
                       ),
                     ],
                   ),
-            // Column(
-            //         crossAxisAlignment: CrossAxisAlignment.start,
-            //         children: [
-            //           Container(
-            //             height: 200,
-            //             child: Text(
-            //               '1.Question',
-            //               textAlign: TextAlign.left,
-            //               style: GoogleFonts.dmSans(
-            //                 fontWeight: FontWeight.w600,
-            //                 color: Colors.black,
-            //                 fontSize: 18,
-            //               ),
-            //             ),
-            //           ),
-            //           SizedBox(
-            //             height: 10,
-            //           ),
-            //           Divider(
-            //             height: 1,
-            //             color: pink1,
-            //           ),
-            //           SizedBox(
-            //             height: 10,
-            //           ),
-            //           Flexible(
-            //             child: Text(
-            //               'Answer 1',
-            //               textAlign: TextAlign.left,
-            //               style: GoogleFonts.dmSans(
-            //                 fontWeight: FontWeight.w600,
-            //                 color: Colors.black,
-            //                 fontSize: 18,
-            //               ),
-            //             ),
-            //           ),
-            //           SizedBox(
-            //             height: 10,
-            //           ),
-            //           Center(
-            //             child: Text(
-            //               "^ Click to minimize ^",
-            //               textAlign: TextAlign.center,
-            //               style: GoogleFonts.dmSans(
-            //                 fontWeight: FontWeight.w200,
-            //                 color: Colors.black,
-            //                 fontSize: 11,
-            //               ),
-            //             ),
-            //           ),
-            //         ],
-            //       ),
           ),
         ),
       ),
