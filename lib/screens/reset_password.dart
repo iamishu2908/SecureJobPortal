@@ -23,7 +23,10 @@ class _ResetPasswordState extends State<ResetPassword> {
         elevation: 0,
         title: Text(
           "Forgotten Password?",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.indigo[900]),
+          style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.indigo[900]),
         ),
       ),
       body: Container(
@@ -51,9 +54,9 @@ class _ResetPasswordState extends State<ResetPassword> {
                           .then((value) => Navigator.of(context).pop());
                     })
                   ],
-                ),
-            ),
+
           ))
-    );
+    )
+    ));
   }
 }
