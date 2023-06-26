@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:secure_job_portal/reusable_widgets/reusable_widget.dart';
 import 'package:secure_job_portal/screens/home.dart';
-import 'package:secure_job_portal/screens/reset_password.dart';
-import 'package:secure_job_portal/screens/signin_company.dart';
 import 'package:secure_job_portal/screens/signin_student.dart';
 import 'package:secure_job_portal/screens/signup_student.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +13,9 @@ class SignUpComScreen extends StatefulWidget {
 }
 
 class _SignUpComScreenState extends State<SignUpComScreen> {
+  TextEditingController _nameTextController = TextEditingController();
+  TextEditingController _comNameTextController = TextEditingController();
+  TextEditingController _designationTextController = TextEditingController();
   TextEditingController _passwordTextController = TextEditingController();
   TextEditingController _emailTextController = TextEditingController();
   String UserType = "";
@@ -81,66 +82,28 @@ class _SignUpComScreenState extends State<SignUpComScreen> {
                 const SizedBox(
                   height: 25,
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 25,
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Your Name",
-                    style: TextStyle(color: Colors.indigo.shade900,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
+                reusableTextContainer("Your Name", MediaQuery.of(context).size.width),
                 reusableTextField("Enter Name", false,
-                    _emailTextController),
+                    _nameTextController),
                 const SizedBox(
                   height: 20,
                 ),
                 Row(
                     children: <Widget>[
-                      Container(
-                        //color: Colors.black,
-                        width: MediaQuery.of(context).size.width * 0.46,
-                        height: 25,
-                        //alignment: Alignment.topLeft,
-                        child: Text(
-                          "Company Name",
-                          style: TextStyle(color: Colors.indigo.shade900,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
-                      Container(
-                        //color: Colors.pink,
-                        width: MediaQuery.of(context).size.width * 0.4,
-                        height: 25,
-                        //alignment: Alignment.topLeft,
-                        child: Text(
-                          "Designation",
-                          style: TextStyle(color: Colors.indigo.shade900,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
+                      reusableTextContainer("Company Name", MediaQuery.of(context).size.width * 0.46),
+                      reusableTextContainer("Designation", MediaQuery.of(context).size.width * 0.4),
                     ]
                 ),
                 Row(
                   children: <Widget>[
                     Expanded(
                       child: reusableTextField("Enter Company", false,
-                          _emailTextController),
+                          _comNameTextController),
                     ),
                     SizedBox(width: 10),
                     Expanded(
                         child:reusableTextField("Enter Designation", false,
-                        _emailTextController),
+                        _designationTextController),
                     ),
                   ]),
                 const SizedBox(
@@ -148,34 +111,8 @@ class _SignUpComScreenState extends State<SignUpComScreen> {
                 ),
                 Row(
                     children: <Widget>[
-                      Container(
-                        //color: Colors.black,
-                        width: MediaQuery.of(context).size.width * 0.46,
-                        height: 25,
-                        //alignment: Alignment.topLeft,
-                        child: Text(
-                          "Email",
-                          style: TextStyle(color: Colors.indigo.shade900,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
-                      Container(
-                        //color: Colors.pink,
-                        width: MediaQuery.of(context).size.width * 0.4,
-                        height: 25,
-                        //alignment: Alignment.topLeft,
-                        child: Text(
-                          "Password",
-                          style: TextStyle(color: Colors.indigo.shade900,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
+                      reusableTextContainer("Email", MediaQuery.of(context).size.width * 0.46),
+                      reusableTextContainer("Password", MediaQuery.of(context).size.width * 0.4),
                     ]
                 ),
                 Row(
