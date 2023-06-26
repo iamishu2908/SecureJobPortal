@@ -30,8 +30,7 @@ class _ResetPasswordState extends State<ResetPassword> {
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
-<<<<<<< HEAD
-              color: Colors.white24),
+          color: Colors.white24),
           child: SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.fromLTRB(20, 120, 20, 0),
@@ -40,19 +39,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                     const SizedBox(
                       height: 20,
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 25,
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        "Email",
-                        style: TextStyle(color: Colors.indigo.shade900,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                    ),
+                    reusableTextContainer("Email", MediaQuery.of(context).size.width),
                     reusableTextField("Enter Email", false,
                         _emailTextController),
                     const SizedBox(
@@ -64,34 +51,9 @@ class _ResetPasswordState extends State<ResetPassword> {
                           .then((value) => Navigator.of(context).pop());
                     })
                   ],
-=======
-              gradient: LinearGradient(colors: [
-            hexStringToColor("CB2B93"),
-            hexStringToColor("9546C4"),
-            hexStringToColor("5E61F4")
-          ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
-          child: SingleChildScrollView(
-              child: Padding(
-            padding: EdgeInsets.fromLTRB(20, 120, 20, 0),
-            child: Column(
-              children: <Widget>[
-                const SizedBox(
-                  height: 20,
->>>>>>> f16966db874dd9e2286160ff3916af02678ab531
                 ),
-                reusableTextField(
-                    "Enter Email Id", false, _emailTextController),
-                const SizedBox(
-                  height: 20,
-                ),
-                firebaseUIButton(context, "Reset Password", () {
-                  FirebaseAuth.instance
-                      .sendPasswordResetEmail(email: _emailTextController.text)
-                      .then((value) => Navigator.of(context).pop());
-                })
-              ],
             ),
-          ))),
+          ))
     );
   }
 }

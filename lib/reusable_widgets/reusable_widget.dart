@@ -10,6 +10,22 @@ Image logoWidget(String imageName) {
   );
 }
 
+Container reusableTextContainer(String text, double Width) {
+  return Container(
+    width: Width,
+    height: 25,
+    alignment: Alignment.topLeft,
+    child: Text(
+      text,
+      style: TextStyle(color: Colors.indigo.shade900,
+          fontSize: 15,
+          fontWeight: FontWeight.w500
+      ),
+      textAlign: TextAlign.left,
+    ),
+  );
+}
+
 TextField reusableTextField(String text, bool isPasswordType,
     TextEditingController controller) {
   return TextField(

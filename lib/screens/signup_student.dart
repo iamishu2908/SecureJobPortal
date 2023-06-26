@@ -1,11 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:secure_job_portal/reusable_widgets/reusable_widget.dart';
 import 'package:secure_job_portal/screens/home.dart';
-import 'package:secure_job_portal/screens/reset_password.dart';
-import 'package:secure_job_portal/screens/signin_company.dart';
 import 'package:secure_job_portal/screens/signin_student.dart';
 import 'package:secure_job_portal/screens/signup_company.dart';
-import 'package:secure_job_portal/screens/signup_student.dart';
 import 'package:flutter/material.dart';
 
 class SignUpStuScreen extends StatefulWidget {
@@ -16,6 +13,7 @@ class SignUpStuScreen extends StatefulWidget {
 }
 
 class _SignUpStuScreenState extends State<SignUpStuScreen> {
+  TextEditingController _nameTextController = TextEditingController();
   TextEditingController _passwordTextController = TextEditingController();
   TextEditingController _emailTextController = TextEditingController();
   String UserType = "";
@@ -81,55 +79,19 @@ class _SignUpStuScreenState extends State<SignUpStuScreen> {
                 const SizedBox(
                   height: 25,
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 25,
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Your Name",
-                    style: TextStyle(color: Colors.indigo.shade900,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
+                reusableTextContainer("Your Name", MediaQuery.of(context).size.width),
                 reusableTextField("Enter Name", false,
-                    _emailTextController),
+                    _nameTextController),
                 const SizedBox(
                   height: 20,
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 25,
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Email",
-                    style: TextStyle(color: Colors.indigo.shade900,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
+                reusableTextContainer("Email", MediaQuery.of(context).size.width),
                 reusableTextField("Enter Email", false,
                     _emailTextController),
                 const SizedBox(
                   height: 20,
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 25,
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Password",
-                    style: TextStyle(color: Colors.indigo.shade900,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
+                reusableTextContainer("Password", MediaQuery.of(context).size.width),
                 reusableTextField("Enter Password", true,
                     _passwordTextController),
                 const SizedBox(
