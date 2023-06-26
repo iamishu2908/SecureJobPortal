@@ -79,43 +79,25 @@ class _SignInStuScreenState extends State<SignInStuScreen> {
                 const SizedBox(
                   height: 25,
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 25,
-                  alignment: Alignment.topLeft,
-                    child: Text(
-                      "Email",
-                      style: TextStyle(color: Colors.indigo.shade900,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500
-                        ),
-                      textAlign: TextAlign.left,
-                    ),
-                ),
+
+                reusableTextContainer("Email", MediaQuery.of(context).size.width),
+
                 reusableTextField("Enter Email", false,
                     _emailTextController),
                 const SizedBox(
                   height: 20,
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 25,
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Password",
-                    style: TextStyle(color: Colors.indigo.shade900,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
+
+                reusableTextContainer("Password", MediaQuery.of(context).size.width),
+
                 reusableTextField("Enter Password", true,
                     _passwordTextController),
                 const SizedBox(
                   height: 5,
                 ),
+
                 forgetPassword(context),
+
                 firebaseUIButton(context, "Sign In", () {
                   FirebaseAuth.instance
                       .signInWithEmailAndPassword(

@@ -32,40 +32,31 @@ class _ResetPasswordState extends State<ResetPassword> {
       body: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(color: Colors.white24),
+          decoration: BoxDecoration(
+          color: Colors.white24),
           child: SingleChildScrollView(
               child: Padding(
-            padding: EdgeInsets.fromLTRB(20, 120, 20, 0),
-            child: Column(
-              children: <Widget>[
-                const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 25,
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Email",
-                    style: TextStyle(
-                        color: Colors.indigo.shade900,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                reusableTextField("Enter Email", false, _emailTextController),
-                const SizedBox(
-                  height: 20,
-                ),
-                firebaseUIButton(context, "Reset Password", () {
-                  FirebaseAuth.instance
-                      .sendPasswordResetEmail(email: _emailTextController.text)
-                      .then((value) => Navigator.of(context).pop());
-                })
-              ],
-            ),
-          ))),
-    );
+                padding: EdgeInsets.fromLTRB(20, 120, 20, 0),
+                child: Column(
+                  children: <Widget>[
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    reusableTextContainer("Email", MediaQuery.of(context).size.width),
+                    reusableTextField("Enter Email", false,
+                        _emailTextController),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    firebaseUIButton(context, "Reset Password", () {
+                      FirebaseAuth.instance
+                          .sendPasswordResetEmail(email: _emailTextController.text)
+                          .then((value) => Navigator.of(context).pop());
+                    })
+                  ],
+
+          ))
+    )
+    ));
   }
 }

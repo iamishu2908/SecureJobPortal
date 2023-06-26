@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:secure_job_portal/screens/edit_experience.dart';
 import 'package:secure_job_portal/screens/profilepage.dart';
 import 'package:secure_job_portal/screens/signin_student.dart';
 import 'package:secure_job_portal/utils/color_utils.dart';
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.indigo,
       ),
       // home: profilepage()
-      home: const SignInStuScreen(),
+      home: const EditExperience(),
     );
   }
 }
