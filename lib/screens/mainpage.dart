@@ -171,7 +171,7 @@ class _mainpageState extends State<mainpage> {
             ],
           ),
           SizedBox(
-            height: 10,
+            height: 25,
           ),
           Container(
             child: Text(
@@ -185,7 +185,7 @@ class _mainpageState extends State<mainpage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(5),
             child: ListView.builder(
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
@@ -193,7 +193,7 @@ class _mainpageState extends State<mainpage> {
                 itemBuilder: (context, index) {
                   //bool expanded = false;
                   return Padding(
-                    padding: EdgeInsets.fromLTRB(6, 0, 6, 8),
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
                     child: Align(
                         child: Stack(children: <Widget>[
                       Container(

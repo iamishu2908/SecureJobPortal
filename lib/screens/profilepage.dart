@@ -6,6 +6,8 @@ import 'package:secure_job_portal/screens/mainpage.dart';
 import 'package:secure_job_portal/screens/signin_student.dart';
 import 'package:secure_job_portal/utils/color_utils.dart';
 
+import 'edit_experience.dart';
+
 List<String> profilemenu = [
   'About Me',
   'Work Experience',
@@ -269,10 +271,21 @@ class _qboxState extends State<qbox> {
                                 Spacer(),
                                 Align(
                                   alignment: Alignment.centerRight,
-                                  child: Icon(
-                                    Icons.edit,
-                                    size: 22.0,
-                                    color: orangetheme,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      if (widget.title == 'Work Experience') {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    EditExperience()));
+                                      }
+                                    },
+                                    child: Icon(
+                                      Icons.edit,
+                                      size: 22.0,
+                                      color: orangetheme,
+                                    ),
                                   ),
                                 ),
                                 SizedBox(
