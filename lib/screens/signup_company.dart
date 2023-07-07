@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:secure_job_portal/reusable_widgets/reusable_widget.dart';
 import 'package:secure_job_portal/screens/home.dart';
@@ -18,7 +19,8 @@ class _SignUpComScreenState extends State<SignUpComScreen> {
   TextEditingController _designationTextController = TextEditingController();
   TextEditingController _passwordTextController = TextEditingController();
   TextEditingController _emailTextController = TextEditingController();
-  String UserType = "";
+  String UserType = "company";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +51,7 @@ class _SignUpComScreenState extends State<SignUpComScreen> {
                   title: Row(
                     children: <Widget>[
                       Expanded(child: OutlinedButton(onPressed: () {
-                        UserType = "Student";
+                        UserType = "student";
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => const SignUpStuScreen()),
@@ -66,7 +68,7 @@ class _SignUpComScreenState extends State<SignUpComScreen> {
                       ),
                       SizedBox(width: 10,),
                       Expanded(child: FilledButton(onPressed: () {
-                        UserType = "Company";
+                        UserType = "company";
                       },child: Text("Company"),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.white,
@@ -133,10 +135,18 @@ class _SignUpComScreenState extends State<SignUpComScreen> {
 
                 firebaseUIButton(context, "Sign Up", () {
                   FirebaseAuth.instance
-                      .signInWithEmailAndPassword(
+                      .createUserWithEmailAndPassword(
                       email: _emailTextController.text,
                       password: _passwordTextController.text)
                       .then((value) {
+                    addUserDetails(
+                      UserType,
+                      _emailTextController.text,
+                      _nameTextController.text,
+                      _comNameTextController.text,
+                      _designationTextController.text
+                    );
+                  }).then((value) {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => HomeScreen()));
                   }).onError((error, stackTrace) {
@@ -170,6 +180,16 @@ class _SignUpComScreenState extends State<SignUpComScreen> {
         )
       ],
     );
+  }
+
+  Future addUserDetails(String userType, String email, String name, String comName, String desig) async {
+    await FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).set({
+      'user_type' : userType,
+      'email' : email,
+      'name' : name,
+      'company_name' : comName,
+      'designation' : desig
+    });
   }
 
 }

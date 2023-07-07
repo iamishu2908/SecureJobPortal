@@ -23,7 +23,7 @@ class FirebaseProfile {
       "name": namedb,
       "about": aboutdb,
       "work_experience": work_experiencedb,
-      "education": educationdb,
+      "edu": educationdb,
       "skills": skillsdb,
       "resume": resumedb,
     };
@@ -63,7 +63,7 @@ class FirebaseProfile {
       "name": namedb,
       "about": aboutdb,
       "work_experience": work_experiencedb,
-      "education": educationdb,
+      "edu": educationdb,
       "skills": skillsdb,
       "achievements": achievementsdb,
       "resume": resumedb,

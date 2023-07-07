@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:secure_job_portal/reusable_widgets/reusable_widget.dart';
 import 'package:secure_job_portal/screens/home.dart';
@@ -16,7 +17,8 @@ class _SignUpStuScreenState extends State<SignUpStuScreen> {
   TextEditingController _nameTextController = TextEditingController();
   TextEditingController _passwordTextController = TextEditingController();
   TextEditingController _emailTextController = TextEditingController();
-  String UserType = "";
+  String UserType = "student";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +50,7 @@ class _SignUpStuScreenState extends State<SignUpStuScreen> {
                       Expanded(
                           child: OutlinedButton(
                         onPressed: () {
-                          UserType = "Student";
+                          UserType = "student";
                         },
                         child: Text("Student"),
                         style: OutlinedButton.styleFrom(
@@ -67,7 +69,7 @@ class _SignUpStuScreenState extends State<SignUpStuScreen> {
                       Expanded(
                           child: FilledButton(
                         onPressed: () {
-                          UserType = "Company";
+                          UserType = "company";
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -106,67 +108,23 @@ class _SignUpStuScreenState extends State<SignUpStuScreen> {
                 reusableTextContainer("Password", MediaQuery.of(context).size.width),
                 reusableTextField("Enter Password", true,
                     _passwordTextController),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 25,
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Your Name",
-                    style: TextStyle(
-                        color: Colors.indigo.shade900,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                reusableTextField("Enter Name", false, _nameTextController),
-                const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 25,
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Email",
-                    style: TextStyle(
-                        color: Colors.indigo.shade900,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                reusableTextField("Enter Email", false, _emailTextController),
-                const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 25,
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Password",
-                    style: TextStyle(
-                        color: Colors.indigo.shade900,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                reusableTextField(
-                    "Enter Password", true, _passwordTextController),
-                const SizedBox(
-                  height: 20,
-                ),
+
                 firebaseUIButton(context, "Sign Up", () {
                   FirebaseAuth.instance
-                      .signInWithEmailAndPassword(
+                      .createUserWithEmailAndPassword(
                           email: _emailTextController.text,
                           password: _passwordTextController.text)
                       .then((value) {
+                        addUserDetails(
+                          UserType,
+                          _emailTextController.text,
+                          _nameTextController.text,
+                        );
+                      }).then((value) {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => HomeScreen()));
-                  }).onError((error, stackTrace) {
+                  }).
+                  onError((error, stackTrace) {
                     print("Error ${error.toString()}");
                   });
                 }),
@@ -199,4 +157,13 @@ class _SignUpStuScreenState extends State<SignUpStuScreen> {
       ],
     );
   }
+  
+  Future addUserDetails(String userType, String email, String name) async {
+    await FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).set({
+      'user_type' : userType,
+      'email' : email,
+      'name' : name
+    });
+  }
+
 }
