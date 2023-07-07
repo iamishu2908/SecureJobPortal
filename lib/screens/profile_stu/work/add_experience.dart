@@ -1,27 +1,30 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:secure_job_portal/screens/profilepage.dart';
+import 'package:secure_job_portal/screens/profile_stu/profilepage.dart';
+import 'package:secure_job_portal/screens/profile_stu/work/work_experience.dart';
 import 'package:secure_job_portal/utils/color_utils.dart';
 import 'package:secure_job_portal/reusable_widgets/reusable_widget.dart';
 
-class EditExperience extends StatefulWidget {
-  const EditExperience({super.key});
+class AddExperience extends StatefulWidget {
+  const AddExperience({super.key});
 
   @override
-  State<EditExperience> createState() => _EditExperienceState();
+  State<AddExperience> createState() => _AddExperienceState();
 }
 
-class _EditExperienceState extends State<EditExperience> {
+class _AddExperienceState extends State<AddExperience> {
   final TextEditingController _jobTitleController = TextEditingController();
-  final TextEditingController _companyDetailsController =
-      TextEditingController();
+  final TextEditingController _companyDetailsController = TextEditingController();
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
+  final TextEditingController _description = TextEditingController();
+  final currentUser = FirebaseAuth.instance.currentUser;
+
+
   @override
   Widget build(BuildContext context) {
-    String description = '';
-    bool? checkedValue = false;
     return Material(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -33,7 +36,7 @@ class _EditExperienceState extends State<EditExperience> {
               onPressed: () {
                 // Perform navigation
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => profilepage()));
+                    MaterialPageRoute(builder: (context) => WorkExperience()));
               },
               child: Row(
                 children: const [
@@ -67,10 +70,10 @@ class _EditExperienceState extends State<EditExperience> {
           ),
           Expanded(
               child: Container(
-            padding: EdgeInsets.all(8.0),
-            margin: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
-            child: reusableTextField("Job Title", false, _jobTitleController),
-          )),
+                padding: EdgeInsets.all(8.0),
+                margin: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
+                child: reusableTextField("Job Title", false, _jobTitleController),
+              )),
           Padding(
             padding: const EdgeInsets.fromLTRB(18.0, 0.0, 18.0, 0.0),
             child: Text('Company Details',
@@ -82,11 +85,11 @@ class _EditExperienceState extends State<EditExperience> {
           ),
           Expanded(
               child: Container(
-            padding: EdgeInsets.all(8.0),
-            margin: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
-            child: reusableTextField(
-                "Company Details", false, _companyDetailsController),
-          )),
+                padding: EdgeInsets.all(8.0),
+                margin: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
+                child: reusableTextField(
+                    "Company Details", false, _companyDetailsController),
+              )),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -120,34 +123,17 @@ class _EditExperienceState extends State<EditExperience> {
             children: [
               Expanded(
                   child: Container(
-                padding: EdgeInsets.all(8.0),
-                margin: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
-                child: reusableTextField("", false, _startDateController),
-              )),
+                    padding: EdgeInsets.all(8.0),
+                    margin: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
+                    child: reusableTextField("", false, _startDateController),
+                  )),
               Expanded(
                   child: Container(
-                padding: EdgeInsets.all(8.0),
-                margin: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
-                child: reusableTextField("", false, _endDateController),
-              )),
+                    padding: EdgeInsets.all(8.0),
+                    margin: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
+                    child: reusableTextField("", false, _endDateController),
+                  )),
             ],
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(18.0, 0, 0, 9.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Checkbox(
-                  value: checkedValue,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      checkedValue = value!;
-                    });
-                  },
-                ),
-                Text("this is my position now"),
-              ],
-            ),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(18.0, 2.0, 80.0, 0.0),
@@ -159,51 +145,18 @@ class _EditExperienceState extends State<EditExperience> {
                     decoration: TextDecoration.none)),
           ),
           Expanded(
-            child: Container(
-              height: 600,
-              padding: const EdgeInsets.all(8.0),
-              margin: const EdgeInsets.all(8.0),
-              child: TextField(
-                cursorColor: Colors.grey.shade500,
-                style: TextStyle(color: Colors.grey.shade600, fontSize: 16.0),
-                maxLines: 10,
-                decoration: InputDecoration(
-                  fillColor: Colors.white,
-                  filled: true,
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide(width: 1, style: BorderStyle.none),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide(
-                        width: 1,
-                        style: BorderStyle.solid,
-                        color: Colors.indigo.shade900),
-                  ),
-                ),
-                onChanged: (String value) {
-                  // Handle text input changes
-                  setState(() {
-                    description = value;
-                  });
-                },
-              ),
-            ),
+            child: reusableTextField("Description of the Job...", false, _description),
           ),
           Center(
-            child: firebaseUIButton(context, "SAVE", () {
-              // FirebaseAuth.instance
-              //     .editExperience(
-              //     job_title: _jobTitleController.text,
-              //     companyDetails: _companyDetailsController.text)
-              //     .then((value) {
-              //   Navigator.push(context,
-              //       MaterialPageRoute(builder: (context) => profilepage()));
-              // }).onError((error, stackTrace) {
-              //   print("Error ${error.toString()}");
-              // });
+            child: firebaseUIButton(context, "SAVE", () async {
+              await FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser?.uid).collection('work_exp').
+              add({
+                'job_title': _jobTitleController.text,
+                'com_name': _companyDetailsController.text,
+                'start_date': _startDateController.text,
+                'end_date': _endDateController.text,
+                'description': _description.text,
+              }).whenComplete(() => Navigator.pop(context));
             }),
           ),
         ],

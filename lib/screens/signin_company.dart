@@ -16,7 +16,8 @@ class SignInComScreen extends StatefulWidget {
 class _SignInComScreenState extends State<SignInComScreen> {
   TextEditingController _passwordTextController = TextEditingController();
   TextEditingController _emailTextController = TextEditingController();
-  String UserType = "";
+  String UserType = "company";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +48,7 @@ class _SignInComScreenState extends State<SignInComScreen> {
                   title: Row(
                     children: <Widget>[
                       Expanded(child: OutlinedButton(onPressed: () {
-                        UserType = "Student";
+                        UserType = "student";
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => const SignInStuScreen()),
@@ -64,7 +65,7 @@ class _SignInComScreenState extends State<SignInComScreen> {
                       ),
                       SizedBox(width: 10,),
                       Expanded(child: FilledButton(onPressed: () {
-                        UserType = "Company";
+                        UserType = "company";
                       },child: Text("Company"),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.white,

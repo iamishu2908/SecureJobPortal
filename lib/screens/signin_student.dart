@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:secure_job_portal/reusable_widgets/reusable_widget.dart';
 import 'package:secure_job_portal/screens/home.dart';
@@ -16,7 +17,8 @@ class SignInStuScreen extends StatefulWidget {
 class _SignInStuScreenState extends State<SignInStuScreen> {
   TextEditingController _passwordTextController = TextEditingController();
   TextEditingController _emailTextController = TextEditingController();
-  String UserType = "";
+  String UserType = "student";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +49,7 @@ class _SignInStuScreenState extends State<SignInStuScreen> {
                   title: Row(
                     children: <Widget>[
                       Expanded(child: OutlinedButton(onPressed: () {
-                        UserType = "Student";},
+                        UserType = "student";},
                         child: Text("Student"),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.white,
@@ -59,7 +61,7 @@ class _SignInStuScreenState extends State<SignInStuScreen> {
                       ),
                       SizedBox(width: 10,),
                       Expanded(child: FilledButton(onPressed: () {
-                        UserType = "Company";
+                        UserType = "company";
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => const SignInComScreen()),
@@ -155,4 +157,5 @@ class _SignInStuScreenState extends State<SignInStuScreen> {
       ),
     );
   }
+
 }
