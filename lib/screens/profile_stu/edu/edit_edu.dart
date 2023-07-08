@@ -2,8 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:secure_job_portal/screens/profile_stu/profilepage.dart';
-import 'package:secure_job_portal/screens/profile_stu/work/work_experience.dart';
+import 'package:secure_job_portal/screens/profile_stu/edu/education.dart';
 import 'package:secure_job_portal/utils/color_utils.dart';
 import 'package:secure_job_portal/reusable_widgets/reusable_widget.dart';
 
@@ -48,8 +47,7 @@ class _EditEducationState extends State<EditEducation> {
             child: TextButton(
               onPressed: () {
                 // Perform navigation
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const WorkExperience()));
+                Navigator.pop(context);
               },
               child: Row(
                 children: const [

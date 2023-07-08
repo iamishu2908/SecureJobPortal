@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:secure_job_portal/reusable_widgets/reusable_widget.dart';
-import 'package:secure_job_portal/screens/home.dart';
+import 'package:secure_job_portal/screens/homepage/home.dart';
 import 'package:secure_job_portal/utils/color_utils.dart';
 import 'package:flutter/material.dart';
 

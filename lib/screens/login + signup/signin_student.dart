@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:secure_job_portal/reusable_widgets/reusable_widget.dart';
-import 'package:secure_job_portal/screens/home.dart';
-import 'package:secure_job_portal/screens/reset_password.dart';
-import 'package:secure_job_portal/screens/signin_company.dart';
-import 'package:secure_job_portal/screens/signup_student.dart';
+import 'package:secure_job_portal/screens/homepage/home.dart';
+import 'package:secure_job_portal/screens/login%20+%20signup/reset_password.dart';
+import 'package:secure_job_portal/screens/login%20+%20signup/signin_company.dart';
+import 'package:secure_job_portal/screens/login%20+%20signup/signup_student.dart';
 import 'package:flutter/material.dart';
 
 class SignInStuScreen extends StatefulWidget {
