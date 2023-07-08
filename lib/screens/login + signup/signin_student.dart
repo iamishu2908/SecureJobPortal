@@ -1,22 +1,24 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:secure_job_portal/reusable_widgets/reusable_widget.dart';
-import 'package:secure_job_portal/screens/home.dart';
-import 'package:secure_job_portal/screens/reset_password.dart';
-import 'package:secure_job_portal/screens/signin_student.dart';
-import 'package:secure_job_portal/screens/signup_student.dart';
+import 'package:secure_job_portal/screens/homepage/home.dart';
+import 'package:secure_job_portal/screens/login%20+%20signup/reset_password.dart';
+import 'package:secure_job_portal/screens/login%20+%20signup/signin_company.dart';
+import 'package:secure_job_portal/screens/login%20+%20signup/signup_student.dart';
 import 'package:flutter/material.dart';
 
-class SignInComScreen extends StatefulWidget {
-  const SignInComScreen({Key? key}) : super(key: key);
+class SignInStuScreen extends StatefulWidget {
+  const SignInStuScreen({Key? key}) : super(key: key);
 
   @override
-  _SignInComScreenState createState() => _SignInComScreenState();
+  _SignInStuScreenState createState() => _SignInStuScreenState();
 }
 
-class _SignInComScreenState extends State<SignInComScreen> {
+class _SignInStuScreenState extends State<SignInStuScreen> {
   TextEditingController _passwordTextController = TextEditingController();
   TextEditingController _emailTextController = TextEditingController();
-  String UserType = "";
+  String UserType = "student";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +27,7 @@ class _SignInComScreenState extends State<SignInComScreen> {
         height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
             color: Colors.white24
-        ),
+            ),
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.fromLTRB(
@@ -34,9 +36,9 @@ class _SignInComScreenState extends State<SignInComScreen> {
               children: <Widget>[
                 Container(
                   child: Text("Welcome Back",
-                    style: TextStyle(color: Colors.indigo[900],
-                        fontWeight: FontWeight.w500,
-                        fontSize: 30),
+                      style: TextStyle(color: Colors.indigo[900],
+                      fontWeight: FontWeight.w500,
+                      fontSize: 30),
 
                   ),
                 ),
@@ -47,16 +49,11 @@ class _SignInComScreenState extends State<SignInComScreen> {
                   title: Row(
                     children: <Widget>[
                       Expanded(child: OutlinedButton(onPressed: () {
-                        UserType = "Student";
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const SignInStuScreen()),
-                        );
-                        },
+                        UserType = "student";},
                         child: Text("Student"),
                         style: OutlinedButton.styleFrom(
-                          foregroundColor: Colors.indigo[900],
-                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.indigo[900],
                           side: BorderSide(color: Colors.indigo.shade900, width: 1),
                           shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
                         ),
@@ -64,11 +61,15 @@ class _SignInComScreenState extends State<SignInComScreen> {
                       ),
                       SizedBox(width: 10,),
                       Expanded(child: FilledButton(onPressed: () {
-                        UserType = "Company";
+                        UserType = "company";
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const SignInComScreen()),
+                        );
                       },child: Text("Company"),
                         style: OutlinedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: Colors.indigo[900],
+                          foregroundColor: Colors.indigo[900],
+                          backgroundColor: Colors.white,
                           side: BorderSide(color: Colors.indigo.shade900, width: 1),
                           shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
                         ),
@@ -80,19 +81,25 @@ class _SignInComScreenState extends State<SignInComScreen> {
                 const SizedBox(
                   height: 25,
                 ),
+
                 reusableTextContainer("Email", MediaQuery.of(context).size.width),
+
                 reusableTextField("Enter Email", false,
                     _emailTextController),
                 const SizedBox(
                   height: 20,
                 ),
+
                 reusableTextContainer("Password", MediaQuery.of(context).size.width),
+
                 reusableTextField("Enter Password", true,
                     _passwordTextController),
                 const SizedBox(
                   height: 5,
                 ),
+
                 forgetPassword(context),
+
                 firebaseUIButton(context, "Sign In", () {
                   FirebaseAuth.instance
                       .signInWithEmailAndPassword(
@@ -150,4 +157,5 @@ class _SignInComScreenState extends State<SignInComScreen> {
       ),
     );
   }
+
 }

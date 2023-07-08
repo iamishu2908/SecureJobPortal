@@ -1,12 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:secure_job_portal/screens/home.dart';
-import 'package:secure_job_portal/screens/mainpage.dart';
-import 'package:secure_job_portal/screens/signin_student.dart';
+import 'package:secure_job_portal/screens/homepage/home.dart';
+import 'package:secure_job_portal/screens/profile_stu/edu/education.dart';
+import 'package:secure_job_portal/screens/profile_stu/skills/add_skills.dart';
+import 'package:secure_job_portal/screens/profile_stu/work_exp/work_experience.dart';
+import 'package:secure_job_portal/screens/login%20+%20signup/signin_student.dart';
 import 'package:secure_job_portal/utils/color_utils.dart';
 
-import 'edit_experience.dart';
 
 List<String> profilemenu = [
   'About Me',
@@ -278,7 +279,21 @@ class _qboxState extends State<qbox> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    EditExperience()));
+                                                    WorkExperience()));
+                                      }
+                                      else if (widget.title == 'Education') {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    Education()));
+                                      }
+                                      else if (widget.title == 'Skills') {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    AddSkill()));
                                       }
                                     },
                                     child: Icon(

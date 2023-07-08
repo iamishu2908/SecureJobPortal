@@ -3,8 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rounded_expansion_tile/rounded_expansion_tile.dart';
-import 'package:secure_job_portal/screens/profilepage.dart';
-import 'package:secure_job_portal/screens/signin_student.dart';
+import 'package:secure_job_portal/screens/profile_stu/profilepage.dart';
+import 'package:secure_job_portal/screens/login%20+%20signup/signin_student.dart';
 import 'package:secure_job_portal/utils/color_utils.dart';
 import 'package:async/async.dart';
 
