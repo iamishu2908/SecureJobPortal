@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:secure_job_portal/reusable_widgets/reusable_widget.dart';
-import 'package:secure_job_portal/screens/home.dart';
-import 'package:secure_job_portal/screens/signin_student.dart';
-import 'package:secure_job_portal/screens/signup_company.dart';
+import 'package:secure_job_portal/screens/homepage/home.dart';
+import 'package:secure_job_portal/screens/login%20+%20signup/info_student.dart';
+import 'package:secure_job_portal/screens/login%20+%20signup/signin_student.dart';
+import 'package:secure_job_portal/screens/login%20+%20signup/signup_company.dart';
 import 'package:flutter/material.dart';
 
 class SignUpStuScreen extends StatefulWidget {
@@ -122,7 +123,7 @@ class _SignUpStuScreenState extends State<SignUpStuScreen> {
                         );
                       }).then((value) {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()));
+                        MaterialPageRoute(builder: (context) => InfoStuScreen()));
                   }).
                   onError((error, stackTrace) {
                     print("Error ${error.toString()}");

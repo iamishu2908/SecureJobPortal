@@ -1,15 +1,11 @@
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:secure_job_portal/screens/profile_stu/edu/add_edu.dart';
 import 'package:secure_job_portal/screens/profile_stu/edu/edit_edu.dart';
-import 'package:secure_job_portal/screens/profile_stu/work/add_experience.dart';
-import 'package:secure_job_portal/screens/profile_stu/work/edit_experience.dart';
 import 'package:secure_job_portal/screens/profile_stu/profilepage.dart';
 import 'package:secure_job_portal/utils/color_utils.dart';
-import 'package:secure_job_portal/reusable_widgets/reusable_widget.dart';
 
 class Education extends StatefulWidget {
   const Education({super.key});
@@ -35,12 +31,8 @@ class _EducationState extends State<Education> {
             ),
             onPressed: () {
               setState(() {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => AddEducation(),
-                  ),
-                );
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AddEducation()));
               });
             }),
       ),
@@ -62,8 +54,7 @@ class _EducationState extends State<Education> {
             Icons.arrow_back,
             size: 23,
           ),
-          onPressed: () => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => profilepage())),
+          onPressed: () => Navigator.pop(context),
         ),
         title: Text("Education",
           style: TextStyle(

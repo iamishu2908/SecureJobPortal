@@ -3,8 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:secure_job_portal/screens/profile_stu/work/add_experience.dart';
-import 'package:secure_job_portal/screens/profile_stu/work/edit_experience.dart';
+import 'package:secure_job_portal/screens/profile_stu/work_exp/add_experience.dart';
+import 'package:secure_job_portal/screens/profile_stu/work_exp/edit_experience.dart';
 import 'package:secure_job_portal/screens/profile_stu/profilepage.dart';
 import 'package:secure_job_portal/utils/color_utils.dart';
 import 'package:secure_job_portal/reusable_widgets/reusable_widget.dart';
@@ -33,12 +33,8 @@ class _WorkExperienceState extends State<WorkExperience> {
             ),
             onPressed: () {
               setState(() {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => AddExperience(),
-                  ),
-                );
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AddExperience()));
               });
             }),
       ),
@@ -60,8 +56,7 @@ class _WorkExperienceState extends State<WorkExperience> {
             Icons.arrow_back,
             size: 23,
           ),
-          onPressed: () => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => profilepage())),
+          onPressed: () => Navigator.pop(context),
         ),
         title: Text("Work Experience",
             style: TextStyle(

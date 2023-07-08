@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:secure_job_portal/screens/home.dart';
+import 'package:secure_job_portal/screens/homepage/home.dart';
 import 'package:secure_job_portal/screens/profile_stu/edu/education.dart';
-import 'package:secure_job_portal/screens/profile_stu/work/work_experience.dart';
-import 'package:secure_job_portal/screens/signin_student.dart';
+import 'package:secure_job_portal/screens/profile_stu/skills/add_skills.dart';
+import 'package:secure_job_portal/screens/profile_stu/work_exp/work_experience.dart';
+import 'package:secure_job_portal/screens/login%20+%20signup/signin_student.dart';
 import 'package:secure_job_portal/utils/color_utils.dart';
 
 
@@ -286,6 +287,13 @@ class _qboxState extends State<qbox> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     Education()));
+                                      }
+                                      else if (widget.title == 'Skills') {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    AddSkill()));
                                       }
                                     },
                                     child: Icon(
