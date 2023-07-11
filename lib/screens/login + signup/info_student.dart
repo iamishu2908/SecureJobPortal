@@ -180,16 +180,18 @@ class _InfoStuScreenState extends State<InfoStuScreen> {
 class CustomSearchDelegate extends SearchDelegate<String> {
   @override
   List<String> searchTerms = [
-    'Java',
-    'C++',
-    'Python',
-    'Flutter',
-    'Firebase',
-    'React',
-    'JavaScript',
-    'Figma',
-    'HTML',
-    'CSS',
+    'Java Engineer',
+    'C++ Programmer',
+    'Flutter App Developer',
+    'Mobile App Developer',
+    'Frontend Developer',
+    'Backend Developer',
+    'Fullstack Developer',
+    'UI/UX Developer',
+    'AI/ML Developer',
+    'Python Programmer',
+    'Data Scientist',
+    'Product Manager'
   ];
 
   List<Widget> buildActions(BuildContext context) {
