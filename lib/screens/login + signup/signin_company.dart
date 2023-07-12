@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:secure_job_portal/reusable_widgets/reusable_widget.dart';
-import 'package:secure_job_portal/screens/homepage/home.dart';
+import 'package:secure_job_portal/screens/homepage/homepage_company.dart';
 import 'package:secure_job_portal/screens/login%20+%20signup/reset_password.dart';
 import 'package:secure_job_portal/screens/login%20+%20signup/signin_student.dart';
 import 'package:secure_job_portal/screens/login%20+%20signup/signup_student.dart';
@@ -101,7 +101,7 @@ class _SignInComScreenState extends State<SignInComScreen> {
                       password: _passwordTextController.text)
                       .then((value) {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()));
+                        MaterialPageRoute(builder: (context) => CompanyHome()));
                   }).onError((error, stackTrace) {
                     print("Error ${error.toString()}");
                   });
