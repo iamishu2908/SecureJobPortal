@@ -1,14 +1,18 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:secure_job_portal/screens/homepage/chatpage.dart';
+import 'package:secure_job_portal/screens/chatpage/chatpage.dart';
 import 'package:secure_job_portal/screens/homepage/communitypage.dart';
 import 'package:secure_job_portal/screens/homepage/mainpage.dart';
 import 'package:secure_job_portal/screens/login%20+%20signup/signin_student.dart';
 import 'package:flutter/material.dart';
 import 'package:secure_job_portal/utils/color_utils.dart';
 
+import '../chatpage/ChatModel.dart';
+
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  HomeScreen({this.chatmodels, this.sourchat});
+  final List<ChatModel>? chatmodels;
+  final ChatModel? sourchat;
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -25,17 +29,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(_bottomNavIndex);
     return Scaffold(
       floatingActionButton: Visibility(
         visible: MediaQuery.of(context).viewInsets.bottom == 0,
         child: FloatingActionButton(
-            backgroundColor: primarytheme,
+            backgroundColor:
+                (_bottomNavIndex == 2) ? primarytheme : Colors.white,
             child: Icon(
+              color: (_bottomNavIndex == 2) ? Colors.white : primarytheme,
               Icons.home_rounded,
             ),
             onPressed: () {
               setState(() {
-                _bottomNavIndex = 1;
+                _bottomNavIndex = 2;
               });
             }),
       ),
@@ -54,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: (_bottomNavIndex == 0)
           ? communitypage()
-          : (_bottomNavIndex == 2)
+          : (_bottomNavIndex == 1)
               ? chatpage()
               : mainpage(),
     );
