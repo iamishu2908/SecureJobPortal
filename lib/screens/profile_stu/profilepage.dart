@@ -141,11 +141,11 @@ class _profilepageState extends State<profilepage> {
               style: ButtonStyle(
                   minimumSize: MaterialStateProperty.all<Size>(Size(60, 50)),
                   backgroundColor:
-                      MaterialStateProperty.all<Color>(primarytheme),
+                  MaterialStateProperty.all<Color>(primarytheme),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                  ))),
+                        borderRadius: BorderRadius.circular(18.0),
+                      ))),
               child: Text(
                 'Logout',
                 textAlign: TextAlign.left,
@@ -192,17 +192,31 @@ class _qboxState extends State<qbox> {
   Widget build(BuildContext context) {
     return Container(
       decoration:
-          BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20))),
+      BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20))),
       child: Padding(
         padding: const EdgeInsets.all(2.0),
         child: GestureDetector(
           onTap: () {
             expand = !expand;
-            FirebaseStorage.instance
-                .ref()
-                .child('files').child(FirebaseAuth.instance.currentUser!.uid)
-                .getDownloadURL()
-                .then((value) => setState(() {url = value;}));
+            FirebaseStorage.instance.ref().child('files').child(
+                FirebaseAuth.instance.currentUser!.uid)
+                .getDownloadURL().then(
+                  (value) {
+                setState(
+                      () {
+                    url = value;
+                  },
+                );
+              },
+            ).catchError((e) {
+              debugPrint('Exception::: ==========>>>>>>> ${e.toString()}');
+              setState(
+                    () {
+                  url = '';
+                },
+              );
+            });
+            //setState(() {});
           },
           child: Container(
             decoration: BoxDecoration(
@@ -219,163 +233,205 @@ class _qboxState extends State<qbox> {
             padding: const EdgeInsets.all(12),
             child: (expand == false)
                 ? Row(
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Icon(
-                          widget.icon,
-                          size: 22.0,
-                          color: orangetheme,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        '${widget.title}',
-                        // overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.left,
-                        style: GoogleFonts.dmSans(
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                          fontSize: 17,
-                        ),
-                      ),
-                      Spacer(),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Icon(
-                          Icons.edit,
-                          size: 22.0,
-                          color: orangetheme,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      )
-                    ],
-                  )
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Icon(
+                    widget.icon,
+                    size: 22.0,
+                    color: orangetheme,
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  '${widget.title}',
+                  // overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.left,
+                  style: GoogleFonts.dmSans(
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                    fontSize: 17,
+                  ),
+                ),
+                Spacer(),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Icon(
+                    Icons.edit,
+                    size: 22.0,
+                    color: orangetheme,
+                  ),
+                ),
+                SizedBox(
+                  width: 5,
+                )
+              ],
+            )
                 : Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 1),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 1),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Icon(
-                                    widget.icon,
-                                    size: 22.0,
-                                    color: orangetheme,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  '${widget.title}',
-                                  // overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.left,
-                                  style: GoogleFonts.dmSans(
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black,
-                                    fontSize: 17,
-                                  ),
-                                ),
-                                Spacer(),
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: GestureDetector(
-                                    onTap: () async {
-                                      if (widget.title == 'About Me') {
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return Dialog(
-                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-                                                elevation: 16,
-                                                child: Container(
-                                                  padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).size.height*0.06, 20, 0),
-                                                  height: MediaQuery.of(context).size.height*0.35,
-                                                  child: Column(
-                                                    children: [
-                                                      reusableTextContainer('About Me', MediaQuery.of(context).size.width),
-                                                      SizedBox(height: 5),
-                                                      reusableTextField('Describe Yourself..', false, _aboutMeController),
-                                                      SizedBox(height: 20),
-                                                  firebaseUIButton(context, "SAVE", () async {
-                                                    await FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser?.uid).
-                                                    update({
-                                                      'about_me': _aboutMeController.text,
-                                                    }).whenComplete(() => Navigator.pop(context));
-                                                  }),
-                                                    ],
-                                                  ),
-                                                ),
-                                              );
-                                            }
-                                            );
+                      Row(
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Icon(
+                              widget.icon,
+                              size: 22.0,
+                              color: orangetheme,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            '${widget.title}',
+                            // overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.left,
+                            style: GoogleFonts.dmSans(
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                              fontSize: 17,
+                            ),
+                          ),
+                          Spacer(),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: GestureDetector(
+                              onTap: () async {
+                                if (widget.title == 'About Me') {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return Dialog(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius
+                                                  .circular(40)),
+                                          elevation: 16,
+                                          child: Container(
+                                            padding: EdgeInsets.fromLTRB(
+                                                20, MediaQuery
+                                                .of(context)
+                                                .size
+                                                .height * 0.06, 20, 0),
+                                            height: MediaQuery
+                                                .of(context)
+                                                .size
+                                                .height * 0.35,
+                                            child: Column(
+                                              children: [
+                                                reusableTextContainer(
+                                                    'About Me', MediaQuery
+                                                    .of(context)
+                                                    .size
+                                                    .width),
+                                                SizedBox(height: 5),
+                                                reusableTextField(
+                                                    'Describe Yourself..',
+                                                    false,
+                                                    _aboutMeController),
+                                                SizedBox(height: 20),
+                                                firebaseUIButton(context,
+                                                    "SAVE", () async {
+                                                      await FirebaseFirestore
+                                                          .instance
+                                                          .collection(
+                                                          "Users").doc(
+                                                          FirebaseAuth
+                                                              .instance
+                                                              .currentUser
+                                                              ?.uid)
+                                                          .
+                                                      update({
+                                                        'about_me': _aboutMeController
+                                                            .text,
+                                                      })
+                                                          .whenComplete(() =>
+                                                          Navigator.pop(
+                                                              context));
+                                                    }),
+                                              ],
+                                            ),
+                                          ),
+                                        );
                                       }
-                                      else if (widget.title == 'Work Experience') {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      WorkExperience()));
-                                        }
-                                      else if (widget.title == 'Education') {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    Education()));
-                                      }
-                                      else if (widget.title == 'Skills') {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    AddSkill()));
-                                      }
-                                      else if (widget.title == 'Achievements') {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    Achievement()));
-                                      }
-                                      else if (widget.title == 'Resume') {
-                                        final path = (await FlutterDocumentPicker.openDocument())!;
-                                        print(path);
-                                        File file = File(path);
-                                        firebase_storage.UploadTask? task = await uploadFile(file);
-                                      }
-                                      },
+                                  );
+                                }
+                                else if (widget.title == 'Work Experience') {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              WorkExperience()));
+                                }
+                                else if (widget.title == 'Education') {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              Education()));
+                                }
+                                else if (widget.title == 'Skills') {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              AddSkill()));
+                                }
+                                else if (widget.title == 'Achievements') {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              Achievement()));
+                                }
+                                else if (widget.title == 'Resume') {
+                                  final path = (await FlutterDocumentPicker
+                                      .openDocument())!;
+                                  print(path);
+                                  File file = File(path);
+                                  firebase_storage
+                                      .UploadTask? task = await uploadFile(
+                                      file).then((result) {
+                                    FirebaseStorage.instance
+                                        .ref().child('files').child(
+                                        FirebaseAuth.instance.currentUser!
+                                            .uid).getDownloadURL()
+                                        .then((result) {
+                                      setState(() {
+                                        url = result;
+                                      });
+                                    });
+                                  });
+                                }
+                              },
 
-                                    child: Icon(
-                                      Icons.edit,
-                                      size: 22.0,
-                                      color: orangetheme,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                )
-                              ],
+                              child: Icon(
+                                Icons.edit,
+                                size: 22.0,
+                                color: orangetheme,
+                              ),
                             ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            getText(widget.title, url)
-                          ],
-                        ),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          )
+                        ],
                       ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      getText(widget.title, url)
                     ],
                   ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -384,13 +440,18 @@ class _qboxState extends State<qbox> {
 
   Widget getText(String title, String url) {
     if (title == 'Resume') {
+
       return TextButton(
         onPressed: () async {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => PdfViewerPage(url: url)));
+          if (url != '') {
+            Navigator.push(context,
+                MaterialPageRoute(
+                    builder: (context) => PdfViewerPage(url: url)));
+          }
+          else {}
         },
         child: Text(
-          'View Resume',
+          (url != '') ? 'View Resume' : '',
           textAlign: TextAlign.right,
           style: GoogleFonts.dmSans(
             fontWeight: FontWeight.w500,
@@ -432,6 +493,7 @@ class _qboxState extends State<qbox> {
       );
     }
   }
+
 
   Future<firebase_storage.UploadTask?> uploadFile(File file) async {
     if (file == null) {
