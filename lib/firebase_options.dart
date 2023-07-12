@@ -49,7 +49,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '948096660107',
     projectId: 'jobportal-c9122',
     authDomain: 'jobportal-c9122.firebaseapp.com',
-    databaseURL: 'https://jobportal-c9122-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://jobportal-c9122-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'jobportal-c9122.appspot.com',
     measurementId: 'G-GEG3GQ5S72',
   );
@@ -59,7 +60,8 @@ class DefaultFirebaseOptions {
     appId: '1:948096660107:android:206014ca79d210635b9a8e',
     messagingSenderId: '948096660107',
     projectId: 'jobportal-c9122',
-    databaseURL: 'https://jobportal-c9122-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://jobportal-c9122-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'jobportal-c9122.appspot.com',
   );
 
@@ -68,9 +70,11 @@ class DefaultFirebaseOptions {
     appId: '1:948096660107:ios:d1e6e16151977d235b9a8e',
     messagingSenderId: '948096660107',
     projectId: 'jobportal-c9122',
-    databaseURL: 'https://jobportal-c9122-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://jobportal-c9122-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'jobportal-c9122.appspot.com',
-    iosClientId: '948096660107-f7f8i815du8s5jvqjcp5lc3obohd7aqm.apps.googleusercontent.com',
+    iosClientId:
+        '948096660107-f7f8i815du8s5jvqjcp5lc3obohd7aqm.apps.googleusercontent.com',
     iosBundleId: 'com.example.secureJobPortal',
   );
 
@@ -79,9 +83,11 @@ class DefaultFirebaseOptions {
     appId: '1:948096660107:ios:d1e6e16151977d235b9a8e',
     messagingSenderId: '948096660107',
     projectId: 'jobportal-c9122',
-    databaseURL: 'https://jobportal-c9122-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://jobportal-c9122-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'jobportal-c9122.appspot.com',
-    iosClientId: '948096660107-f7f8i815du8s5jvqjcp5lc3obohd7aqm.apps.googleusercontent.com',
+    iosClientId:
+        '948096660107-f7f8i815du8s5jvqjcp5lc3obohd7aqm.apps.googleusercontent.com',
     iosBundleId: 'com.example.secureJobPortal',
   );
 }
