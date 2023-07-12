@@ -18,7 +18,6 @@ import 'package:secure_job_portal/utils/color_utils.dart';
 import 'package:flutter_document_picker/flutter_document_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
-
 List<String> profilemenu = [
   'About Me',
   'Work Experience',
@@ -200,9 +199,12 @@ class _qboxState extends State<qbox> {
             expand = !expand;
             FirebaseStorage.instance
                 .ref()
-                .child('files').child(FirebaseAuth.instance.currentUser!.uid)
+                .child('files')
+                .child(FirebaseAuth.instance.currentUser!.uid)
                 .getDownloadURL()
-                .then((value) => setState(() {url = value;}));
+                .then((value) => setState(() {
+                      url = value;
+                    }));
           },
           child: Container(
             decoration: BoxDecoration(
@@ -295,66 +297,96 @@ class _qboxState extends State<qbox> {
                                             context: context,
                                             builder: (context) {
                                               return Dialog(
-                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            40)),
                                                 elevation: 16,
                                                 child: Container(
-                                                  padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).size.height*0.06, 20, 0),
-                                                  height: MediaQuery.of(context).size.height*0.35,
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      20,
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .height *
+                                                          0.06,
+                                                      20,
+                                                      0),
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.35,
                                                   child: Column(
                                                     children: [
-                                                      reusableTextContainer('About Me', MediaQuery.of(context).size.width),
+                                                      reusableTextContainer(
+                                                          'About Me',
+                                                          MediaQuery.of(context)
+                                                              .size
+                                                              .width),
                                                       SizedBox(height: 5),
-                                                      reusableTextField('Describe Yourself..', false, _aboutMeController),
+                                                      reusableTextField(
+                                                          'Describe Yourself..',
+                                                          false,
+                                                          _aboutMeController),
                                                       SizedBox(height: 20),
-                                                  firebaseUIButton(context, "SAVE", () async {
-                                                    await FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser?.uid).
-                                                    update({
-                                                      'about_me': _aboutMeController.text,
-                                                    }).whenComplete(() => Navigator.pop(context));
-                                                  }),
+                                                      firebaseUIButton(
+                                                          context, "SAVE",
+                                                          () async {
+                                                        await FirebaseFirestore
+                                                            .instance
+                                                            .collection("Users")
+                                                            .doc(FirebaseAuth
+                                                                .instance
+                                                                .currentUser
+                                                                ?.uid)
+                                                            .update({
+                                                          'about_me':
+                                                              _aboutMeController
+                                                                  .text,
+                                                        }).whenComplete(() =>
+                                                                Navigator.pop(
+                                                                    context));
+                                                      }),
                                                     ],
                                                   ),
                                                 ),
                                               );
-                                            }
-                                            );
-                                      }
-                                      else if (widget.title == 'Work Experience') {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      WorkExperience()));
-                                        }
-                                      else if (widget.title == 'Education') {
+                                            });
+                                      } else if (widget.title ==
+                                          'Work Experience') {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    WorkExperience()));
+                                      } else if (widget.title == 'Education') {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     Education()));
-                                      }
-                                      else if (widget.title == 'Skills') {
+                                      } else if (widget.title == 'Skills') {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     AddSkill()));
-                                      }
-                                      else if (widget.title == 'Achievements') {
+                                      } else if (widget.title ==
+                                          'Achievements') {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     Achievement()));
-                                      }
-                                      else if (widget.title == 'Resume') {
-                                        final path = (await FlutterDocumentPicker.openDocument())!;
+                                      } else if (widget.title == 'Resume') {
+                                        final path =
+                                            (await FlutterDocumentPicker
+                                                .openDocument())!;
                                         print(path);
                                         File file = File(path);
-                                        firebase_storage.UploadTask? task = await uploadFile(file);
+                                        firebase_storage.UploadTask? task =
+                                            await uploadFile(file);
                                       }
-                                      },
-
+                                    },
                                     child: Icon(
                                       Icons.edit,
                                       size: 22.0,
@@ -400,13 +432,12 @@ class _qboxState extends State<qbox> {
           ),
         ),
       );
-    }
-    else if (title == 'About Me') {
+    } else if (title == 'About Me') {
       var collection = FirebaseFirestore.instance.collection('Users');
       return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         future: collection.doc(FirebaseAuth.instance.currentUser?.uid).get(),
         builder: (_, snapshot) {
-          if (snapshot.hasError) return Text ('Error = ${snapshot.error}');
+          if (snapshot.hasError) return Text('Error = ${snapshot.error}');
 
           if (snapshot.hasData) {
             var data = snapshot.data!.data();
@@ -424,8 +455,7 @@ class _qboxState extends State<qbox> {
           return Center(child: CircularProgressIndicator());
         },
       );
-    }
-    else {
+    } else {
       return Text(
         '',
         textAlign: TextAlign.left,
@@ -456,5 +486,4 @@ class _qboxState extends State<qbox> {
     print("done..!");
     return Future.value(uploadTask);
   }
-
 }
