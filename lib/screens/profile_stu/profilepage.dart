@@ -1,12 +1,22 @@
+// ignore_for_file: deprecated_member_use
+
+import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:secure_job_portal/reusable_widgets/reusable_widget.dart';
 import 'package:secure_job_portal/screens/homepage/home.dart';
+import 'package:secure_job_portal/screens/profile_stu/achievements/achievement.dart';
 import 'package:secure_job_portal/screens/profile_stu/edu/education.dart';
+import 'package:secure_job_portal/screens/profile_stu/resume/pdf_viewer.dart';
 import 'package:secure_job_portal/screens/profile_stu/skills/add_skills.dart';
 import 'package:secure_job_portal/screens/profile_stu/work_exp/work_experience.dart';
 import 'package:secure_job_portal/screens/login%20+%20signup/signin_student.dart';
 import 'package:secure_job_portal/utils/color_utils.dart';
+import 'package:flutter_document_picker/flutter_document_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 
 List<String> profilemenu = [
@@ -174,6 +184,8 @@ class qbox extends StatefulWidget {
 }
 
 class _qboxState extends State<qbox> {
+  TextEditingController _aboutMeController = TextEditingController();
+  var url = '';
   bool expand = false;
 
   @override
@@ -186,7 +198,11 @@ class _qboxState extends State<qbox> {
         child: GestureDetector(
           onTap: () {
             expand = !expand;
-            setState(() {});
+            FirebaseStorage.instance
+                .ref()
+                .child('files').child(FirebaseAuth.instance.currentUser!.uid)
+                .getDownloadURL()
+                .then((value) => setState(() {url = value;}));
           },
           child: Container(
             decoration: BoxDecoration(
@@ -273,16 +289,45 @@ class _qboxState extends State<qbox> {
                                 Align(
                                   alignment: Alignment.centerRight,
                                   child: GestureDetector(
-                                    onTap: () {
-                                      if (widget.title == 'Work Experience') {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    WorkExperience()));
+                                    onTap: () async {
+                                      if (widget.title == 'About Me') {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return Dialog(
+                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+                                                elevation: 16,
+                                                child: Container(
+                                                  padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).size.height*0.06, 20, 0),
+                                                  height: MediaQuery.of(context).size.height*0.35,
+                                                  child: Column(
+                                                    children: [
+                                                      reusableTextContainer('About Me', MediaQuery.of(context).size.width),
+                                                      SizedBox(height: 5),
+                                                      reusableTextField('Describe Yourself..', false, _aboutMeController),
+                                                      SizedBox(height: 20),
+                                                  firebaseUIButton(context, "SAVE", () async {
+                                                    await FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser?.uid).
+                                                    update({
+                                                      'about_me': _aboutMeController.text,
+                                                    }).whenComplete(() => Navigator.pop(context));
+                                                  }),
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                            );
                                       }
-                                      else if (widget.title == 'Education') {
+                                      else if (widget.title == 'Work Experience') {
                                           Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      WorkExperience()));
+                                        }
+                                      else if (widget.title == 'Education') {
+                                        Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
@@ -295,7 +340,21 @@ class _qboxState extends State<qbox> {
                                                 builder: (context) =>
                                                     AddSkill()));
                                       }
-                                    },
+                                      else if (widget.title == 'Achievements') {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    Achievement()));
+                                      }
+                                      else if (widget.title == 'Resume') {
+                                        final path = (await FlutterDocumentPicker.openDocument())!;
+                                        print(path);
+                                        File file = File(path);
+                                        firebase_storage.UploadTask? task = await uploadFile(file);
+                                      }
+                                      },
+
                                     child: Icon(
                                       Icons.edit,
                                       size: 22.0,
@@ -311,15 +370,7 @@ class _qboxState extends State<qbox> {
                             SizedBox(
                               height: 10,
                             ),
-                            Text(
-                              'I am a curious person interested in solving real world problems using the latest technologies.I\'m a tech geek!',
-                              textAlign: TextAlign.left,
-                              style: GoogleFonts.dmSans(
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black,
-                                fontSize: 14,
-                              ),
-                            ),
+                            getText(widget.title, url)
                           ],
                         ),
                       ),
@@ -330,4 +381,80 @@ class _qboxState extends State<qbox> {
       ),
     );
   }
+
+  Widget getText(String title, String url) {
+    if (title == 'Resume') {
+      return TextButton(
+        onPressed: () async {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => PdfViewerPage(url: url)));
+        },
+        child: Text(
+          'View Resume',
+          textAlign: TextAlign.right,
+          style: GoogleFonts.dmSans(
+            fontWeight: FontWeight.w500,
+            color: Colors.blue,
+            fontSize: 14,
+            decoration: TextDecoration.underline,
+          ),
+        ),
+      );
+    }
+    else if (title == 'About Me') {
+      var collection = FirebaseFirestore.instance.collection('Users');
+      return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+        future: collection.doc(FirebaseAuth.instance.currentUser?.uid).get(),
+        builder: (_, snapshot) {
+          if (snapshot.hasError) return Text ('Error = ${snapshot.error}');
+
+          if (snapshot.hasData) {
+            var data = snapshot.data!.data();
+            var value = data!['about_me'];
+            return Text(
+              value,
+              textAlign: TextAlign.left,
+              style: GoogleFonts.dmSans(
+                fontWeight: FontWeight.w400,
+                color: Colors.black,
+                fontSize: 14,
+              ),
+            );
+          }
+          return Center(child: CircularProgressIndicator());
+        },
+      );
+    }
+    else {
+      return Text(
+        '',
+        textAlign: TextAlign.left,
+      );
+    }
+  }
+
+  Future<firebase_storage.UploadTask?> uploadFile(File file) async {
+    if (file == null) {
+      return null;
+    }
+
+    firebase_storage.UploadTask uploadTask;
+
+    // Create a Reference to the file
+    firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('files')
+        .child(FirebaseAuth.instance.currentUser!.uid);
+
+    final metadata = firebase_storage.SettableMetadata(
+        contentType: 'file/pdf',
+        customMetadata: {'picked-file-path': file.path});
+    print("Uploading..!");
+
+    uploadTask = ref.putData(await file.readAsBytes(), metadata);
+
+    print("done..!");
+    return Future.value(uploadTask);
+  }
+
 }
