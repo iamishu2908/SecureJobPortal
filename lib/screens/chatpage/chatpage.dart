@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:secure_job_portal/screens/chatpage/ChatModel.dart';
 import 'package:secure_job_portal/screens/chatpage/customcard.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class chatpage extends StatefulWidget {
   chatpage({this.chatmodels, this.sourchat});
@@ -12,46 +15,45 @@ class chatpage extends StatefulWidget {
 }
 
 class _chatpageState extends State<chatpage> {
-  List<ChatModel> chatmodels = [
-    ChatModel(
-        name: "Ishwarya",
-        currentMessage: "Hi Everyone",
-        time: "4:00",
-        icon: "assets/images/profile.png",
-        id: '2fn0mWDaIVTC2AfDtnwqK2ugA4r2'),
-    // ChatModel(
-    //   name: "Kishor",
-    //   currentMessage: "Hi Kishor",
-    //   time: "13:00",
-    //   icon: "assets/images/profile.png",
-    //   id: 'ababaaa',
-    // ),
-
-    // ChatModel(
-    //   name: "testabc",
-    //   currentMessage: "Hi Dev Stack",
-    //   time: "8:00",
-    //   icon: "assets/images/profile.png",
-    //   id: 'vy1vccMZW8UjSL8D66LqbDe8DWE3',
-    // ),
-
-    // ChatModel(
-    //   name: "Balram Rathore",
-    //   currentMessage: "Hi Dev Stack",
-    //   time: "2:00",
-    //   icon: "assets/images/profile.png",
-    //   id: 'ababa',
-    // ),
-
-    // ChatModel(
-    //   name: "NodeJs Group",
-    //   isGroup: true,
-    //   currentMessage: "New NodejS Post",
-    //   time: "2:00",
-    //   icon: "group.svg",
-    // ),
-  ];
+  List<ChatModel> chatmodels = [];
   @override
+  void initState() {
+    super.initState();
+    fetchChatModels();
+  }
+
+  void fetchChatModels() async {
+    // Retrieve the current user
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      await Firebase.initializeApp();
+
+      // Retrieve user details from Firestore
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection('users_msg').get();
+      querySnapshot.docs.forEach((doc) {
+        String name = doc['name'];
+        String currentMessage = doc['currentmsg'];
+        String time = doc['time'];
+        String icon = doc['icon'];
+        String id = doc.id;
+
+        ChatModel chatModel = ChatModel(
+          name: name,
+          currentMessage: currentMessage,
+          time: time,
+          icon: icon,
+          id: id,
+        );
+
+        setState(() {
+          chatmodels.add(chatModel);
+        });
+        print(chatmodels);
+      });
+    }
+  }
+
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),

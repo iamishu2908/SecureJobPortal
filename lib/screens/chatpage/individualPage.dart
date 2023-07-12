@@ -139,8 +139,6 @@ class _IndividualPageState extends State<IndividualPage> {
             ),
           ),
           actions: [
-            IconButton(icon: Icon(Icons.videocam), onPressed: () {}),
-            IconButton(icon: Icon(Icons.call), onPressed: () {}),
             PopupMenuButton<String>(
               padding: EdgeInsets.all(0),
               onSelected: (value) {
