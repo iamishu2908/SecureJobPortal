@@ -9,7 +9,7 @@ hexStringToColor(String hexColor) {
 }
 
 Color whitetheme = hexStringToColor('FFFFFF');
-Color primarytheme = hexStringToColor('120161');
+Color primarytheme = hexStringToColor('130160');
 Color secondarytheme = hexStringToColor('D5CDFE');
 Color orangetheme = hexStringToColor('FFA751');
 Color peachtheme = hexStringToColor('FFE1D5');

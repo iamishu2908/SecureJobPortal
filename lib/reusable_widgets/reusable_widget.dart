@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:secure_job_portal/utils/color_utils.dart';
 
 Image logoWidget(String imageName) {
   return Image.asset(
@@ -17,7 +18,7 @@ Container reusableTextContainer(String text, double Width) {
     alignment: Alignment.topLeft,
     child: Text(
       text,
-      style: TextStyle(color: Colors.indigo.shade900,
+      style: TextStyle(color: primarytheme,
           fontSize: 15,
           fontWeight: FontWeight.w500
       ),
@@ -29,6 +30,7 @@ Container reusableTextContainer(String text, double Width) {
 TextField reusableTextField(String text, bool isPasswordType,
     TextEditingController controller) {
   return TextField(
+    maxLines: 1,
     controller: controller,
     obscureText: isPasswordType,
     enableSuggestions: !isPasswordType,
@@ -77,7 +79,7 @@ Container firebaseUIButton(BuildContext context, String title, Function onTap) {
             if (states.contains(MaterialState.pressed)) {
               return Colors.grey.shade500;
             }
-            return Colors.indigo[900];
+            return primarytheme;
           }),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))),
