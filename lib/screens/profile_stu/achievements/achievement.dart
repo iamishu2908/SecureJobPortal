@@ -2,21 +2,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:secure_job_portal/screens/profile_stu/achievements/add_achievement.dart';
+import 'package:secure_job_portal/screens/profile_stu/achievements/edit_achievement.dart';
 import 'package:secure_job_portal/screens/profile_stu/edu/add_edu.dart';
 import 'package:secure_job_portal/screens/profile_stu/edu/edit_edu.dart';
 import 'package:secure_job_portal/screens/profile_stu/profilepage.dart';
 import 'package:secure_job_portal/utils/color_utils.dart';
 
-class Education extends StatefulWidget {
-  const Education({super.key});
+class Achievement extends StatefulWidget {
+  const Achievement({super.key});
 
   @override
-  State<Education> createState() => _EducationState();
+  State<Achievement> createState() => _AchievementState();
 }
 
-class _EducationState extends State<Education> {
+class _AchievementState extends State<Achievement> {
   final currentUser = FirebaseAuth.instance.currentUser;
-  final ref = FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser?.uid).collection('education');
+  final ref = FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser?.uid).collection('achievement');
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class _EducationState extends State<Education> {
             onPressed: () {
               setState(() {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => AddEducation()));
+                    MaterialPageRoute(builder: (context) => AddAchievement()));
               });
             }),
       ),
@@ -56,7 +58,7 @@ class _EducationState extends State<Education> {
           ),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text("Education",
+        title: Text("Achievements",
           style: TextStyle(
               fontFamily: 'Playfair Display',
               fontSize: 20,
@@ -79,7 +81,7 @@ class _EducationState extends State<Education> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => EditEducation(docToEdit: snapshot.data!.docs.elementAt(index),),
+                              builder: (_) => EditAchievement(docToEdit: snapshot.data!.docs.elementAt(index),),
                             ),
                           );
                         },
@@ -112,13 +114,12 @@ class _EducationState extends State<Education> {
                                     Row(
                                       children: [
                                         Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Container(
                                               width: MediaQuery.of(context).size.width *0.55,
                                               child: Text(
-                                                (snapshot.data!.docs.elementAt(index).data() as Map)['level_of_edu'].toString(),
+                                                (snapshot.data!.docs.elementAt(index).data() as Map)['award_name'].toString(),
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: GoogleFonts.dmSans(
@@ -127,58 +128,23 @@ class _EducationState extends State<Education> {
                                                     fontSize: MediaQuery.of(context)
                                                         .size
                                                         .width *
-                                                        0.055),
+                                                        0.05),
                                               ),
-                                            ),
-                                            Text(
-                                              (snapshot.data!.docs.elementAt(index).data() as Map)['institute_name'].toString(),
-                                              maxLines: 1,
-                                              style: GoogleFonts.poppins(
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.indigo[900],
-                                                  fontSize: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                      0.038),
                                             ),
                                           ],
                                         ),
                                         Spacer(),
                                         Align(
                                           alignment: Alignment.topRight,
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                (snapshot.data!.docs.elementAt(index).data() as Map)['start_date'].toString(),
-                                                style: GoogleFonts.poppins(
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Colors.black,
-                                                    fontSize: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                        0.035),
-                                              ),
-                                              Text(
-                                                ' - ',
-                                                style: GoogleFonts.poppins(
-                                                    fontWeight: FontWeight.w200,
-                                                    color: Colors.black,
-                                                    fontSize: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                        0.05),
-                                              ),
-                                              Text(
-                                                (snapshot.data!.docs.elementAt(index).data() as Map)['end_date'].toString(),
-                                                style: GoogleFonts.poppins(
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Colors.black,
-                                                    fontSize: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                        0.035),
-                                              ),
-                                            ],
+                                          child: Text(
+                                            (snapshot.data!.docs.elementAt(index).data() as Map)['date'].toString(),
+                                            style: GoogleFonts.poppins(
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                                fontSize: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                    0.035),
                                           ),
                                         ),
                                         SizedBox(

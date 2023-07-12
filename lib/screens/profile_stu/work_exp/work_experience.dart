@@ -117,16 +117,20 @@ class _WorkExperienceState extends State<WorkExperience> {
                                           crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                              (snapshot.data!.docs.elementAt(index).data() as Map)['job_title'].toString(),
-                                              maxLines: 1,
-                                              style: GoogleFonts.dmSans(
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.black,
-                                                  fontSize: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                      0.06),
+                                            Container(
+                                              width: MediaQuery.of(context).size.width *0.55,
+                                              child: Text(
+                                                (snapshot.data!.docs.elementAt(index).data() as Map)['job_title'].toString(),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: GoogleFonts.dmSans(
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.black,
+                                                    fontSize: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                        0.055),
+                                              ),
                                             ),
                                             Text(
                                               (snapshot.data!.docs.elementAt(index).data() as Map)['com_name'].toString(),
@@ -167,7 +171,7 @@ class _WorkExperienceState extends State<WorkExperience> {
                                                         0.05),
                                               ),
                                               Text(
-                                                (snapshot.data!.docs.elementAt(index).data() as Map)['end-date'].toString(),
+                                                (snapshot.data!.docs.elementAt(index).data() as Map)['end_date'].toString(),
                                                 style: GoogleFonts.poppins(
                                                     fontWeight: FontWeight.w500,
                                                     color: Colors.black,
