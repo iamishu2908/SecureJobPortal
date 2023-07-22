@@ -14,6 +14,10 @@ Color secondarytheme = hexStringToColor('D5CDFE');
 Color orangetheme = hexStringToColor('FFA751');
 Color peachtheme = hexStringToColor('FFE1D5');
 Color greytheme = hexStringToColor('F4F3F6');
+const Color correct = Color(0xFF32AB58);
+const Color incorrect = Color(0xFFAB3232);
+const Color neutral = Color(0xFFE7E7E7);
+const Color background = Color(0xFF143464);
 
 // convert_color(String hexa) {
 //   int col = ("0x$hexa").toString() as int;
