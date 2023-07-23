@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:secure_job_portal/screens/profile_stu/skills/cert-verify.dart';
+import '../../../utils/color_utils.dart';
 import '../skills/skill_test.dart';
 
 class AddSkill extends StatefulWidget {
@@ -141,17 +143,57 @@ class _AddSkillState extends State<AddSkill> {
                                                   .toString() ==
                                               'false')
                                             {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          SkillTest(
-                                                              skill: (snapshot
-                                                                      .data!.docs
-                                                                      .elementAt(
-                                                                          index)
-                                                                      .data()
-                                                                  as Map)['skill'])))
+                                              showDialog(
+                                                  context: context,
+                                                  barrierDismissible: false,
+                                                  builder: (ctx) => AlertDialog(
+                                                      backgroundColor:
+                                                          secondarytheme,
+                                                      content: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            TextButton(
+                                                              onPressed: () {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                        builder:
+                                                                            (context) =>
+                                                                                SkillTest(skill: (snapshot.data!.docs.elementAt(index).data() as Map)['skill'])));
+                                                              },
+                                                              child: const Text(
+                                                                'Take the skill questionnaire',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .indigo,
+                                                                    fontSize:
+                                                                        15.0),
+                                                              ),
+                                                            ),
+                                                            const Text("OR"),
+                                                            TextButton(
+                                                              onPressed: () {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                        builder:
+                                                                            (context) =>
+                                                                                CertificateVerification(skill: (snapshot.data!.docs.elementAt(index).data() as Map)['skill'])));
+                                                              },
+                                                              child: const Text(
+                                                                  'Verify through Certificates'),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )))
                                             }
                                           else
                                             {

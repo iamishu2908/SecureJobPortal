@@ -53,6 +53,7 @@ dependencies:
   flutter_pdfview: ^1.2.1
   socket_io_client: ^2.0.2
   emoji_picker_flutter: ^1.6.1
+  html: ^0.15.4
 
 dev_dependencies:
   flutter_test:
