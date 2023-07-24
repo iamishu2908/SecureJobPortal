@@ -117,9 +117,9 @@ class _AddSkillState extends State<AddSkill> {
                               child: Card(
                                 elevation: 0,
                                 color: Colors.white,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                child: Row(
+                                  //mainAxisAlignment: MainAxisAlignment.start,
+                                  //crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                         (snapshot.data!.docs
@@ -131,120 +131,117 @@ class _AddSkillState extends State<AddSkill> {
                                           color: Colors.black,
                                           fontSize: 20,
                                         )),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                                      child: TextButton(
-                                        onPressed: () => {
-                                          if ((snapshot.data!.docs
-                                                          .elementAt(index)
-                                                          .data()
-                                                      as Map)['isVerified']
-                                                  .toString() ==
-                                              'false')
-                                            {
-                                              showDialog(
-                                                  context: context,
-                                                  barrierDismissible: false,
-                                                  builder: (ctx) => AlertDialog(
-                                                      backgroundColor:
-                                                          secondarytheme,
-                                                      content: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child: Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.min,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            TextButton(
-                                                              onPressed: () {
-                                                                Navigator.push(
-                                                                    context,
-                                                                    MaterialPageRoute(
-                                                                        builder:
-                                                                            (context) =>
-                                                                                SkillTest(skill: (snapshot.data!.docs.elementAt(index).data() as Map)['skill'])));
-                                                              },
-                                                              child: const Text(
-                                                                'Take the skill questionnaire',
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .indigo,
-                                                                    fontSize:
-                                                                        15.0),
-                                                              ),
+                                    Spacer(),
+                                    TextButton(
+                                      onPressed: () => {
+                                        if ((snapshot.data!.docs
+                                                        .elementAt(index)
+                                                        .data()
+                                                    as Map)['isVerified']
+                                                .toString() ==
+                                            'false')
+                                          {
+                                            showDialog(
+                                                context: context,
+                                                barrierDismissible: false,
+                                                builder: (ctx) => AlertDialog(
+                                                    backgroundColor:
+                                                        secondarytheme,
+                                                    content: Padding(
+                                                      padding:
+                                                          const EdgeInsets
+                                                              .all(8.0),
+                                                      child: Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder:
+                                                                          (context) =>
+                                                                              SkillTest(skill: (snapshot.data!.docs.elementAt(index).data() as Map)['skill'])));
+                                                            },
+                                                            child: const Text(
+                                                              'Take the skill questionnaire',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .indigo,
+                                                                  fontSize:
+                                                                      15.0),
                                                             ),
-                                                            const Text("OR"),
-                                                            TextButton(
-                                                              onPressed: () {
-                                                                Navigator.push(
-                                                                    context,
-                                                                    MaterialPageRoute(
-                                                                        builder:
-                                                                            (context) =>
-                                                                                CertificateVerification(skill: (snapshot.data!.docs.elementAt(index).data() as Map)['skill'])));
-                                                              },
-                                                              child: const Text(
-                                                                  'Verify through Certificates'),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      )))
-                                            }
-                                          else
-                                            {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(const SnackBar(
-                                                      content: Text(
-                                                          'Skill already verified'),
-                                                      behavior: SnackBarBehavior
-                                                          .floating,
-                                                      margin:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 20.0)))
-                                            }
-                                        },
-                                        style: TextButton.styleFrom(
-                                          backgroundColor: (snapshot.data!.docs
+                                                          ),
+                                                          const Text("OR"),
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder:
+                                                                          (context) =>
+                                                                              CertificateVerification(skill: (snapshot.data!.docs.elementAt(index).data() as Map)['skill'])));
+                                                            },
+                                                            child: const Text(
+                                                                'Verify through Certificates'),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )))
+                                          }
+                                        else
+                                          {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(const SnackBar(
+                                                    content: Text(
+                                                        'Skill already verified'),
+                                                    behavior: SnackBarBehavior
+                                                        .floating,
+                                                    margin:
+                                                        EdgeInsets.fromLTRB(10, 20, 10, 20),
+                                                        ))
+                                          }
+                                      },
+                                      style: TextButton.styleFrom(
+                                        backgroundColor: (snapshot.data!.docs
+                                                            .elementAt(index)
+                                                            .data()
+                                                        as Map)['isVerified']
+                                                    .toString() ==
+                                                'false'
+                                            ? const Color.fromARGB(
+                                                255, 120, 54, 175)
+                                            : Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                        ),
+                                      ),
+                                      child: Text(
+                                          (snapshot.data!.docs
                                                               .elementAt(index)
-                                                              .data()
-                                                          as Map)['isVerified']
+                                                              .data() as Map)[
+                                                          'isVerified']
                                                       .toString() ==
                                                   'false'
-                                              ? const Color.fromARGB(
-                                                  255, 120, 54, 175)
-                                              : Colors.white,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                          ),
-                                        ),
-                                        child: Text(
-                                            (snapshot.data!.docs
-                                                                .elementAt(index)
-                                                                .data() as Map)[
-                                                            'isVerified']
-                                                        .toString() ==
-                                                    'false'
-                                                ? "Take the Skill Test"
-                                                : "Verified",
-                                            style: GoogleFonts.openSans(
-                                                fontWeight: FontWeight.w700,
-                                                color: (snapshot.data!.docs
-                                                                    .elementAt(
-                                                                        index)
-                                                                    .data() as Map)[
-                                                                'isVerified']
-                                                            .toString() ==
-                                                        'false'
-                                                    ? Colors.white
-                                                    : Colors.green[500],
-                                                fontSize: 14)),
-                                      ),
+                                              ? "Take the Skill Test"
+                                              : "Verified",
+                                          style: GoogleFonts.openSans(
+                                              fontWeight: FontWeight.w700,
+                                              color: (snapshot.data!.docs
+                                                                  .elementAt(
+                                                                      index)
+                                                                  .data() as Map)[
+                                                              'isVerified']
+                                                          .toString() ==
+                                                      'false'
+                                                  ? Colors.white
+                                                  : Colors.green[500],
+                                              fontSize: 14)),
                                     ),
                                   ],
                                 ),
