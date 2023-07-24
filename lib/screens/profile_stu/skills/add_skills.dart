@@ -189,7 +189,8 @@ class _AddSkillState extends State<AddSkill> {
                                                                                 CertificateVerification(skill: (snapshot.data!.docs.elementAt(index).data() as Map)['skill'])));
                                                               },
                                                               child: const Text(
-                                                                  'Verify through Certificates'),
+                                                                  'Verify through Certificates or projects',
+                                                                  textAlign: TextAlign.center),
                                                             ),
                                                           ],
                                                         ),
