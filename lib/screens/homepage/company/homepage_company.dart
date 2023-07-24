@@ -26,7 +26,7 @@ class CompanyHome extends StatefulWidget {
 class _CompanyHomeState extends State<CompanyHome> {
   String company = "";
   bool result = false;
-  final ref = FirebaseFirestore.instance.collection("Applicants");
+  final CollectionReference ref = FirebaseFirestore.instance.collection("Applicants");
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +102,18 @@ class _CompanyHomeState extends State<CompanyHome> {
                             MaterialPageRoute(
                                 builder: (context) => JobPosting()));
                       }
+                      else
+                      {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text(
+                              'Company not Verified'),
+                          behavior: SnackBarBehavior
+                              .floating,
+                          margin:
+                          EdgeInsets.fromLTRB(10, 20, 10, 20),
+                        ));
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Color.fromARGB(254, 190, 175, 254)),
@@ -159,171 +171,261 @@ class _CompanyHomeState extends State<CompanyHome> {
               ),
 
               Container(
-                child: StreamBuilder(
-                    stream: ref.snapshots(),
-                    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                      return
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
-                          child: ListView.builder(
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: snapshot.hasData?(snapshot.data?.docs.length):0,
-                              itemBuilder: (_, index) {
-                                //bool expanded = false;
-                                return Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
-                                  child: Align(
-                                      child: Stack(children: <Widget>[
-                                        Container(
-                                          decoration: new BoxDecoration(
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.grey.withOpacity(0.12),
-                                                spreadRadius: 2,
-                                                blurRadius: 3,
-                                                offset:
-                                                Offset(1,
-                                                    2), // changes position of shadow
+                child: FutureBuilder<String>(
+                  future: getFieldValue(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text('Error: ${snapshot.error}'),
+                      );
+                    }
+                    final fieldValue = snapshot.data;
+
+
+                    return StreamBuilder<QuerySnapshot>(
+                        stream: ref.where('company',
+                            isEqualTo: fieldValue) // Replace 'field_name' with the actual field name you want to filter on
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return Center(
+                              child: Text('Error: ${snapshot.error}'),
+                            );
+                          }
+
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+
+                          // Convert QuerySnapshot to a list of DocumentSnapshots
+                          final List<DocumentSnapshot> documents = snapshot
+                              .data!.docs;
+
+                          if (documents.isEmpty) {
+                            return Center(
+                              child: Text('No Applicants.'),
+                            );
+                          }
+                          return
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
+                              child: ListView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: documents.length,
+                                  itemBuilder: (_, index) {
+                                    //bool expanded = false;
+                                    final Map<String,
+                                        dynamic> data = documents[index]
+                                        .data() as Map<String, dynamic>;
+                                    return Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
+                                      child: Align(
+                                          child: Stack(children: <Widget>[
+                                            Container(
+                                              decoration: new BoxDecoration(
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.grey
+                                                        .withOpacity(0.12),
+                                                    spreadRadius: 2,
+                                                    blurRadius: 3,
+                                                    offset:
+                                                    Offset(1,
+                                                        2), // changes position of shadow
+                                                  ),
+                                                ],
+                                                color: Colors.white,
+                                                shape: BoxShape.rectangle,
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(15.0)),
                                               ),
-                                            ],
-                                            color: Colors.white,
-                                            shape: BoxShape.rectangle,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(15.0)),
-                                          ),
-                                          child: Card(
-                                            elevation: 0,
-                                            color: Colors.white,
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment
-                                                  .start,
-                                              crossAxisAlignment: CrossAxisAlignment
-                                                  .start,
-                                              children: [
-                                                Row(
+                                              child: Card(
+                                                elevation: 0,
+                                                color: Colors.white,
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment
+                                                      .start,
+                                                  crossAxisAlignment: CrossAxisAlignment
+                                                      .start,
                                                   children: [
-                                                    Align(
-                                                      alignment: Alignment.centerLeft,
-                                                      child: Icon(
-                                                        Icons.person,
-                                                        size: 30.0,
-                                                        color: Colors.black,
+                                                    Row(
+                                                      children: [
+                                                        Align(
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Icon(
+                                                            Icons.person,
+                                                            size: 30.0,
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        Text(
+                                                          data['candidate_name'],
+                                                          style: GoogleFonts
+                                                              .poppins(
+                                                              fontWeight: FontWeight
+                                                                  .w600,
+                                                              color: Colors
+                                                                  .black,
+                                                              fontSize: MediaQuery
+                                                                  .of(context)
+                                                                  .size
+                                                                  .width *
+                                                                  0.048),
+                                                        ),
+                                                        Spacer(),
+                                                        Align(
+                                                          alignment: Alignment
+                                                              .centerRight,
+                                                          child: Icon(
+                                                            Icons
+                                                                .bookmark_border_outlined,
+                                                            size: 28.0,
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 10,
+                                                        )
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                          .fromLTRB(
+                                                          10, 0, 0, 0),
+                                                      child: Row(
+                                                        children: [
+                                                          Text("Role - ",
+                                                            style: GoogleFonts
+                                                                .poppins(
+                                                                fontWeight: FontWeight
+                                                                    .w500,
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                    254, 190,
+                                                                    175, 254),
+                                                                fontSize:
+                                                                MediaQuery
+                                                                    .of(context)
+                                                                    .size
+                                                                    .width *
+                                                                    0.038),
+                                                          ),
+                                                          Text(
+                                                            data['role'],
+                                                            style: GoogleFonts
+                                                                .poppins(
+                                                                fontWeight: FontWeight
+                                                                    .w500,
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize:
+                                                                MediaQuery
+                                                                    .of(context)
+                                                                    .size
+                                                                    .width *
+                                                                    0.038),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ),
                                                     SizedBox(
-                                                      width: 10,
+                                                      height: 5,
                                                     ),
-                                                    Text(
-                                                      (snapshot.data!.docs.elementAt(index).data() as Map)['candidate_name'].toString(),
-                                                      style: GoogleFonts.poppins(
-                                                          fontWeight: FontWeight
-                                                              .w600,
-                                                          color: Colors.black,
-                                                          fontSize: MediaQuery
-                                                              .of(context)
-                                                              .size
-                                                              .width *
-                                                              0.048),
-                                                    ),
-                                                    Spacer(),
-                                                    Align(
-                                                      alignment: Alignment
-                                                          .centerRight,
-                                                      child: Icon(
-                                                        Icons.bookmark_border_outlined,
-                                                        size: 28.0,
-                                                        color: Colors.black,
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                          .only(left: 7),
+                                                      child: ElevatedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          backgroundColor: peachtheme,
+                                                          shadowColor: Colors
+                                                              .grey,
+                                                          elevation: 3,
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                  32.0)),
+                                                          minimumSize: Size(
+                                                              50,
+                                                              30), //////// HERE
+                                                        ),
+                                                        onPressed: () {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (
+                                                                      context) =>
+                                                                      ViewApplicantProfile(
+                                                                          id: data['id'])));
+                                                        },
+                                                        child: Text(
+                                                          'View Profile',
+                                                          style: GoogleFonts
+                                                              .poppins(
+                                                              fontWeight: FontWeight
+                                                                  .w600,
+                                                              color: Colors
+                                                                  .black,
+                                                              fontSize: MediaQuery
+                                                                  .of(context)
+                                                                  .size
+                                                                  .width *
+                                                                  0.035),
+                                                        ),
                                                       ),
                                                     ),
-                                                    SizedBox(
-                                                      width: 10,
-                                                    )
                                                   ],
                                                 ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                                  child: Row(
-                                                    children: [
-                                                      Text("Role - ",
-                                                        style: GoogleFonts.poppins(
-                                                            fontWeight: FontWeight.w500,
-                                                            color: Color.fromARGB(254, 190, 175, 254),
-                                                            fontSize:
-                                                            MediaQuery
-                                                                .of(context)
-                                                                .size
-                                                                .width *
-                                                                0.038),
-                                                      ),
-                                                      Text(
-                                                        (snapshot.data!.docs.elementAt(index).data() as Map)['role'].toString(),
-                                                        style: GoogleFonts.poppins(
-                                                            fontWeight: FontWeight.w500,
-                                                            color: Colors.black,
-                                                            fontSize:
-                                                            MediaQuery
-                                                                .of(context)
-                                                                .size
-                                                                .width *
-                                                                0.038),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 5,
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets.only(left: 7),
-                                                  child: ElevatedButton(
-                                                    style: ElevatedButton.styleFrom(
-                                                      backgroundColor: peachtheme,
-                                                      shadowColor: Colors.grey,
-                                                      elevation: 3,
-                                                      shape: RoundedRectangleBorder(
-                                                          borderRadius:
-                                                          BorderRadius.circular(
-                                                              32.0)),
-                                                      minimumSize: Size(
-                                                          50, 30), //////// HERE
-                                                    ),
-                                                    onPressed: () {
-                                                      Navigator.push(context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  ViewApplicantProfile(id: (snapshot.data!.docs.elementAt(index).data() as Map)['id'].toString())));
-                                                    },
-                                                    child: Text(
-                                                      'View Profile',
-                                                      style: GoogleFonts.poppins(
-                                                          fontWeight: FontWeight.w600,
-                                                          color: Colors.black,
-                                                          fontSize: MediaQuery
-                                                              .of(context)
-                                                              .size
-                                                              .width *
-                                                              0.035),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                      ])),
-                                );
-                              }),
-                        );
-                    }
-                ),
+                                          ])),
+                                    );
+                                  }),
+                            );
+                        }
+                    );
+                  })
               )
             ],
           ),
         ));
+  }
+
+  Future<String> getFieldValue() async {
+    try {
+      final DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(FirebaseAuth.instance.currentUser?.uid)
+          .get();
+
+      if (snapshot.exists) {
+        // Extract the field value from the document
+        final fieldValue = snapshot.get('company_name');
+        return fieldValue.toString();
+      } else {
+        return 'Document not found';
+      }
+    } catch (e) {
+      return 'Error: $e';
+    }
   }
 }
 
@@ -331,10 +433,11 @@ class _CompanyHomeState extends State<CompanyHome> {
 Future<String> getUserData(String? userId) async {
   try {
     final userSnapshot = await firestore.collection('Users').doc(userId).get();
+
     if (userSnapshot.exists) {
-      final userData = userSnapshot.data();
+      final userData = userSnapshot.get('company_name');
       // Process or use the userData
-      return (userData!["company_name"]);
+      return userData.toString();
     } else {
       return 'User not found';
     }
