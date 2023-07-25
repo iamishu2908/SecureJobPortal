@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 
-import '../../utils/color_utils.dart';
+import '../../../utils/color_utils.dart';
 
 class CompanyDescriptionScreen extends StatefulWidget {
   final String id;

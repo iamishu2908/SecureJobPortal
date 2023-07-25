@@ -1,13 +1,13 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:secure_job_portal/screens/chatpage/chatpage.dart';
-import 'package:secure_job_portal/screens/homepage/communitypage.dart';
-import 'package:secure_job_portal/screens/homepage/mainpage.dart';
+import 'package:secure_job_portal/screens/homepage/student/communitypage.dart';
+import 'package:secure_job_portal/screens/homepage/student/mainpage.dart';
 import 'package:secure_job_portal/screens/login%20+%20signup/signin_student.dart';
 import 'package:flutter/material.dart';
 import 'package:secure_job_portal/utils/color_utils.dart';
 
-import '../chatpage/ChatModel.dart';
+import '../../chatpage/ChatModel.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({this.chatmodels, this.sourchat});

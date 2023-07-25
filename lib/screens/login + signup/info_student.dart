@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:secure_job_portal/reusable_widgets/reusable_widget.dart';
-import 'package:secure_job_portal/screens/homepage/home.dart';
+import 'package:secure_job_portal/screens/homepage/student/home.dart';
 import 'package:flutter/material.dart';
 
 class InfoStuScreen extends StatefulWidget {
