@@ -56,7 +56,6 @@ class _profilepageState extends State<profilepage> {
         name = userDoc.data()?['name'] ?? 'Default Name';
       });
 
-      print('User Name: $name');
     } else {
       print('User document not found.');
     }

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -36,7 +37,8 @@ class ViewApplicantProfile extends StatefulWidget {
 }
 
 class _ViewApplicantProfileState extends State<ViewApplicantProfile> {
-  String name = '';
+
+  String name = "";
   void getUserData() async {
     final userDoc = await FirebaseFirestore.instance
         .collection('Users')
@@ -45,10 +47,10 @@ class _ViewApplicantProfileState extends State<ViewApplicantProfile> {
 
     if (userDoc.exists) {
       setState(() {
-        name = userDoc.data()?['name'] ?? 'Default Name';
+        name = userDoc.data()?['company_name'] ?? 'Default Name';
       });
 
-      print('User Name: $name');
+      //print('User Name: $name');
     } else {
       print('User document not found.');
     }
@@ -96,15 +98,7 @@ class _ViewApplicantProfileState extends State<ViewApplicantProfile> {
               alignment: Alignment.topLeft,
               child: Padding(
                 padding: EdgeInsets.only(left: 30, top: 10),
-                child: Text(
-                  '$name',
-                  textAlign: TextAlign.left,
-                  style: GoogleFonts.dmSans(
-                    fontWeight: FontWeight.w400,
-                    color: whitetheme,
-                    fontSize: 20,
-                  ),
-                ),
+                child: getName()
               ),
             ),
           ],
@@ -198,7 +192,12 @@ class _ViewApplicantProfileState extends State<ViewApplicantProfile> {
                                                   fontSize: 15,
                                                 ),
                                               ),
-                                              onPressed: () {}
+                                              onPressed: () async {
+                                                await FirebaseFirestore.instance.collection("Users").doc(widget.id).collection('Hired').doc('$name').
+                                                set({
+                                                  'name': '$name'
+                                                }).whenComplete(() => Navigator.pop(context));
+                                              }
                                           ),
                                         ),
                                       ),
@@ -235,6 +234,31 @@ class _ViewApplicantProfileState extends State<ViewApplicantProfile> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget getName() {
+    var collection = FirebaseFirestore.instance.collection('Users');
+    return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+      future: collection.doc(widget.id).get(),
+      builder: (_, snapshot) {
+        if (snapshot.hasError) return Text('Error = ${snapshot.error}');
+
+        if (snapshot.hasData) {
+          var data = snapshot.data!.data();
+          var value = data!['name'];
+          return Text(
+            value,
+            textAlign: TextAlign.left,
+            style: GoogleFonts.dmSans(
+              fontWeight: FontWeight.w400,
+              color: whitetheme,
+              fontSize: 20,
+            ),
+          );
+        }
+        return Center(child: CircularProgressIndicator());
+      },
     );
   }
 }
