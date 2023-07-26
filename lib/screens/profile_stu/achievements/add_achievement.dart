@@ -23,38 +23,36 @@ class _AddAchievementState extends State<AddAchievement> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: ListView(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: TextButton(
-              onPressed: () {
-                // Perform navigation
-                Navigator.pop(context);
-              },
-              child: Row(
-                children: const [
-                  Icon(Icons.arrow_back, color: Colors.black),
-                ],
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 15, 15, 15),
+                child: TextButton(
+                  onPressed: () {
+                    // Perform navigation
+                    Navigator.pop(context);
+                  },
+                  child: Icon(Icons.arrow_back, color: Colors.black),
+                ),
               ),
-            ),
-          ),
-          const SizedBox(height: 15),
-          Padding(
-            padding: const EdgeInsets.all(18.0),
-            child: Text(
-              'Add Achievement',
-              style: GoogleFonts.dmSans(
-                color: primarytheme,
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-                decoration: TextDecoration.none,
+              Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Text(
+                  'Add Achievement',
+                  style: GoogleFonts.dmSans(
+                    color: primarytheme,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    decoration: TextDecoration.none,
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
-          const SizedBox(height: 10.0),
+
+          const SizedBox(height: 5.0),
           Padding(
             padding: const EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0.0),
             child: Text('Award Name',

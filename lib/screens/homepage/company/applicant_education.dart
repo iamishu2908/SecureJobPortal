@@ -88,17 +88,19 @@ class _ApplicantEducationState extends State<ApplicantEducation> {
                                         children: [
                                           Container(
                                             width: MediaQuery.of(context).size.width *0.55,
-                                            child: Text(
-                                              (snapshot.data!.docs.elementAt(index).data() as Map)['level_of_edu'].toString(),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: GoogleFonts.dmSans(
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.black,
-                                                  fontSize: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                      0.055),
+                                            child: Flexible(
+                                              child: Text(
+                                                (snapshot.data!.docs.elementAt(index).data() as Map)['level_of_edu'].toString(),
+                                                //maxLines: 1,
+                                                overflow: TextOverflow.visible,
+                                                style: GoogleFonts.dmSans(
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.black,
+                                                    fontSize: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                        0.055),
+                                              ),
                                             ),
                                           ),
                                           Text(

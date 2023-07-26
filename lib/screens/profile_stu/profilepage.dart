@@ -11,6 +11,7 @@ import 'package:secure_job_portal/screens/homepage/student/home.dart';
 import 'package:secure_job_portal/screens/profile_stu/achievements/achievement.dart';
 import 'package:secure_job_portal/screens/profile_stu/edu/education.dart';
 import 'package:secure_job_portal/screens/profile_stu/resume/pdf_viewer.dart';
+import 'package:secure_job_portal/screens/profile_stu/resume/resume_maker_info.dart';
 import 'package:secure_job_portal/screens/profile_stu/skills/add_skills.dart';
 import 'package:secure_job_portal/screens/profile_stu/work_exp/work_experience.dart';
 import 'package:secure_job_portal/screens/login%20+%20signup/signin_student.dart';
@@ -135,7 +136,34 @@ class _profilepageState extends State<profilepage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(50.0),
+            padding: const EdgeInsets.fromLTRB(50, 25, 50, 0),
+            child: ElevatedButton(
+              style: ButtonStyle(
+                  minimumSize: MaterialStateProperty.all<Size>(Size(60, 50)),
+                  backgroundColor:
+                  MaterialStateProperty.all<Color>(Colors.orangeAccent.shade200),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ))),
+              child: Text(
+                'Resume Maker',
+                textAlign: TextAlign.left,
+                style: GoogleFonts.dmSans(
+                  fontWeight: FontWeight.w800,
+                  color: whitetheme,
+                  fontSize: 15,
+                ),
+              ),
+              onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ResumeInfoForm()));
+                })
+            ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(50, 20, 50, 50),
             child: ElevatedButton(
               style: ButtonStyle(
                   minimumSize: MaterialStateProperty.all<Size>(Size(60, 50)),
