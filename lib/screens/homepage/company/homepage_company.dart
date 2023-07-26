@@ -33,8 +33,8 @@ class _CompanyHomeState extends State<CompanyHome> {
     return Scaffold(
         backgroundColor: Colors.white,
         body: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 20.0),
-          child: Column(
+          padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 20.0),
+          child: ListView(
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -217,7 +217,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                           }
                           return
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
+                              padding: const EdgeInsets.fromLTRB(5, 20, 5, 5),
                               child: ListView.builder(
                                   physics: NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
@@ -230,173 +230,175 @@ class _CompanyHomeState extends State<CompanyHome> {
                                     return Padding(
                                       padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
                                       child: Align(
-                                          child: Stack(children: <Widget>[
-                                            Container(
-                                              decoration: new BoxDecoration(
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: Colors.grey
-                                                        .withOpacity(0.12),
-                                                    spreadRadius: 2,
-                                                    blurRadius: 3,
-                                                    offset:
-                                                    Offset(1,
-                                                        2), // changes position of shadow
-                                                  ),
-                                                ],
-                                                color: Colors.white,
-                                                shape: BoxShape.rectangle,
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(15.0)),
-                                              ),
-                                              child: Card(
-                                                elevation: 0,
-                                                color: Colors.white,
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment
-                                                      .start,
-                                                  crossAxisAlignment: CrossAxisAlignment
-                                                      .start,
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        Align(
-                                                          alignment: Alignment
-                                                              .centerLeft,
-                                                          child: Icon(
-                                                            Icons.person,
-                                                            size: 30.0,
-                                                            color: Colors.black,
-                                                          ),
-                                                        ),
-                                                        SizedBox(
-                                                          width: 10,
-                                                        ),
-                                                        Text(
-                                                          data['candidate_name'],
-                                                          style: GoogleFonts
-                                                              .poppins(
-                                                              fontWeight: FontWeight
-                                                                  .w600,
-                                                              color: Colors
-                                                                  .black,
-                                                              fontSize: MediaQuery
-                                                                  .of(context)
-                                                                  .size
-                                                                  .width *
-                                                                  0.048),
-                                                        ),
-                                                        Spacer(),
-                                                        Align(
-                                                          alignment: Alignment
-                                                              .centerRight,
-                                                          child: Icon(
-                                                            Icons
-                                                                .bookmark_border_outlined,
-                                                            size: 28.0,
-                                                            color: Colors.black,
-                                                          ),
-                                                        ),
-                                                        SizedBox(
-                                                          width: 10,
-                                                        )
-                                                      ],
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Padding(
-                                                      padding: const EdgeInsets
-                                                          .fromLTRB(
-                                                          10, 0, 0, 0),
-                                                      child: Row(
-                                                        children: [
-                                                          Text("Role - ",
-                                                            style: GoogleFonts
-                                                                .poppins(
-                                                                fontWeight: FontWeight
-                                                                    .w500,
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                    254, 190,
-                                                                    175, 254),
-                                                                fontSize:
-                                                                MediaQuery
-                                                                    .of(context)
-                                                                    .size
-                                                                    .width *
-                                                                    0.038),
-                                                          ),
-                                                          Text(
-                                                            data['role'],
-                                                            style: GoogleFonts
-                                                                .poppins(
-                                                                fontWeight: FontWeight
-                                                                    .w500,
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize:
-                                                                MediaQuery
-                                                                    .of(context)
-                                                                    .size
-                                                                    .width *
-                                                                    0.038),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 5,
-                                                    ),
-                                                    Padding(
-                                                      padding: const EdgeInsets
-                                                          .only(left: 7),
-                                                      child: ElevatedButton(
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                          backgroundColor: peachtheme,
-                                                          shadowColor: Colors
-                                                              .grey,
-                                                          elevation: 3,
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                  32.0)),
-                                                          minimumSize: Size(
-                                                              50,
-                                                              30), //////// HERE
-                                                        ),
-                                                        onPressed: () {
-                                                          Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder: (
-                                                                      context) =>
-                                                                      ViewApplicantProfile(
-                                                                          id: data['id'])));
-                                                        },
-                                                        child: Text(
-                                                          'View Profile',
-                                                          style: GoogleFonts
-                                                              .poppins(
-                                                              fontWeight: FontWeight
-                                                                  .w600,
-                                                              color: Colors
-                                                                  .black,
-                                                              fontSize: MediaQuery
-                                                                  .of(context)
-                                                                  .size
-                                                                  .width *
-                                                                  0.035),
-                                                        ),
-                                                      ),
+                                          child: SingleChildScrollView(
+                                            child: Column(children: <Widget>[
+                                              Container(
+                                                decoration: new BoxDecoration(
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.grey
+                                                          .withOpacity(0.12),
+                                                      spreadRadius: 2,
+                                                      blurRadius: 3,
+                                                      offset:
+                                                      Offset(1,
+                                                          2), // changes position of shadow
                                                     ),
                                                   ],
+                                                  color: Colors.white,
+                                                  shape: BoxShape.rectangle,
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(15.0)),
+                                                ),
+                                                child: Card(
+                                                  elevation: 0,
+                                                  color: Colors.white,
+                                                  child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment
+                                                        .start,
+                                                    crossAxisAlignment: CrossAxisAlignment
+                                                        .start,
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          Align(
+                                                            alignment: Alignment
+                                                                .centerLeft,
+                                                            child: Icon(
+                                                              Icons.person,
+                                                              size: 30.0,
+                                                              color: Colors.black,
+                                                            ),
+                                                          ),
+                                                          SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          Text(
+                                                            data['candidate_name'],
+                                                            style: GoogleFonts
+                                                                .poppins(
+                                                                fontWeight: FontWeight
+                                                                    .w600,
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: MediaQuery
+                                                                    .of(context)
+                                                                    .size
+                                                                    .width *
+                                                                    0.048),
+                                                          ),
+                                                          Spacer(),
+                                                          Align(
+                                                            alignment: Alignment
+                                                                .centerRight,
+                                                            child: Icon(
+                                                              Icons
+                                                                  .bookmark_border_outlined,
+                                                              size: 28.0,
+                                                              color: Colors.black,
+                                                            ),
+                                                          ),
+                                                          SizedBox(
+                                                            width: 10,
+                                                          )
+                                                        ],
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Padding(
+                                                        padding: const EdgeInsets
+                                                            .fromLTRB(
+                                                            10, 0, 0, 0),
+                                                        child: Row(
+                                                          children: [
+                                                            Text("Role - ",
+                                                              style: GoogleFonts
+                                                                  .poppins(
+                                                                  fontWeight: FontWeight
+                                                                      .w500,
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                      254, 190,
+                                                                      175, 254),
+                                                                  fontSize:
+                                                                  MediaQuery
+                                                                      .of(context)
+                                                                      .size
+                                                                      .width *
+                                                                      0.038),
+                                                            ),
+                                                            Text(
+                                                              data['role'],
+                                                              style: GoogleFonts
+                                                                  .poppins(
+                                                                  fontWeight: FontWeight
+                                                                      .w500,
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize:
+                                                                  MediaQuery
+                                                                      .of(context)
+                                                                      .size
+                                                                      .width *
+                                                                      0.038),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 5,
+                                                      ),
+                                                      Padding(
+                                                        padding: const EdgeInsets
+                                                            .only(left: 7),
+                                                        child: ElevatedButton(
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                            backgroundColor: peachtheme,
+                                                            shadowColor: Colors
+                                                                .grey,
+                                                            elevation: 3,
+                                                            shape: RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                    32.0)),
+                                                            minimumSize: Size(
+                                                                50,
+                                                                30), //////// HERE
+                                                          ),
+                                                          onPressed: () {
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (
+                                                                        context) =>
+                                                                        ViewApplicantProfile(
+                                                                            id: data['id'])));
+                                                          },
+                                                          child: Text(
+                                                            'View Profile',
+                                                            style: GoogleFonts
+                                                                .poppins(
+                                                                fontWeight: FontWeight
+                                                                    .w600,
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: MediaQuery
+                                                                    .of(context)
+                                                                    .size
+                                                                    .width *
+                                                                    0.035),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          ])),
+                                            ]),
+                                          )),
                                     );
                                   }),
                             );

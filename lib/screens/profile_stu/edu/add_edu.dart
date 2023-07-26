@@ -17,47 +17,45 @@ class _AddEducationState extends State<AddEducation> {
   final TextEditingController _levelOfEduController = TextEditingController();
   final TextEditingController _instituteNameController = TextEditingController();
   final TextEditingController _fieldOfStudyController = TextEditingController();
-  final TextEditingController _startDateController = TextEditingController();
-  final TextEditingController _endDateController = TextEditingController();
+  final TextEditingController _startYearController = TextEditingController();
+  final TextEditingController _endYearController = TextEditingController();
   final TextEditingController _description = TextEditingController();
+  final TextEditingController _location = TextEditingController();
   final currentUser = FirebaseAuth.instance.currentUser;
 
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: ListView(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: TextButton(
-              onPressed: () {
-                // Perform navigation
-                Navigator.pop(context);
-              },
-              child: Row(
-                children: const [
-                  Icon(Icons.arrow_back, color: Colors.black),
-                ],
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 15, 15, 15),
+                child: TextButton(
+                  onPressed: () {
+                    // Perform navigation
+                    Navigator.pop(context);
+                  },
+                  child: Icon(Icons.arrow_back, color: Colors.black),
+                ),
               ),
-            ),
-          ),
-          const SizedBox(height: 15),
-          Padding(
-            padding: const EdgeInsets.all(18.0),
-            child: Text(
-              'Add Education',
-              style: GoogleFonts.dmSans(
-                color: primarytheme,
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-                decoration: TextDecoration.none,
+              Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Text(
+                  'Add Education',
+                  style: GoogleFonts.dmSans(
+                    color: primarytheme,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    decoration: TextDecoration.none,
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
-          const SizedBox(height: 10.0),
+          const SizedBox(height: 5.0),
           Padding(
             padding: const EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0.0),
             child: Text('Level of Education',
@@ -91,6 +89,22 @@ class _AddEducationState extends State<AddEducation> {
               )),
           Padding(
             padding: const EdgeInsets.fromLTRB(18.0, 0.0, 18.0, 0.0),
+            child: Text('Location',
+                style: GoogleFonts.dmSans(
+                    color: primarytheme,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    decoration: TextDecoration.none)),
+          ),
+          Expanded(
+              child: Container(
+                padding: EdgeInsets.all(8.0),
+                margin: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
+                child: reusableTextField(
+                    "Location", false, _location),
+              )),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(18.0, 0.0, 18.0, 0.0),
             child: Text('Field of Study',
                 style: GoogleFonts.dmSans(
                     color: primarytheme,
@@ -112,7 +126,7 @@ class _AddEducationState extends State<AddEducation> {
                 flex: 1,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(18.0, 0.0, 80.0, 0.0),
-                  child: Text('Start Date',
+                  child: Text('Start Year',
                       style: GoogleFonts.dmSans(
                           color: primarytheme,
                           fontSize: 12,
@@ -124,7 +138,7 @@ class _AddEducationState extends State<AddEducation> {
                 flex: 1,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(18.0, 0.0, 80.0, 0.0),
-                  child: Text('End Date',
+                  child: Text('End Year',
                       style: GoogleFonts.dmSans(
                           color: primarytheme,
                           fontSize: 12,
@@ -140,13 +154,13 @@ class _AddEducationState extends State<AddEducation> {
                   child: Container(
                     padding: EdgeInsets.all(8.0),
                     margin: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
-                    child: reusableTextField("", false, _startDateController),
+                    child: reusableTextField("", false, _startYearController),
                   )),
               Expanded(
                   child: Container(
                     padding: EdgeInsets.all(8.0),
                     margin: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
-                    child: reusableTextField("", false, _endDateController),
+                    child: reusableTextField("", false, _endYearController),
                   )),
             ],
           ),
@@ -160,17 +174,21 @@ class _AddEducationState extends State<AddEducation> {
                     decoration: TextDecoration.none)),
           ),
           Expanded(
-            child: reusableTextField("Description of the Education...", false, _description),
-          ),
+              child: Container(
+                padding: EdgeInsets.all(8.0),
+                margin: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
+                child: reusableTextField("Description of the Education..", false, _description),
+              )),
           Center(
             child: firebaseUIButton(context, "SAVE", () async {
               await FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser?.uid).collection('education').
               add({
                 'level_of_edu': _levelOfEduController.text,
                 'institute_name': _instituteNameController.text,
+                'location': _location.text,
                 'field_of_study': _fieldOfStudyController.text,
-                'start_date': _startDateController.text,
-                'end_date': _endDateController.text,
+                'start_year': _startYearController.text,
+                'end_year': _endYearController.text,
                 'description': _description.text,
               }).whenComplete(() => Navigator.pop(context));
             }),

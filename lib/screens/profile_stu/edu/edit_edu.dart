@@ -19,9 +19,10 @@ class _EditEducationState extends State<EditEducation> {
   TextEditingController _levelOfEduController = TextEditingController();
   TextEditingController _instituteNameController = TextEditingController();
   TextEditingController _fieldOfStudyController = TextEditingController();
-  TextEditingController _startDateController = TextEditingController();
-  TextEditingController _endDateController = TextEditingController();
+  TextEditingController _startYearController = TextEditingController();
+  TextEditingController _endYearController = TextEditingController();
   TextEditingController _description = TextEditingController();
+  TextEditingController _location = TextEditingController();
   final currentUser = FirebaseAuth.instance.currentUser;
 
   @override
@@ -29,47 +30,46 @@ class _EditEducationState extends State<EditEducation> {
     _levelOfEduController = TextEditingController(text: (widget.docToEdit.data() as Map)['level_of_edu']);
     _instituteNameController = TextEditingController(text: (widget.docToEdit.data() as Map)['institute_name']);
     _fieldOfStudyController = TextEditingController(text: (widget.docToEdit.data() as Map)['field_of_study']);
-    _startDateController = TextEditingController(text: (widget.docToEdit.data() as Map)['start_date']);
-    _endDateController = TextEditingController(text: (widget.docToEdit.data() as Map)['end_date']);
+    _startYearController = TextEditingController(text: (widget.docToEdit.data() as Map)['start_year']);
+    _endYearController = TextEditingController(text: (widget.docToEdit.data() as Map)['end_year']);
     _description = TextEditingController(text: (widget.docToEdit.data() as Map)['description']);
+    _location = TextEditingController(text: (widget.docToEdit.data() as Map)['location']);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: ListView(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: TextButton(
-              onPressed: () {
-                // Perform navigation
-                Navigator.pop(context);
-              },
-              child: Row(
-                children: const [
-                  Icon(Icons.arrow_back, color: Colors.black),
-                ],
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 15, 15, 15),
+                child: TextButton(
+                  onPressed: () {
+                    // Perform navigation
+                    Navigator.pop(context);
+                  },
+                  child: Icon(Icons.arrow_back, color: Colors.black),
+                ),
               ),
-            ),
-          ),
-          const SizedBox(height: 15),
-          Padding(
-            padding: const EdgeInsets.all(18.0),
-            child: Text(
-              'Edit Education',
-              style: GoogleFonts.dmSans(
-                color: primarytheme,
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-                decoration: TextDecoration.none,
+              Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Text(
+                  'Edit Education',
+                  style: GoogleFonts.dmSans(
+                    color: primarytheme,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    decoration: TextDecoration.none,
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
-          const SizedBox(height: 10.0),
+
+          const SizedBox(height: 5.0),
           Padding(
             padding: const EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0.0),
             child: Text('Level of Education',
@@ -103,6 +103,22 @@ class _EditEducationState extends State<EditEducation> {
               )),
           Padding(
             padding: const EdgeInsets.fromLTRB(18.0, 0.0, 18.0, 0.0),
+            child: Text('Location',
+                style: GoogleFonts.dmSans(
+                    color: primarytheme,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    decoration: TextDecoration.none)),
+          ),
+          Expanded(
+              child: Container(
+                padding: EdgeInsets.all(8.0),
+                margin: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
+                child: reusableTextField(
+                    "Location", false, _location),
+              )),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(18.0, 0.0, 18.0, 0.0),
             child: Text('Field of Study',
                 style: GoogleFonts.dmSans(
                     color: primarytheme,
@@ -124,7 +140,7 @@ class _EditEducationState extends State<EditEducation> {
                 flex: 1,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(18.0, 0.0, 80.0, 0.0),
-                  child: Text('Start Date',
+                  child: Text('Start Year',
                       style: GoogleFonts.dmSans(
                           color: primarytheme,
                           fontSize: 12,
@@ -136,7 +152,7 @@ class _EditEducationState extends State<EditEducation> {
                 flex: 1,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(18.0, 0.0, 80.0, 0.0),
-                  child: Text('End Date',
+                  child: Text('End Year',
                       style: GoogleFonts.dmSans(
                           color: primarytheme,
                           fontSize: 12,
@@ -152,13 +168,13 @@ class _EditEducationState extends State<EditEducation> {
                   child: Container(
                     padding: EdgeInsets.all(8.0),
                     margin: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
-                    child: reusableTextField("", false, _startDateController),
+                    child: reusableTextField("", false, _startYearController),
                   )),
               Expanded(
                   child: Container(
                     padding: EdgeInsets.all(8.0),
                     margin: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
-                    child: reusableTextField("", false, _endDateController),
+                    child: reusableTextField("", false, _endYearController),
                   )),
             ],
           ),
@@ -172,16 +188,20 @@ class _EditEducationState extends State<EditEducation> {
                     decoration: TextDecoration.none)),
           ),
           Expanded(
-            child: reusableTextField("Description of the Job...", false, _description),
-          ),
+              child: Container(
+                padding: EdgeInsets.all(8.0),
+                margin: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
+                child: reusableTextField("Description of the Education ..", false, _description),
+              )),
           Center(
             child: firebaseUIButton(context, "SAVE", () {
               widget.docToEdit.reference.update({
                 'level_of_edu': _levelOfEduController.text,
                 'institute_name': _instituteNameController.text,
+                'location': _location.text,
                 'field_of_study': _fieldOfStudyController.text,
-                'start_date': _startDateController.text,
-                'end_date': _endDateController.text,
+                'start_year': _startYearController.text,
+                'end_year': _endYearController.text,
                 'description': _description.text,
               }).whenComplete(() => Navigator.pop(context));
             },
