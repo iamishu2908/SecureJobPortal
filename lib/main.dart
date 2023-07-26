@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:secure_job_portal/screens/homepage/job_posting.dart';
+import 'package:secure_job_portal/screens/homepage/company/job_posting.dart';
 import 'package:secure_job_portal/screens/login%20+%20signup/signin_student.dart';
 import 'firebase_options.dart';
 

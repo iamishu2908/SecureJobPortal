@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:secure_job_portal/reusable_widgets/reusable_widget.dart';
-import 'package:secure_job_portal/screens/homepage/company_description.dart';
-import 'package:secure_job_portal/screens/homepage/home.dart';
+import 'package:secure_job_portal/screens/homepage/student/applicant_form.dart';
+import 'package:secure_job_portal/screens/homepage/student/company_description.dart';
+import 'package:secure_job_portal/screens/homepage/student/home.dart';
 import 'package:flutter/material.dart';
 
-import '../../utils/color_utils.dart';
+import '../../../utils/color_utils.dart';
 
 class JobDescriptionScreen extends StatefulWidget {
   DocumentSnapshot docToView;
@@ -411,7 +412,7 @@ class _JobDescriptionScreenState extends State<JobDescriptionScreen> {
 
                 firebaseUIButton(context, "Apply", () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()))
+                        MaterialPageRoute(builder: (context) => ApplicantForm(role: (widget.docToView.data() as Map)['position'].toString(), company: (widget.docToView.data() as Map)['company'].toString())))
                   .onError((error, stackTrace) {
                     print("Error ${error.toString()}");
                   });

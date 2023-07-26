@@ -1,6 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:secure_job_portal/reusable_widgets/reusable_widget.dart';
-import 'package:secure_job_portal/screens/homepage/homepage_company.dart';
+import 'package:secure_job_portal/screens/homepage/company/homepage_company.dart';
 import 'package:secure_job_portal/screens/login%20+%20signup/reset_password.dart';
 import 'package:secure_job_portal/screens/login%20+%20signup/signin_student.dart';
 import 'package:secure_job_portal/screens/login%20+%20signup/signup_student.dart';
@@ -17,6 +18,11 @@ class _SignInComScreenState extends State<SignInComScreen> {
   TextEditingController _passwordTextController = TextEditingController();
   TextEditingController _emailTextController = TextEditingController();
   String UserType = "company";
+  
+  bool _isEmailValid(String email) {
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return emailRegex.hasMatch(email);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +30,7 @@ class _SignInComScreenState extends State<SignInComScreen> {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-            color: Colors.white24
-        ),
+        decoration: BoxDecoration(color: Colors.white24),
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.fromLTRB(
@@ -34,11 +38,12 @@ class _SignInComScreenState extends State<SignInComScreen> {
             child: Column(
               children: <Widget>[
                 Container(
-                  child: Text("Welcome Back",
-                    style: TextStyle(color: Colors.indigo[900],
+                  child: Text(
+                    "Welcome Back",
+                    style: TextStyle(
+                        color: Colors.indigo[900],
                         fontWeight: FontWeight.w500,
                         fontSize: 30),
-
                   ),
                 ),
                 const SizedBox(
@@ -47,49 +52,62 @@ class _SignInComScreenState extends State<SignInComScreen> {
                 ListTile(
                   title: Row(
                     children: <Widget>[
-                      Expanded(child: OutlinedButton(onPressed: () {
-                        UserType = "student";
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const SignInStuScreen()),
-                        );
+                      Expanded(
+                          child: OutlinedButton(
+                        onPressed: () {
+                          UserType = "student";
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SignInStuScreen()),
+                          );
                         },
                         child: Text("Student"),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.indigo[900],
                           backgroundColor: Colors.white,
-                          side: BorderSide(color: Colors.indigo.shade900, width: 1),
-                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                          side: BorderSide(
+                              color: Colors.indigo.shade900, width: 1),
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
                         ),
-                      )
+                      )),
+                      SizedBox(
+                        width: 10,
                       ),
-                      SizedBox(width: 10,),
-                      Expanded(child: FilledButton(onPressed: () {
-                        UserType = "company";
-                      },child: Text("Company"),
+                      Expanded(
+                          child: FilledButton(
+                        onPressed: () {
+                          UserType = "company";
+                        },
+                        child: Text("Company"),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.white,
                           backgroundColor: Colors.indigo[900],
-                          side: BorderSide(color: Colors.indigo.shade900, width: 1),
-                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                          side: BorderSide(
+                              color: Colors.indigo.shade900, width: 1),
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
                         ),
-                      )
-                      )
+                      ))
                     ],
                   ),
                 ),
                 const SizedBox(
                   height: 25,
                 ),
-                reusableTextContainer("Email", MediaQuery.of(context).size.width),
-                reusableTextField("Enter Email", false,
-                    _emailTextController),
+                reusableTextContainer(
+                    "Email", MediaQuery.of(context).size.width),
+                reusableTextField("Enter Email", false, _emailTextController),
                 const SizedBox(
                   height: 20,
                 ),
-                reusableTextContainer("Password", MediaQuery.of(context).size.width),
-                reusableTextField("Enter Password", true,
-                    _passwordTextController),
+                reusableTextContainer(
+                    "Password", MediaQuery.of(context).size.width),
+                reusableTextField(
+                    "Enter Password", true, _passwordTextController),
                 const SizedBox(
                   height: 5,
                 ),
@@ -97,12 +115,48 @@ class _SignInComScreenState extends State<SignInComScreen> {
                 firebaseUIButton(context, "Sign In", () {
                   FirebaseAuth.instance
                       .signInWithEmailAndPassword(
-                      email: _emailTextController.text,
-                      password: _passwordTextController.text)
+                          email: _emailTextController.text,
+                          password: _passwordTextController.text)
                       .then((value) {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => CompanyHome()));
                   }).onError((error, stackTrace) {
+                    if (error.toString() ==
+                        '[firebase_auth/user-not-found] There is no user record corresponding to this identifier. The user may have been deleted.') {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Email not registered.'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                    else if (_isEmailValid(_emailTextController.text.trim()) ==
+                        false) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Email format not valid.'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                    else if (_passwordTextController.text.length < 6) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content:
+                              Text('Password should be at least 6 characters.'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                      return;
+                    }
+                    else if (error != null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Password or email is invalid'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
                     print("Error ${error.toString()}");
                   });
                 }),
@@ -128,7 +182,8 @@ class _SignInComScreenState extends State<SignInComScreen> {
           },
           child: const Text(
             " Sign Up",
-            style: TextStyle(color: Colors.orangeAccent, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: Colors.orangeAccent, fontWeight: FontWeight.bold),
           ),
         )
       ],
