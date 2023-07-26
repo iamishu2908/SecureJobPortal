@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:secure_job_portal/reusable_widgets/reusable_widget.dart';
-import 'package:secure_job_portal/screens/homepage/home.dart';
 import 'package:secure_job_portal/screens/login%20+%20signup/info_company.dart';
 import 'package:secure_job_portal/screens/login%20+%20signup/signin_company.dart';
-import 'package:secure_job_portal/screens/login%20+%20signup/signin_student.dart';
 import 'package:secure_job_portal/screens/login%20+%20signup/signup_student.dart';
 import 'package:flutter/material.dart';
 
@@ -23,15 +21,18 @@ class _SignUpComScreenState extends State<SignUpComScreen> {
   TextEditingController _emailTextController = TextEditingController();
   String UserType = "company";
 
+  bool _isEmailValid(String email) {
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return emailRegex.hasMatch(email);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-            color: Colors.white24
-        ),
+        decoration: BoxDecoration(color: Colors.white24),
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.fromLTRB(
@@ -39,11 +40,12 @@ class _SignUpComScreenState extends State<SignUpComScreen> {
             child: Column(
               children: <Widget>[
                 Container(
-                  child: Text("Create an Account",
-                    style: TextStyle(color: Colors.indigo[900],
+                  child: Text(
+                    "Create an Account",
+                    style: TextStyle(
+                        color: Colors.indigo[900],
                         fontWeight: FontWeight.w500,
                         fontSize: 30),
-
                   ),
                 ),
                 const SizedBox(
@@ -52,106 +54,143 @@ class _SignUpComScreenState extends State<SignUpComScreen> {
                 ListTile(
                   title: Row(
                     children: <Widget>[
-                      Expanded(child: OutlinedButton(onPressed: () {
-                        UserType = "student";
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const SignUpStuScreen()),
-                        );
+                      Expanded(
+                          child: OutlinedButton(
+                        onPressed: () {
+                          UserType = "student";
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SignUpStuScreen()),
+                          );
                         },
                         child: Text("Student"),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.indigo[900],
                           backgroundColor: Colors.white,
-                          side: BorderSide(color: Colors.indigo.shade900, width: 1),
-                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                          side: BorderSide(
+                              color: Colors.indigo.shade900, width: 1),
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
                         ),
-                      )
+                      )),
+                      SizedBox(
+                        width: 10,
                       ),
-                      SizedBox(width: 10,),
-                      Expanded(child: FilledButton(onPressed: () {
-                        UserType = "company";
-                      },child: Text("Company"),
+                      Expanded(
+                          child: FilledButton(
+                        onPressed: () {
+                          UserType = "company";
+                        },
+                        child: Text("Company"),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.white,
                           backgroundColor: Colors.indigo[900],
-                          side: BorderSide(color: Colors.indigo.shade900, width: 1),
-                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                          side: BorderSide(
+                              color: Colors.indigo.shade900, width: 1),
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
                         ),
-                      )
-                      )
+                      ))
                     ],
                   ),
                 ),
                 const SizedBox(
                   height: 25,
                 ),
-                reusableTextContainer("Your Name", MediaQuery.of(context).size.width),
-                reusableTextField("Enter Name", false,
-                    _nameTextController),
+                reusableTextContainer(
+                    "Your Name", MediaQuery.of(context).size.width),
+                reusableTextField("Enter Name", false, _nameTextController),
                 const SizedBox(
                   height: 20,
                 ),
-                Row(
-                    children: <Widget>[
-                      reusableTextContainer("Company Name", MediaQuery.of(context).size.width * 0.46),
-                      reusableTextContainer("Designation", MediaQuery.of(context).size.width * 0.4),
-                    ]
-                ),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: reusableTextField("Enter Company", false,
-                          _comNameTextController),
-                    ),
-                    SizedBox(width: 10),
-                    Expanded(
-                        child:reusableTextField("Enter Designation", false,
-                        _designationTextController),
-                    ),
-                  ]),
+                Row(children: <Widget>[
+                  reusableTextContainer(
+                      "Company Name", MediaQuery.of(context).size.width * 0.46),
+                  reusableTextContainer(
+                      "Designation", MediaQuery.of(context).size.width * 0.4),
+                ]),
+                Row(children: <Widget>[
+                  Expanded(
+                    child: reusableTextField(
+                        "Enter Company", false, _comNameTextController),
+                  ),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: reusableTextField(
+                        "Enter Designation", false, _designationTextController),
+                  ),
+                ]),
                 const SizedBox(
                   height: 20,
                 ),
-                Row(
-                    children: <Widget>[
-                      reusableTextContainer("Email", MediaQuery.of(context).size.width * 0.46),
-                      reusableTextContainer("Password", MediaQuery.of(context).size.width * 0.4),
-                    ]
-                ),
-                Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: reusableTextField("Enter Email", false,
-                            _emailTextController),
-                      ),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child:reusableTextField("Enter Password", true,
-                            _passwordTextController),
-                      ),
-                    ]),
+                Row(children: <Widget>[
+                  reusableTextContainer(
+                      "Email", MediaQuery.of(context).size.width * 0.46),
+                  reusableTextContainer(
+                      "Password", MediaQuery.of(context).size.width * 0.4),
+                ]),
+                Row(children: <Widget>[
+                  Expanded(
+                    child: reusableTextField(
+                        "Enter Email", false, _emailTextController),
+                  ),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: reusableTextField(
+                        "Enter Password", true, _passwordTextController),
+                  ),
+                ]),
                 const SizedBox(
                   height: 20,
                 ),
-
                 firebaseUIButton(context, "Sign Up", () {
                   FirebaseAuth.instance
                       .createUserWithEmailAndPassword(
-                      email: _emailTextController.text,
-                      password: _passwordTextController.text)
+                          email: _emailTextController.text,
+                          password: _passwordTextController.text)
                       .then((value) {
                     addUserDetails(
-                      UserType,
-                      _emailTextController.text,
-                      _nameTextController.text,
-                      _comNameTextController.text,
-                      _designationTextController.text
-                    );
+                        UserType,
+                        _emailTextController.text,
+                        _nameTextController.text,
+                        _comNameTextController.text,
+                        _designationTextController.text);
                   }).then((value) {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => InfoComScreen()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => InfoComScreen()));
                   }).onError((error, stackTrace) {
+                    if (error.toString() ==
+                        '[firebase_auth/email-already-in-use] The email address is already in use by another account.') {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Email already registered.'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    } else if (_isEmailValid(
+                            _emailTextController.text.trim()) ==
+                        false) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Email format not valid.'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                    if (_passwordTextController.text.length < 6) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content:
+                              Text('Password should be at least 6 characters.'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
                     print("Error ${error.toString()}");
                   });
                 }),
@@ -177,21 +216,25 @@ class _SignUpComScreenState extends State<SignUpComScreen> {
           },
           child: const Text(
             " Sign In",
-            style: TextStyle(color: Colors.orangeAccent, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: Colors.orangeAccent, fontWeight: FontWeight.bold),
           ),
         )
       ],
     );
   }
 
-  Future addUserDetails(String userType, String email, String name, String comName, String desig) async {
-    await FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).set({
-      'user_type' : userType,
-      'email' : email,
-      'name' : name,
-      'company_name' : comName,
-      'designation' : desig
+  Future addUserDetails(String userType, String email, String name,
+      String comName, String desig) async {
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .set({
+      'user_type': userType,
+      'email': email,
+      'name': name,
+      'company_name': comName,
+      'designation': desig
     });
   }
-
 }

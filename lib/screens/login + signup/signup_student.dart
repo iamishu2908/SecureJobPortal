@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:secure_job_portal/reusable_widgets/reusable_widget.dart';
-import 'package:secure_job_portal/screens/homepage/home.dart';
 import 'package:secure_job_portal/screens/login%20+%20signup/info_student.dart';
 import 'package:secure_job_portal/screens/login%20+%20signup/signin_student.dart';
 import 'package:secure_job_portal/screens/login%20+%20signup/signup_company.dart';
@@ -19,6 +18,11 @@ class _SignUpStuScreenState extends State<SignUpStuScreen> {
   TextEditingController _passwordTextController = TextEditingController();
   TextEditingController _emailTextController = TextEditingController();
   String UserType = "student";
+
+  bool _isEmailValid(String email) {
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return emailRegex.hasMatch(email);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,39 +98,67 @@ class _SignUpStuScreenState extends State<SignUpStuScreen> {
                 const SizedBox(
                   height: 25,
                 ),
-                reusableTextContainer("Your Name", MediaQuery.of(context).size.width),
-                reusableTextField("Enter Name", false,
-                    _nameTextController),
+                reusableTextContainer(
+                    "Your Name", MediaQuery.of(context).size.width),
+                reusableTextField("Enter Name", false, _nameTextController),
                 const SizedBox(
                   height: 20,
                 ),
-                reusableTextContainer("Email", MediaQuery.of(context).size.width),
-                reusableTextField("Enter Email", false,
-                    _emailTextController),
+                reusableTextContainer(
+                    "Email", MediaQuery.of(context).size.width),
+                reusableTextField("Enter Email", false, _emailTextController),
                 const SizedBox(
                   height: 20,
                 ),
-                reusableTextContainer("Password", MediaQuery.of(context).size.width),
-                reusableTextField("Enter Password", true,
-                    _passwordTextController),
-
+                reusableTextContainer(
+                    "Password", MediaQuery.of(context).size.width),
+                reusableTextField(
+                    "Enter Password", true, _passwordTextController),
                 firebaseUIButton(context, "Sign Up", () {
                   FirebaseAuth.instance
                       .createUserWithEmailAndPassword(
                           email: _emailTextController.text,
                           password: _passwordTextController.text)
                       .then((value) {
-                        addUserDetails(
-                          UserType,
-                          _emailTextController.text,
-                          _nameTextController.text,
-                        );
-                      }).then((value) {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => InfoStuScreen()));
-                  }).
-                  onError((error, stackTrace) {
-                    print("Error ${error.toString()}");
+                    addUserDetails(
+                      UserType,
+                      _emailTextController.text,
+                      _nameTextController.text,
+                    );
+                  }).then((value) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => InfoStuScreen()));
+                  }).onError((error, stackTrace) async {
+                    if (error.toString() ==
+                        '[firebase_auth/email-already-in-use] The email address is already in use by another account.') {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Email already registered.'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                    else if (_isEmailValid(_emailTextController.text.trim()) ==
+                        false) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Email format not valid.'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                    if (_passwordTextController.text.length < 6) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content:
+                              Text('Password should be at least 6 characters.'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                    print("Error: ${error.toString()}");
                   });
                 }),
                 signInOption()
@@ -158,13 +190,11 @@ class _SignUpStuScreenState extends State<SignUpStuScreen> {
       ],
     );
   }
-  
-  Future addUserDetails(String userType, String email, String name) async {
-    await FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).set({
-      'user_type' : userType,
-      'email' : email,
-      'name' : name
-    });
-  }
 
+  Future addUserDetails(String userType, String email, String name) async {
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .set({'user_type': userType, 'email': email, 'name': name});
+  }
 }
