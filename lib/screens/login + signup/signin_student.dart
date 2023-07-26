@@ -6,6 +6,8 @@ import 'package:secure_job_portal/screens/login%20+%20signup/reset_password.dart
 import 'package:secure_job_portal/screens/login%20+%20signup/signin_company.dart';
 import 'package:secure_job_portal/screens/login%20+%20signup/signup_student.dart';
 import 'package:flutter/material.dart';
+import 'package:secure_job_portal/screens/profile_stu/resume/pdf_resume/previewpage.dart';
+import 'package:secure_job_portal/screens/profile_stu/resume/pdf_resume/resume_maker.dart';
 
 class SignInStuScreen extends StatefulWidget {
   const SignInStuScreen({Key? key}) : super(key: key);
@@ -107,7 +109,7 @@ class _SignInStuScreenState extends State<SignInStuScreen> {
                       password: _passwordTextController.text)
                       .then((value) {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()));
+                        MaterialPageRoute(builder: (context) => CreatePdfMainPage()));
                   }).onError((error, stackTrace) {
                     print("Error ${error.toString()}");
                   });
