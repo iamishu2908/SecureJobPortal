@@ -26,9 +26,27 @@ class mainpage extends StatefulWidget {
 
 class _mainpageState extends State<mainpage> {
   final ref = FirebaseFirestore.instance.collection("Job_Postings");
+  String name = "";
+  void getUserData() async {
+    final userDoc = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .get();
+
+    if (userDoc.exists) {
+      setState(() {
+       name = userDoc.data()?['name'] ?? 'Default Name'; 
+      });
+      
+      print('User Name: $name');
+    } else {
+      print('User document not found.');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    getUserData();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: ListView(
@@ -59,7 +77,7 @@ class _mainpageState extends State<mainpage> {
                             height: 5,
                           ),
                           Text(
-                            'Test123 !',
+                            '$name,',
                             textAlign: TextAlign.left,
                             style: GoogleFonts.dmSans(
                               fontWeight: FontWeight.w700,
@@ -194,233 +212,249 @@ class _mainpageState extends State<mainpage> {
             child: StreamBuilder(
                 stream: ref.snapshots(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  return
-                  Padding(
+                  return Padding(
                     padding: const EdgeInsets.fromLTRB(5, 10, 5, 5),
                     child: ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: snapshot.hasData?(snapshot.data?.docs.length):0,
+                        itemCount:
+                            snapshot.hasData ? (snapshot.data?.docs.length) : 0,
                         itemBuilder: (_, index) {
                           //bool expanded = false;
                           return Padding(
                             padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
                             child: Align(
                                 child: Stack(children: <Widget>[
-                                  Container(
-                                    decoration: new BoxDecoration(
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.1),
-                                          spreadRadius: 1,
-                                          blurRadius: 3,
-                                          offset:
-                                          Offset(1,
-                                              2), // changes position of shadow
-                                        ),
-                                      ],
-                                      color: Colors.white,
-                                      shape: BoxShape.rectangle,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0)),
+                              Container(
+                                decoration: new BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.1),
+                                      spreadRadius: 1,
+                                      blurRadius: 3,
+                                      offset: Offset(
+                                          1, 2), // changes position of shadow
                                     ),
-                                    child: Card(
-                                      elevation: 0,
-                                      color: Colors.white,
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment
-                                            .start,
-                                        crossAxisAlignment: CrossAxisAlignment
-                                            .start,
+                                  ],
+                                  color: Colors.white,
+                                  shape: BoxShape.rectangle,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15.0)),
+                                ),
+                                child: Card(
+                                  elevation: 0,
+                                  color: Colors.white,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
                                         children: [
-                                          Row(
-                                            children: [
-                                              Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Icon(
-                                                  Icons.apple,
-                                                  size: 30.0,
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 10,
-                                              ),
-                                              Column(
-                                                crossAxisAlignment:
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Icon(
+                                              Icons.apple,
+                                              size: 30.0,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
                                                 CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    (snapshot.data!.docs.elementAt(index).data() as Map)['position'].toString(),
-                                                    style: GoogleFonts.poppins(
-                                                        fontWeight: FontWeight
-                                                            .w500,
-                                                        color: Colors.black,
-                                                        fontSize: MediaQuery
-                                                            .of(context)
-                                                            .size
-                                                            .width *
+                                            children: [
+                                              Text(
+                                                (snapshot.data!.docs
+                                                            .elementAt(index)
+                                                            .data()
+                                                        as Map)['position']
+                                                    .toString(),
+                                                style: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.black,
+                                                    fontSize:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
                                                             0.04),
-                                                  ),
-                                                  Text(
-                                                    (snapshot.data!.docs.elementAt(index).data() as Map)['company'].toString(),
-                                                    style: GoogleFonts.poppins(
-                                                        fontWeight: FontWeight
-                                                            .w300,
-                                                        color: Colors.black,
-                                                        fontSize: MediaQuery
-                                                            .of(context)
-                                                            .size
-                                                            .width *
+                                              ),
+                                              Text(
+                                                (snapshot.data!.docs
+                                                            .elementAt(index)
+                                                            .data()
+                                                        as Map)['company']
+                                                    .toString(),
+                                                style: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w300,
+                                                    color: Colors.black,
+                                                    fontSize:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
                                                             0.03),
-                                                  ),
-                                                ],
                                               ),
-                                              Spacer(),
-                                              Align(
-                                                alignment: Alignment
-                                                    .centerRight,
-                                                child: Icon(
-                                                  Icons.bookmark_border_outlined,
-                                                  size: 28.0,
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 10,
-                                              )
                                             ],
                                           ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.fromLTRB(14, 0, 0, 0),
-                                            child: Text(
-                                              (snapshot.data!.docs.elementAt(index).data() as Map)['salary'].toString(),
-                                              style: GoogleFonts.poppins(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.black,
-                                                  fontSize:
-                                                  MediaQuery
-                                                      .of(context)
-                                                      .size
-                                                      .width *
-                                                      0.038),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
-                                            child: Row(
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      right: 10),
-                                                  child: ElevatedButton(
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      backgroundColor: greytheme,
-                                                      shadowColor: Colors.grey,
-                                                      elevation: 3,
-                                                      shape: RoundedRectangleBorder(
-                                                          borderRadius:
-                                                          BorderRadius.circular(
-                                                              32.0)),
-                                                      minimumSize: Size(
-                                                          50, 30), //////// HERE
-                                                    ),
-                                                    onPressed: () {},
-                                                    child: Text(
-                                                      (snapshot.data!.docs.elementAt(index).data() as Map)['experience'].toString(),
-                                                      style: GoogleFonts.poppins(
-                                                          fontWeight: FontWeight
-                                                              .w300,
-                                                          color: Colors.black,
-                                                          fontSize: MediaQuery
-                                                              .of(context)
-                                                              .size
-                                                              .width *
-                                                              0.028),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      right: 35),
-                                                  child: ElevatedButton(
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      backgroundColor: greytheme,
-                                                      shadowColor: Colors.grey,
-                                                      elevation: 3,
-                                                      shape: RoundedRectangleBorder(
-                                                          borderRadius:
-                                                          BorderRadius.circular(
-                                                              32.0)),
-                                                      minimumSize: Size(
-                                                          50, 30), //////// HERE
-                                                    ),
-                                                    onPressed: () {},
-                                                    child: Text(
-                                                      (snapshot.data!.docs.elementAt(index).data() as Map)['job_type'].toString(),
-                                                      style: GoogleFonts.poppins(
-                                                          fontWeight: FontWeight
-                                                              .w300,
-                                                          color: Colors.black,
-                                                          fontSize: MediaQuery
-                                                              .of(context)
-                                                              .size
-                                                              .width *
-                                                              0.028),
-                                                    ),
-                                                  ),
-                                                ),
-                                                ElevatedButton(
-                                                  style: ElevatedButton.styleFrom(
-                                                    backgroundColor: peachtheme,
-                                                    shadowColor: Colors.grey,
-                                                    elevation: 3,
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                        BorderRadius.circular(
-                                                            32.0)),
-                                                    minimumSize: Size(
-                                                        50, 30), //////// HERE
-                                                  ),
-                                                    onPressed: () {
-                                                        Navigator.push(context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                            JobDescriptionScreen(docToView: snapshot.data!.docs.elementAt(index))));
-                                                    },
-                                                  child: Text(
-                                                    'Apply',
-                                                    style: GoogleFonts.poppins(
-                                                        fontWeight: FontWeight.w600,
-                                                        color: Colors.black,
-                                                        fontSize: MediaQuery
-                                                            .of(context)
-                                                            .size
-                                                            .width *
-                                                            0.035),
-                                                  ),
-                                                ),
-                                              ],
+                                          Spacer(),
+                                          Align(
+                                            alignment: Alignment.centerRight,
+                                            child: Icon(
+                                              Icons.bookmark_border_outlined,
+                                              size: 28.0,
+                                              color: Colors.black,
                                             ),
                                           ),
                                           SizedBox(
-                                            height: 10,
+                                            width: 10,
                                           )
                                         ],
                                       ),
-                                    ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            14, 0, 0, 0),
+                                        child: Text(
+                                          (snapshot.data!.docs
+                                                  .elementAt(index)
+                                                  .data() as Map)['salary']
+                                              .toString(),
+                                          style: GoogleFonts.poppins(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                              fontSize: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.038),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            12, 0, 0, 0),
+                                        child: Row(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  EdgeInsets.only(right: 10),
+                                              child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: greytheme,
+                                                  shadowColor: Colors.grey,
+                                                  elevation: 3,
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              32.0)),
+                                                  minimumSize: Size(
+                                                      50, 30), //////// HERE
+                                                ),
+                                                onPressed: () {},
+                                                child: Text(
+                                                  (snapshot.data!.docs
+                                                              .elementAt(index)
+                                                              .data()
+                                                          as Map)['experience']
+                                                      .toString(),
+                                                  style: GoogleFonts.poppins(
+                                                      fontWeight:
+                                                          FontWeight.w300,
+                                                      color: Colors.black,
+                                                      fontSize:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.028),
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  EdgeInsets.only(right: 35),
+                                              child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: greytheme,
+                                                  shadowColor: Colors.grey,
+                                                  elevation: 3,
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              32.0)),
+                                                  minimumSize: Size(
+                                                      50, 30), //////// HERE
+                                                ),
+                                                onPressed: () {},
+                                                child: Text(
+                                                  (snapshot.data!.docs
+                                                              .elementAt(index)
+                                                              .data()
+                                                          as Map)['job_type']
+                                                      .toString(),
+                                                  style: GoogleFonts.poppins(
+                                                      fontWeight:
+                                                          FontWeight.w300,
+                                                      color: Colors.black,
+                                                      fontSize:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.028),
+                                                ),
+                                              ),
+                                            ),
+                                            ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: peachtheme,
+                                                shadowColor: Colors.grey,
+                                                elevation: 3,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            32.0)),
+                                                minimumSize:
+                                                    Size(50, 30), //////// HERE
+                                              ),
+                                              onPressed: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            JobDescriptionScreen(
+                                                                docToView: snapshot
+                                                                    .data!.docs
+                                                                    .elementAt(
+                                                                        index))));
+                                              },
+                                              child: Text(
+                                                'Apply',
+                                                style: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.black,
+                                                    fontSize:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.035),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      )
+                                    ],
                                   ),
-                                ])),
+                                ),
+                              ),
+                            ])),
                           );
                         }),
                   );
-                }
-            ),
+                }),
           )
         ],
       ),
