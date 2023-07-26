@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:secure_job_portal/screens/profile_stu/skills/cert-verify.dart';
+import 'package:secure_job_portal/screens/profile_stu/skills/cert_verify.dart';
 import '../../../utils/color_utils.dart';
 import '../skills/skill_test.dart';
 

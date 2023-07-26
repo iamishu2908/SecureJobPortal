@@ -18,6 +18,11 @@ class _SignInStuScreenState extends State<SignInStuScreen> {
   TextEditingController _passwordTextController = TextEditingController();
   TextEditingController _emailTextController = TextEditingController();
   String UserType = "student";
+  
+  bool _isEmailValid(String email) {
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return emailRegex.hasMatch(email);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +30,7 @@ class _SignInStuScreenState extends State<SignInStuScreen> {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-            color: Colors.white24
-            ),
+        decoration: BoxDecoration(color: Colors.white24),
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.fromLTRB(
@@ -35,11 +38,12 @@ class _SignInStuScreenState extends State<SignInStuScreen> {
             child: Column(
               children: <Widget>[
                 Container(
-                  child: Text("Welcome Back",
-                      style: TextStyle(color: Colors.indigo[900],
-                      fontWeight: FontWeight.w500,
-                      fontSize: 30),
-
+                  child: Text(
+                    "Welcome Back",
+                    style: TextStyle(
+                        color: Colors.indigo[900],
+                        fontWeight: FontWeight.w500,
+                        fontSize: 30),
                   ),
                 ),
                 const SizedBox(
@@ -48,67 +52,111 @@ class _SignInStuScreenState extends State<SignInStuScreen> {
                 ListTile(
                   title: Row(
                     children: <Widget>[
-                      Expanded(child: OutlinedButton(onPressed: () {
-                        UserType = "student";},
+                      Expanded(
+                          child: OutlinedButton(
+                        onPressed: () {
+                          UserType = "student";
+                        },
                         child: Text("Student"),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.white,
                           backgroundColor: Colors.indigo[900],
-                          side: BorderSide(color: Colors.indigo.shade900, width: 1),
-                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                          side: BorderSide(
+                              color: Colors.indigo.shade900, width: 1),
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
                         ),
-                      )
+                      )),
+                      SizedBox(
+                        width: 10,
                       ),
-                      SizedBox(width: 10,),
-                      Expanded(child: FilledButton(onPressed: () {
-                        UserType = "company";
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const SignInComScreen()),
-                        );
-                      },child: Text("Company"),
+                      Expanded(
+                          child: FilledButton(
+                        onPressed: () {
+                          UserType = "company";
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SignInComScreen()),
+                          );
+                        },
+                        child: Text("Company"),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.indigo[900],
                           backgroundColor: Colors.white,
-                          side: BorderSide(color: Colors.indigo.shade900, width: 1),
-                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                          side: BorderSide(
+                              color: Colors.indigo.shade900, width: 1),
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
                         ),
-                      )
-                      )
+                      ))
                     ],
                   ),
                 ),
                 const SizedBox(
                   height: 25,
                 ),
-
-                reusableTextContainer("Email", MediaQuery.of(context).size.width),
-
-                reusableTextField("Enter Email", false,
-                    _emailTextController),
+                reusableTextContainer(
+                    "Email", MediaQuery.of(context).size.width),
+                reusableTextField("Enter Email", false, _emailTextController),
                 const SizedBox(
                   height: 20,
                 ),
-
-                reusableTextContainer("Password", MediaQuery.of(context).size.width),
-
-                reusableTextField("Enter Password", true,
-                    _passwordTextController),
+                reusableTextContainer(
+                    "Password", MediaQuery.of(context).size.width),
+                reusableTextField(
+                    "Enter Password", true, _passwordTextController),
                 const SizedBox(
                   height: 5,
                 ),
-
                 forgetPassword(context),
-
                 firebaseUIButton(context, "Sign In", () {
                   FirebaseAuth.instance
                       .signInWithEmailAndPassword(
-                      email: _emailTextController.text,
-                      password: _passwordTextController.text)
+                          email: _emailTextController.text,
+                          password: _passwordTextController.text)
                       .then((value) {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => HomeScreen()));
                   }).onError((error, stackTrace) {
+                      if (error.toString() ==
+                        '[firebase_auth/user-not-found] There is no user record corresponding to this identifier. The user may have been deleted.') {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Email not registered.'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                    else if (_isEmailValid(_emailTextController.text.trim()) ==
+                        false) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Email format not valid.'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                    else if (_passwordTextController.text.length < 6) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content:
+                              Text('Password should be at least 6 characters.'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                      return;
+                    }
+                    else if (error != null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Password or email is invalid'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
                     print("Error ${error.toString()}");
                   });
                 }),
@@ -134,7 +182,8 @@ class _SignInStuScreenState extends State<SignInStuScreen> {
           },
           child: const Text(
             " Sign Up",
-            style: TextStyle(color: Colors.orangeAccent, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: Colors.orangeAccent, fontWeight: FontWeight.bold),
           ),
         )
       ],
@@ -157,5 +206,4 @@ class _SignInStuScreenState extends State<SignInStuScreen> {
       ),
     );
   }
-
 }
