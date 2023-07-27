@@ -6,8 +6,9 @@ import 'package:secure_job_portal/screens/login%20+%20signup/reset_password.dart
 import 'package:secure_job_portal/screens/login%20+%20signup/signin_company.dart';
 import 'package:secure_job_portal/screens/login%20+%20signup/signup_student.dart';
 import 'package:flutter/material.dart';
-import 'package:secure_job_portal/screens/profile_stu/resume/pdf_resume/previewpage.dart';
-import 'package:secure_job_portal/screens/profile_stu/resume/pdf_resume/resume_maker.dart';
+
+
+import '../profile_stu/profilepage.dart';
 
 class SignInStuScreen extends StatefulWidget {
   const SignInStuScreen({Key? key}) : super(key: key);
@@ -121,7 +122,7 @@ class _SignInStuScreenState extends State<SignInStuScreen> {
                           password: _passwordTextController.text)
                       .then((value) {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => CreatePdfMainPage()));
+                        MaterialPageRoute(builder: (context) => HomeScreen()));
                   }).onError((error, stackTrace) {
                       if (error.toString() ==
                         '[firebase_auth/user-not-found] There is no user record corresponding to this identifier. The user may have been deleted.') {

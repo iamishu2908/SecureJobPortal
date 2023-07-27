@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:printing/printing.dart';
 import 'generatingpdf.dart';
 import 'package:secure_job_portal/screens/profile_stu/resume/resume_maker/user_data.dart';
-
+import 'package:secure_job_portal/utils/color_utils.dart';
 
 
 class PdfPreviewPage extends StatelessWidget {
@@ -14,9 +14,21 @@ class PdfPreviewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('PDF Preview'),
+        backgroundColor: primarytheme,
+        elevation: 5.0,
+        title: const Text('Resume Preview'),
+        toolbarHeight: MediaQuery.of(context).size.height * 0.2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(30),
+          ),
+        ),
+        titleSpacing: 0,
+        centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: primarytheme,
         onPressed: (){
           Navigator.of(context).push(MaterialPageRoute(builder: (context){
             return  PdfPreviewPage(user: user);

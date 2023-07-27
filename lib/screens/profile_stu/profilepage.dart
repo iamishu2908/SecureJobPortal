@@ -11,6 +11,7 @@ import 'package:secure_job_portal/screens/homepage/student/home.dart';
 import 'package:secure_job_portal/screens/profile_stu/achievements/achievement.dart';
 import 'package:secure_job_portal/screens/profile_stu/edu/education.dart';
 import 'package:secure_job_portal/screens/profile_stu/resume/pdf_viewer.dart';
+import 'package:secure_job_portal/screens/profile_stu/resume/resume_maker/previewpage.dart';
 import 'package:secure_job_portal/screens/profile_stu/resume/resume_maker_info.dart';
 import 'package:secure_job_portal/screens/profile_stu/skills/add_skills.dart';
 import 'package:secure_job_portal/screens/profile_stu/work_exp/work_experience.dart';
@@ -18,6 +19,9 @@ import 'package:secure_job_portal/screens/login%20+%20signup/signin_student.dart
 import 'package:secure_job_portal/utils/color_utils.dart';
 import 'package:flutter_document_picker/flutter_document_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:secure_job_portal/screens/profile_stu/resume/resume_maker/user_data.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 List<String> profilemenu = [
   'About Me',
@@ -56,7 +60,7 @@ class _profilepageState extends State<profilepage> {
         name = userDoc.data()?['name'] ?? 'Default Name';
       });
 
-      print('User Name: $name');
+
     } else {
       print('User document not found.');
     }
@@ -66,6 +70,19 @@ class _profilepageState extends State<profilepage> {
   Widget build(BuildContext context) {
     getUserData();
     return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: primarytheme,
+          onPressed: (){
+            final userId = FirebaseAuth.instance.currentUser?.uid;
+            var user = UserData(userId: userId);
+            user.getUserDataResume();
+            Navigator.of(context).push(MaterialPageRoute(builder: (context){
+
+              return  PdfPreviewPage(user: user);
+            }));
+          },
+          child: const Icon(Icons.picture_as_pdf_sharp),
+        ),
       appBar: AppBar(
           toolbarHeight: MediaQuery.of(context).size.height * 0.2,
           shape: RoundedRectangleBorder(
