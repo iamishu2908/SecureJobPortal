@@ -13,7 +13,6 @@ class JobPosting extends StatefulWidget {
 class _JobPostingState extends State<JobPosting> {
   final TextEditingController _positionController = TextEditingController();
   final TextEditingController _salaryController = TextEditingController();
-  final TextEditingController _companyController = TextEditingController();
   final TextEditingController _jobDescriptionController = TextEditingController();
   final TextEditingController _resposibilitiesController = TextEditingController();
   final TextEditingController _requirementsController = TextEditingController();
@@ -72,13 +71,6 @@ class _JobPostingState extends State<JobPosting> {
                   height: 20,
                 ),
 
-                reusableTextContainer("Company", MediaQuery.of(context).size.width),
-
-                reusableTextField("Company", false,
-                    _companyController),
-                const SizedBox(
-                  height: 20,
-                ),
 
                 reusableTextContainer("Job Description", MediaQuery.of(context).size.width),
 
@@ -145,21 +137,39 @@ class _JobPostingState extends State<JobPosting> {
                   height: 25,
                 ),
                 Center(
-                  child: firebaseUIButton(context, "SAVE", () async {
-                    await FirebaseFirestore.instance.collection("Job_Postings").
-                    add({
-                      'position': _positionController.text,
-                      'company': _companyController.text,
-                      'job_description': _jobDescriptionController.text,
-                      'salary': _salaryController.text,
-                      'job_type': _jobTypeController.text,
-                      'qualification': _qualificationController.text,
-                      'experience': _experienceController.text,
-                      'responsibilities': _resposibilitiesController.text,
-                      'requirements': _requirementsController.text,
-                      'id': FirebaseAuth.instance.currentUser?.uid.toString(),
-                    }).whenComplete(() => Navigator.pop(context));
-                  }),
+                  child: FutureBuilder<String>(
+                    future: getFieldValue(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Text('Error: ${snapshot.error}'),
+                        );
+                      }
+                  final fieldValue = snapshot.data;
+
+      return firebaseUIButton(context, "SAVE", () async {
+        await FirebaseFirestore.instance.collection("Job_Postings").
+        add({
+          'position': _positionController.text,
+          'company': fieldValue,
+          'job_description': _jobDescriptionController.text,
+          'salary': _salaryController.text,
+          'job_type': _jobTypeController.text,
+          'qualification': _qualificationController.text,
+          'experience': _experienceController.text,
+          'responsibilities': _resposibilitiesController.text,
+          'requirements': _requirementsController.text,
+          'id': FirebaseAuth.instance.currentUser?.uid.toString(),
+        }).whenComplete(() => Navigator.pop(context));
+      });
+    }
+    )
                 ),
               ],
             ),
@@ -167,5 +177,24 @@ class _JobPostingState extends State<JobPosting> {
         ),
       ),
     );
+  }
+
+  Future<String> getFieldValue() async {
+    try {
+      final DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(FirebaseAuth.instance.currentUser?.uid)
+          .get();
+
+      if (snapshot.exists) {
+        // Extract the field value from the document
+        final fieldValue = snapshot.get('company_name');
+        return fieldValue.toString();
+      } else {
+        return 'Document not found';
+      }
+    } catch (e) {
+      return 'Error: $e';
+    }
   }
 }

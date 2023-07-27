@@ -37,8 +37,7 @@ class _mainpageState extends State<mainpage> {
       setState(() {
        name = userDoc.data()?['name'] ?? 'Default Name'; 
       });
-      
-      print('User Name: $name');
+
     } else {
       print('User document not found.');
     }
