@@ -14,6 +14,7 @@ class CompanyDescriptionScreen extends StatefulWidget {
 
 class _CompanyDescriptionScreenState extends State<CompanyDescriptionScreen> {
   final ref = FirebaseFirestore.instance.collection("Users");
+  final CollectionReference ref2 = FirebaseFirestore.instance.collection("Feedback");
   bool readMore = false;
 
   @override
@@ -397,6 +398,112 @@ class _CompanyDescriptionScreenState extends State<CompanyDescriptionScreen> {
                             ),
                           ],
                         ),
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Container(
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width,
+                        height: 27,
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          "Feedback",
+                          style: TextStyle(color: primarytheme,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+
+                      Container(
+                          child: StreamBuilder<QuerySnapshot>(
+                                    stream: ref2.where('company',
+                                        isEqualTo: data!['company_name'].toString()) // Replace 'field_name' with the actual field name you want to filter on
+                                        .snapshots(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasError) {
+                                        return Center(
+                                          child: Text('Error: ${snapshot.error}'),
+                                        );
+                                      }
+
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      }
+
+                                      // Convert QuerySnapshot to a list of DocumentSnapshots
+                                      final List<DocumentSnapshot> documents = snapshot
+                                          .data!.docs;
+
+                                      if (documents.isEmpty) {
+                                        return Center(
+                                          child: Text('No Feedback.'),
+                                        );
+                                      }
+                                      return
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(0, 2, 2, 2),
+                                          child: ListView.builder(
+                                              physics: NeverScrollableScrollPhysics(),
+                                              shrinkWrap: true,
+                                              itemCount: documents.length,
+                                              itemBuilder: (_, index) {
+                                                //bool expanded = false;
+                                                final Map<String,
+                                                    dynamic> data = documents[index]
+                                                    .data() as Map<String, dynamic>;
+                                                return Padding(
+                                                  padding: EdgeInsets.fromLTRB(0, 0, 0, 3),
+                                                  child: Align(
+                                                      child: SingleChildScrollView(
+                                                        child: Column(children: <Widget>[
+                                                          Container(
+                                                            child: Column(
+                                                              children: [
+                                                                Container(
+                                                                  width: MediaQuery
+                                                                      .of(context)
+                                                                      .size
+                                                                      .width,
+                                                                  //height: 27,
+                                                                  alignment: Alignment.topLeft,
+                                                                  child: Column(
+                                                                    children: [
+                                                                      Text(
+                                                                        data['feedback'],
+                                                                        style: TextStyle(color: Colors.black,
+                                                                            fontSize: 14,
+                                                                            fontWeight: FontWeight.w200
+                                                                        ),
+                                                                        textAlign: TextAlign.left,
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        height: 8,
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ]),
+                                                      )),
+                                                );
+                                              }),
+                                        );
+                                    }
+                                )
                       ),
 
                       const SizedBox(
