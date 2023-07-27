@@ -37,10 +37,7 @@ class _mainpageState extends State<mainpage> {
       setState(() {
        name = userDoc.data()?['name'] ?? 'Default Name'; 
       });
-<<<<<<< HEAD
-      
-=======
->>>>>>> 756555651192657330de9d8e248992ea70508d1a
+
 
     } else {
       print('User document not found.');
