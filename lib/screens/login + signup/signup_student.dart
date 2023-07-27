@@ -195,6 +195,6 @@ class _SignUpStuScreenState extends State<SignUpStuScreen> {
     await FirebaseFirestore.instance
         .collection('Users')
         .doc(FirebaseAuth.instance.currentUser?.uid)
-        .set({'user_type': userType, 'email': email, 'name': name});
+        .set({'user_type': userType, 'email': email, 'name': name, 'about_me': ''});
   }
 }

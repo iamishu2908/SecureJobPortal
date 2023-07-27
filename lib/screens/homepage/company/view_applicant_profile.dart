@@ -1,24 +1,15 @@
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:secure_job_portal/reusable_widgets/reusable_widget.dart';
 import 'package:secure_job_portal/screens/homepage/company/applicant_achievements.dart';
 import 'package:secure_job_portal/screens/homepage/company/applicant_education.dart';
 import 'package:secure_job_portal/screens/homepage/company/applicant_skills.dart';
 import 'package:secure_job_portal/screens/homepage/company/applicant_work_exp.dart';
-import 'package:secure_job_portal/screens/homepage/student/home.dart';
-import 'package:secure_job_portal/screens/profile_stu/achievements/achievement.dart';
-import 'package:secure_job_portal/screens/profile_stu/edu/education.dart';
 import 'package:secure_job_portal/screens/profile_stu/resume/pdf_viewer.dart';
-import 'package:secure_job_portal/screens/profile_stu/skills/add_skills.dart';
-import 'package:secure_job_portal/screens/profile_stu/work_exp/work_experience.dart';
 import 'package:secure_job_portal/screens/login%20+%20signup/signin_student.dart';
 import 'package:secure_job_portal/utils/color_utils.dart';
-import 'package:flutter_document_picker/flutter_document_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 List<String> profilemenu = [
   'About Me',
@@ -46,7 +37,8 @@ class ViewApplicantProfile extends StatefulWidget {
 }
 
 class _ViewApplicantProfileState extends State<ViewApplicantProfile> {
-  String name = '';
+
+  String name = "";
   void getUserData() async {
     final userDoc = await FirebaseFirestore.instance
         .collection('Users')
@@ -55,10 +47,10 @@ class _ViewApplicantProfileState extends State<ViewApplicantProfile> {
 
     if (userDoc.exists) {
       setState(() {
-        name = userDoc.data()?['name'] ?? 'Default Name';
+        name = userDoc.data()?['company_name'] ?? 'Default Name';
       });
 
-      print('User Name: $name');
+      //print('User Name: $name');
     } else {
       print('User document not found.');
     }
@@ -106,15 +98,7 @@ class _ViewApplicantProfileState extends State<ViewApplicantProfile> {
               alignment: Alignment.topLeft,
               child: Padding(
                 padding: EdgeInsets.only(left: 30, top: 10),
-                child: Text(
-                  '$name',
-                  textAlign: TextAlign.left,
-                  style: GoogleFonts.dmSans(
-                    fontWeight: FontWeight.w400,
-                    color: whitetheme,
-                    fontSize: 20,
-                  ),
-                ),
+                child: getName()
               ),
             ),
           ],
@@ -144,8 +128,137 @@ class _ViewApplicantProfileState extends State<ViewApplicantProfile> {
                   }),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(50, 20, 50, 50),
+            child: ElevatedButton(
+              style: ButtonStyle(
+                  minimumSize: MaterialStateProperty.all<Size>(Size(60, 50)),
+                  backgroundColor:
+                  MaterialStateProperty.all<Color>(primarytheme),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ))),
+              child: Text(
+                'Did you Hire the Candidate?',
+                textAlign: TextAlign.left,
+                style: GoogleFonts.dmSans(
+                  fontWeight: FontWeight.w800,
+                  color: whitetheme,
+                  fontSize: 15,
+                ),
+              ),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return Dialog(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius
+                                  .circular(40)),
+                          elevation: 16,
+                          child: Container(
+                              padding: EdgeInsets.fromLTRB(
+                                  20, MediaQuery
+                                  .of(context)
+                                  .size
+                                  .height * 0.02, 20, 20),
+                              height: MediaQuery.of(context).size.height * 0.25,
+                              child: Center(
+                                child: Container(
+                                  padding: EdgeInsets.fromLTRB(
+                                      10, 20, 10, 10),
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(bottom: 15),
+                                        child: SizedBox(
+                                          width: 100,
+                                          child: ElevatedButton(
+                                              style: ButtonStyle(
+                                                  minimumSize: MaterialStateProperty.all<Size>(Size(60, 50)),
+                                                  backgroundColor:
+                                                  MaterialStateProperty.all<Color>(primarytheme),
+                                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                      RoundedRectangleBorder(
+                                                        borderRadius: BorderRadius.circular(18.0),
+                                                      ))),
+                                              child: Text(
+                                                'Yes',
+                                                textAlign: TextAlign.left,
+                                                style: GoogleFonts.dmSans(
+                                                  fontWeight: FontWeight.w800,
+                                                  color: whitetheme,
+                                                  fontSize: 15,
+                                                ),
+                                              ),
+                                              onPressed: () async {
+                                                await FirebaseFirestore.instance.collection("Users").doc(widget.id).collection('Hired').doc('$name').
+                                                set({
+                                                  'name': '$name'
+                                                }).whenComplete(() => Navigator.pop(context));
+                                              }
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 100,
+                                        child: ElevatedButton(
+                                            style: ButtonStyle(
+                                                minimumSize: MaterialStateProperty.all<Size>(Size(60, 50)),
+                                                backgroundColor:
+                                                MaterialStateProperty.all<Color>(primarytheme.withOpacity(0.5)),
+                                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                    RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(18.0),
+                                                    ))),
+                                            child: Text(
+                                              'No',
+                                              textAlign: TextAlign.left,
+                                              style: GoogleFonts.dmSans(
+                                                fontWeight: FontWeight.w800,
+                                                color: whitetheme,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                            onPressed: () {}
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )));
+                    });
+                }
+            ),
+          ),
         ],
       ),
+    );
+  }
+
+  Widget getName() {
+    var collection = FirebaseFirestore.instance.collection('Users');
+    return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+      future: collection.doc(widget.id).get(),
+      builder: (_, snapshot) {
+        if (snapshot.hasError) return Text('Error = ${snapshot.error}');
+
+        if (snapshot.hasData) {
+          var data = snapshot.data!.data();
+          var value = data!['name'];
+          return Text(
+            value,
+            textAlign: TextAlign.left,
+            style: GoogleFonts.dmSans(
+              fontWeight: FontWeight.w400,
+              color: whitetheme,
+              fontSize: 20,
+            ),
+          );
+        }
+        return Center(child: CircularProgressIndicator());
+      },
     );
   }
 }
