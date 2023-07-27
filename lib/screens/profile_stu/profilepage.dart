@@ -59,8 +59,6 @@ class _profilepageState extends State<profilepage> {
       setState(() {
         name = userDoc.data()?['name'] ?? 'Default Name';
       });
-
-
     } else {
       print('User document not found.');
     }
@@ -120,9 +118,9 @@ class _profilepageState extends State<profilepage> {
               Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
-                  padding: EdgeInsets.only(left: 30, top: 10),
+                  padding: const EdgeInsets.only(left: 30, top: 10),
                   child: Text(
-                    '$name',
+                    name,
                     textAlign: TextAlign.left,
                     style: GoogleFonts.dmSans(
                       fontWeight: FontWeight.w400,
@@ -475,23 +473,37 @@ class _qboxState extends State<qbox> {
                                         final path =
                                             (await FlutterDocumentPicker
                                                 .openDocument())!;
-                                        print(path);
-                                        File file = File(path);
-                                        firebase_storage.UploadTask? task =
-                                            await uploadFile(file)
+                                        final lastIndex = path.lastIndexOf('.');
+                                        final extension =
+                                            path.substring(lastIndex + 1);
+                                        print(extension);
+                                        if (extension == 'pdf') {
+                                          File file = File(path);
+                                          firebase_storage.UploadTask? task =
+                                              await uploadFile(file)
+                                                  .then((result) {
+                                            FirebaseStorage.instance
+                                                .ref()
+                                                .child('files')
+                                                .child(FirebaseAuth
+                                                    .instance.currentUser!.uid)
+                                                .getDownloadURL()
                                                 .then((result) {
-                                          FirebaseStorage.instance
-                                              .ref()
-                                              .child('files')
-                                              .child(FirebaseAuth
-                                                  .instance.currentUser!.uid)
-                                              .getDownloadURL()
-                                              .then((result) {
-                                            setState(() {
-                                              url = result;
+                                              setState(() {
+                                                url = result;
+                                              });
                                             });
                                           });
-                                        });
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                              content:
+                                                  Text('File should be in .pdf extension'),
+                                              duration: Duration(seconds: 2),
+                                            ),
+                                          );
+                                        }
                                       }
                                     },
                                     child: Icon(

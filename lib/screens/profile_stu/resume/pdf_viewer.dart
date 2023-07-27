@@ -7,7 +7,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:secure_job_portal/utils/color_utils.dart';
 
 class PdfViewerPage extends StatefulWidget {
-
   String url;
   PdfViewerPage({super.key, required this.url});
 
@@ -32,7 +31,6 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
     setState(() {
       Pfile = file;
     });
-
     print(Pfile);
     setState(() {
       isLoading = false;
@@ -54,21 +52,25 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
         foregroundColor: primarytheme,
         title: Text(
           "View Resume",
-          style: TextStyle(fontFamily: 'Playfair Display',
+          style: TextStyle(
+              fontFamily: 'Playfair Display',
               fontSize: 20,
               fontWeight: FontWeight.bold,
               color: Colors.indigo[900]),
         ),
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator(color: primarytheme,))
+          ? Center(
+              child: CircularProgressIndicator(
+              color: primarytheme,
+            ))
           : Container(
-        child: Center(
-          child: PDFView(
-            filePath: Pfile.path,
-          ),
-        ),
-      ),
+              child: Center(
+                child: PDFView(
+                  filePath: Pfile.path,
+                ),
+              ),
+            ),
     );
   }
 }
