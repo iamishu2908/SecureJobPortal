@@ -145,8 +145,10 @@ class _AddSkillState extends State<AddSkill> {
                                                 context: context,
                                                 barrierDismissible: false,
                                                 builder: (ctx) => AlertDialog(
-                                                    backgroundColor:
-                                                        secondarytheme,
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius: BorderRadius
+                                                            .circular(20)),
+                                                    elevation: 16,
                                                     content: Padding(
                                                       padding:
                                                           const EdgeInsets
@@ -158,7 +160,15 @@ class _AddSkillState extends State<AddSkill> {
                                                             MainAxisAlignment
                                                                 .center,
                                                         children: [
-                                                          TextButton(
+                                                          ElevatedButton(
+                                                            style: ButtonStyle(
+                                                                minimumSize: MaterialStateProperty.all<Size>(Size(60, 50)),
+                                                                backgroundColor:
+                                                                MaterialStateProperty.all<Color>(Colors.indigo.shade900),
+                                                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                                    RoundedRectangleBorder(
+                                                                      borderRadius: BorderRadius.circular(18.0),
+                                                                    ))),
                                                             onPressed: () {
                                                               Navigator.push(
                                                                   context,
@@ -167,17 +177,35 @@ class _AddSkillState extends State<AddSkill> {
                                                                           (context) =>
                                                                               SkillTest(skill: (snapshot.data!.docs.elementAt(index).data() as Map)['skill'])));
                                                             },
-                                                            child: const Text(
+                                                            child: Text(
                                                               'Take the skill questionnaire',
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .indigo,
-                                                                  fontSize:
-                                                                      15.0),
+                                                              textAlign: TextAlign.left,
+                                                              style: GoogleFonts.dmSans(
+                                                                fontWeight: FontWeight.w800,
+                                                                color: whitetheme,
+                                                                fontSize: 12,
+                                                              ),
                                                             ),
                                                           ),
-                                                          const Text("OR"),
-                                                          TextButton(
+                                                          Padding(
+                                                            padding: const EdgeInsets.all(8.0),
+                                                            child: Text("OR",
+                                                              textAlign: TextAlign.left,
+                                                              style: GoogleFonts.dmSans(
+                                                                fontWeight: FontWeight.w800,
+                                                                color: primarytheme,
+                                                                fontSize: 14,
+                                                              ),),
+                                                          ),
+                                                          ElevatedButton(
+                                                            style: ButtonStyle(
+                                                                minimumSize: MaterialStateProperty.all<Size>(Size(60, 50)),
+                                                                backgroundColor:
+                                                                MaterialStateProperty.all<Color>(Colors.indigo.shade900),
+                                                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                                    RoundedRectangleBorder(
+                                                                      borderRadius: BorderRadius.circular(18.0),
+                                                                    ))),
                                                             onPressed: () {
                                                               Navigator.push(
                                                                   context,
@@ -186,8 +214,14 @@ class _AddSkillState extends State<AddSkill> {
                                                                           (context) =>
                                                                               CertificateVerification(skill: (snapshot.data!.docs.elementAt(index).data() as Map)['skill'])));
                                                             },
-                                                            child: const Text(
-                                                                'Verify through Certificates'),
+                                                            child: Text(
+                                                                'Verify through Certificates',
+                                                              textAlign: TextAlign.left,
+                                                              style: GoogleFonts.dmSans(
+                                                                fontWeight: FontWeight.w800,
+                                                                color: whitetheme,
+                                                                fontSize: 12,
+                                                              ),),
                                                           ),
                                                         ],
                                                       ),
@@ -213,8 +247,7 @@ class _AddSkillState extends State<AddSkill> {
                                                         as Map)['isVerified']
                                                     .toString() ==
                                                 'false'
-                                            ? const Color.fromARGB(
-                                                255, 120, 54, 175)
+                                            ? Colors.indigo[900]
                                             : Colors.white,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
@@ -241,7 +274,7 @@ class _AddSkillState extends State<AddSkill> {
                                                       'false'
                                                   ? Colors.white
                                                   : Colors.green[500],
-                                              fontSize: 14)),
+                                              fontSize: 12)),
                                     ),
                                   ],
                                 ),
