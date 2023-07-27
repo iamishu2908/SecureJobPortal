@@ -7,6 +7,9 @@ import 'package:secure_job_portal/screens/login%20+%20signup/signin_company.dart
 import 'package:secure_job_portal/screens/login%20+%20signup/signup_student.dart';
 import 'package:flutter/material.dart';
 
+
+import '../profile_stu/profilepage.dart';
+
 class SignInStuScreen extends StatefulWidget {
   const SignInStuScreen({Key? key}) : super(key: key);
 

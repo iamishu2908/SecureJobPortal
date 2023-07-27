@@ -95,17 +95,38 @@ class _SkillTestState extends State<SkillTest> {
       _questions = Flutter.questions;
     }
     return Scaffold(
-      backgroundColor: background,
+      //backgroundColor: wh,
       appBar: AppBar(
-        title: Text(skill),
-        backgroundColor: background,
-        shadowColor: Colors.transparent,
+        backgroundColor: Colors.white,
+        leading: TextButton(
+          style: TextButton.styleFrom(iconColor: Colors.indigo[900]),
+          child: const Icon(
+            Icons.arrow_back,
+            size: 23,
+          ),
+          onPressed: () {
+            // Perform navigation
+            Navigator.pop(context);
+          },
+        ),
+        title: Text(
+          skill,
+          style: TextStyle(
+              fontFamily: 'Playfair Display',
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.indigo[900]),
+        ),
         actions: [
           Padding(
             padding: EdgeInsets.all(18.0),
             child: Text(
               'Score: $score',
-              style: TextStyle(fontSize: 18),
+                style: TextStyle(
+                    fontFamily: 'Playfair Display',
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.indigo[900])
             ),
           )
         ],
@@ -114,14 +135,17 @@ class _SkillTestState extends State<SkillTest> {
         width: double.infinity,
         padding: EdgeInsets.symmetric(horizontal: 10.0),
         child: Column(children: [
-          QuestionWidget(
-              question: _questions[index].title,
-              indexAction: index,
-              totalQuestions: _questions.length),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 25, 8, 8),
+            child: QuestionWidget(
+                question: _questions[index].title,
+                indexAction: index,
+                totalQuestions: _questions.length),
+          ),
           Divider(
             color: neutral,
           ),
-          SizedBox(height: 25.0),
+          SizedBox(height: 10.0),
           for (int i = 0; i < _questions[index].options.length; i++)
             GestureDetector(
               onTap: () => changeAnswerAndUpdate(

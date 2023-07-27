@@ -120,7 +120,7 @@ class _ApplicantWorkExperienceState extends State<ApplicantWorkExperience> {
                                         child: Row(
                                           children: [
                                             Text(
-                                              (snapshot.data!.docs.elementAt(index).data() as Map)['start_date'].toString(),
+                                              (snapshot.data!.docs.elementAt(index).data() as Map)['start_year'].toString(),
                                               style: GoogleFonts.poppins(
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black,
@@ -140,7 +140,7 @@ class _ApplicantWorkExperienceState extends State<ApplicantWorkExperience> {
                                                       0.05),
                                             ),
                                             Text(
-                                              (snapshot.data!.docs.elementAt(index).data() as Map)['end_date'].toString(),
+                                              (snapshot.data!.docs.elementAt(index).data() as Map)['end_year'].toString(),
                                               style: GoogleFonts.poppins(
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black,
