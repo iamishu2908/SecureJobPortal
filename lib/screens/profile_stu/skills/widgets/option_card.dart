@@ -22,7 +22,7 @@ class OptionCard extends StatelessWidget {
             textAlign: TextAlign.center,
               style: GoogleFonts.dmSans(
                 fontWeight: FontWeight.w300,
-                color: Colors.black,
+                color: color,
                 fontSize: 16,
               ),
           ),

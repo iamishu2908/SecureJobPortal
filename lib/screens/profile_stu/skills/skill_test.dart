@@ -156,7 +156,7 @@ class _SkillTestState extends State<SkillTest> {
                       ? _questions[index].options.values.toList()[i] == true
                           ? correct
                           : incorrect
-                      : neutral),
+                      : Colors.black),
             ),
         ]),
       ),

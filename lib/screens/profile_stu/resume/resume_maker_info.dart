@@ -2,22 +2,30 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:secure_job_portal/reusable_widgets/reusable_widget.dart';
-
-import '../../profile_stu/profilepage.dart';
+import 'package:secure_job_portal/screens/profile_stu/resume/resume_maker/previewpage.dart';
+import 'package:secure_job_portal/screens/profile_stu/resume/resume_maker/user_data.dart';
 
 class ResumeInfoForm extends StatefulWidget {
 
-  const ResumeInfoForm({super.key});
+  String linkedin, github, phone;
+  ResumeInfoForm({super.key, required this.linkedin, required this.github, required this.phone});
 
   @override
   State<ResumeInfoForm> createState() => _ResumeInfoFormState();
 }
 
 class _ResumeInfoFormState extends State<ResumeInfoForm> {
-  final TextEditingController _linkedinController = TextEditingController();
-  final TextEditingController _githubController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
+  TextEditingController _linkedinController = TextEditingController();
+  TextEditingController _githubController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
 
+  @override
+  void initState() {
+    _linkedinController = TextEditingController(text: widget.linkedin);
+    _githubController = TextEditingController(text: widget.linkedin);
+    _phoneController = TextEditingController(text: widget.phone);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,39 +113,15 @@ class _ResumeInfoFormState extends State<ResumeInfoForm> {
                     ),
 
                     Center(
-                        child: firebaseUIButton(context, "SUBMIT", () async {
+                        child: firebaseUIButton(context, "CREATE RESUME", () async {
                           await FirebaseFirestore.instance.collection(
                               "Users").doc(FirebaseAuth.instance.currentUser?.uid).
                           update({
                             'linkedin': _linkedinController.text,
                             'github': _githubController.text,
                             'phone': _phoneController.text,
-                          }).whenComplete(() =>
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return Dialog(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius
-                                                .circular(40)),
-                                        elevation: 16,
-                                        child: Container(
-                                            padding: EdgeInsets.fromLTRB(
-                                                20, MediaQuery
-                                                .of(context)
-                                                .size
-                                                .height * 0.02, 20, 0),
-                                            height: MediaQuery
-                                                .of(context)
-                                                .size
-                                                .height * 0.2,
-                                            child: Center(
-                                              child: Text("Submitted!",
-                                                  style: TextStyle(color: Colors.indigo[900],
-                                                      fontSize: 22,
-                                                      fontWeight: FontWeight.w500)),
-                                            )));
-                                  }));
+                          }).whenComplete(() => getData()
+                              );
                         }
                         )
                     ),
@@ -148,5 +132,15 @@ class _ResumeInfoFormState extends State<ResumeInfoForm> {
         )
     );
   }
+  getData() {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    var user = UserData(userId: userId);
+    user.getUserDataResume();
+    Navigator.of(context).push(MaterialPageRoute(builder: (context){
+
+      return  PdfPreviewPage(user: user);
+    }));
+  }
+
 }
 

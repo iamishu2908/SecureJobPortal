@@ -17,7 +17,7 @@ class ResultBox extends StatelessWidget {
       content: Container(
         height: 400,
         child: Padding(
-          padding: const EdgeInsets.all(50.0),
+          padding: const EdgeInsets.all(40.0),
           child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -43,7 +43,7 @@ class ResultBox extends StatelessWidget {
                       style: const TextStyle(fontSize: 30.0,
                       color: Colors.white),
                     )),
-                const SizedBox(height: 20.0),
+                const SizedBox(height: 15.0),
                 Text(
                   result == questionLength / 2
                       ? 'Almost there'
@@ -64,7 +64,7 @@ class ResultBox extends StatelessWidget {
                       MaterialStateProperty.all<Color>(Colors.indigo.shade900),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0),
+                            borderRadius: BorderRadius.circular(10.0),
                           ))),
                   onPressed: () {
                     Navigator.push(
