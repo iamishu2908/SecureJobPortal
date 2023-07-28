@@ -49,6 +49,10 @@ class profilepage extends StatefulWidget {
 
 class _profilepageState extends State<profilepage> {
   String name = '';
+  String linkedin = '';
+  String github = '';
+  String phone = '';
+
   void getUserData() async {
     final userDoc = await FirebaseFirestore.instance
         .collection('Users')
@@ -58,6 +62,9 @@ class _profilepageState extends State<profilepage> {
     if (userDoc.exists) {
       setState(() {
         name = userDoc.data()?['name'] ?? 'Default Name';
+        linkedin = userDoc.data()?['linkedin'] ?? '';
+        github = userDoc.data()?['github'] ?? '';
+        phone = userDoc.data()?['phone'] ?? '';
       });
     } else {
       print('User document not found.');
@@ -68,19 +75,6 @@ class _profilepageState extends State<profilepage> {
   Widget build(BuildContext context) {
     getUserData();
     return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: primarytheme,
-          onPressed: (){
-            final userId = FirebaseAuth.instance.currentUser?.uid;
-            var user = UserData(userId: userId);
-            user.getUserDataResume();
-            Navigator.of(context).push(MaterialPageRoute(builder: (context){
-
-              return  PdfPreviewPage(user: user);
-            }));
-          },
-          child: const Icon(Icons.picture_as_pdf_sharp),
-        ),
       appBar: AppBar(
           toolbarHeight: MediaQuery.of(context).size.height * 0.2,
           shape: RoundedRectangleBorder(
@@ -193,7 +187,7 @@ class _profilepageState extends State<profilepage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ResumeInfoForm()));
+                            builder: (context) => ResumeInfoForm(linkedin: linkedin, github: github, phone: phone)));
                   })),
           Padding(
             padding: const EdgeInsets.fromLTRB(50, 20, 50, 50),
