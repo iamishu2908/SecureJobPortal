@@ -230,6 +230,7 @@ class _SignUpComScreenState extends State<SignUpComScreen> {
         .collection('Users')
         .doc(FirebaseAuth.instance.currentUser?.uid)
         .set({
+      'uid': FirebaseAuth.instance.currentUser?.uid,
       'user_type': userType,
       'email': email,
       'name': name,
