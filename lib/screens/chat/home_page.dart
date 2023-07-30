@@ -19,7 +19,10 @@ class ChatHomePage extends StatefulWidget {
 
 class _ChatHomePageState extends State<ChatHomePage> {
   final currentUser = FirebaseAuth.instance.currentUser;
-  final ref = FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser?.uid).collection('work_exp');
+  final ref = FirebaseFirestore.instance
+      .collection("Users")
+      .doc(FirebaseAuth.instance.currentUser?.uid)
+      .collection('work_exp');
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +36,11 @@ class _ChatHomePageState extends State<ChatHomePage> {
             Icons.arrow_back,
             size: 23,
           ),
-          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => mainpage())),
+          onPressed: () => Navigator.push(
+              context, MaterialPageRoute(builder: (context) => mainpage())),
         ),
-        title: Text("Chats",
+        title: Text(
+          "Chats",
           style: TextStyle(
               fontFamily: 'Playfair Display',
               fontSize: 20,
@@ -44,36 +49,34 @@ class _ChatHomePageState extends State<ChatHomePage> {
         ),
       ),
       body: _buildUserList(),
-
     );
   }
 
   Widget _buildUserList() {
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('Users').snapshots(),
-      builder: (context, snapshot) {
-        if(snapshot.hasError) {
-          return const Text('error');
-        }
-        if(snapshot.connectionState == ConnectionState.waiting) {
-          return const Text('loading..');
-        }
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 15),
-          child: ListView(
-            children: snapshot.data!.docs
-                .map<Widget>((doc) => _buildUserListItem(doc))
-                .toList(),
-          ),
-        );
-      }
-    );
+        stream: FirebaseFirestore.instance.collection('Users').snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Text('error');
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Text('loading..');
+          }
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 15),
+            child: ListView(
+              children: snapshot.data!.docs
+                  .map<Widget>((doc) => _buildUserListItem(doc))
+                  .toList(),
+            ),
+          );
+        });
   }
 
   Widget _buildUserListItem(DocumentSnapshot document) {
     Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-
-    if(currentUser!.email != data['email']) {
+    print(data['name']);
+    if (currentUser!.email != data['email']) {
       return Column(
         children: [
           ListTile(
@@ -87,14 +90,28 @@ class _ChatHomePageState extends State<ChatHomePage> {
               backgroundColor: secondarytheme,
             ),
             title: Text(
-              data['email'],
+              data['name'],
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
               ),
             ),
+            subtitle: Text(
+              data['email'],
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(receiverUserEmail: data['email'], receiverUserID: data['uid']),),);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChatPage(
+                      receiverUserName: data['name'],
+                      receiverUserID: data['uid']),
+                ),
+              );
             },
           ),
           Padding(
@@ -105,8 +122,7 @@ class _ChatHomePageState extends State<ChatHomePage> {
           ),
         ],
       );
-    }
-    else {
+    } else {
       return Container();
     }
   }
