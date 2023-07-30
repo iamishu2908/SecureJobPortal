@@ -1,5 +1,6 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:secure_job_portal/screens/chat/home_page.dart';
 import 'package:secure_job_portal/screens/chatpage/chatpage.dart';
 import 'package:secure_job_portal/screens/homepage/student/communitypage.dart';
 import 'package:secure_job_portal/screens/homepage/student/mainpage.dart';
@@ -62,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: (_bottomNavIndex == 0)
           ? communitypage()
           : (_bottomNavIndex == 1)
-              ? chatpage()
+              ? ChatHomePage()
               : mainpage(),
     );
   }
